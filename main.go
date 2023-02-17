@@ -3,16 +3,77 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/csv"
 	"fmt"
 	"io"
 	"log"
 	"math/big"
 	"os"
+	"strconv"
 	"sync"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
+
+func main() {
+
+	f, err := os.Open("goerliData.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	r := csv.NewReader(f)
+
+	records, err := r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var wg = new(sync.WaitGroup)
+	for i := 0; i < 100; i++ {
+		wg.Add(1)
+		client, err := ethclient.Dial("https://goerli.davionlabs.com")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer client.Close()
+
+		go func(a int, wg *sync.WaitGroup) {
+			defer wg.Done()
+			for j := 0; j < 400; j++ {
+				bn := records[j+1][0]
+				bnI, err := strconv.ParseInt(bn, 10, 64)
+				if err != nil {
+					panic(err)
+				}
+
+				ba, err := client.BalanceAt(context.Background(), common.HexToAddress("0xc4AaE221f1C62E8CBC657Af5b051eA573914cFc7"), big.NewInt(bnI))
+				if err != nil {
+					panic(err)
+				}
+				records[j+1][4] = fmt.Sprintf("%v", ba)
+
+				th := records[j+1][1]
+				tx, _, err := client.TransactionByHash(context.Background(), common.HexToHash(th))
+				if err != nil {
+					panic(err)
+				}
+				records[j+1][7] = fmt.Sprintf("%v", tx.GasPrice())
+			}
+		}(i, wg)
+	}
+	wg.Wait()
+
+	fmt.Println(len(records))
+	for i, record := range records {
+		if i == 0 {
+			fmt.Println(record)
+		}
+	}
+}
 
 func contains(s []int, e int) bool {
 	for _, a := range s {
@@ -23,7 +84,7 @@ func contains(s []int, e int) bool {
 	return false
 }
 
-func main() {
+func aaa() {
 
 	// again := []int{13, 17, 18, 19, 21, 24, 3, 38, 39, 45, 7, 8}
 
