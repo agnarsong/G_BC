@@ -14,13 +14,29 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
+func contains(s []int, e int) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
+
+	// again := []int{13, 17, 18, 19, 21, 24, 3, 38, 39, 45, 7, 8}
 
 	bn := 8360000
 
 	var wg = new(sync.WaitGroup)
 
 	for i := 0; i < 100; i++ {
+		// // 异常失败后 补跑数据
+		// if !contains(again, i + 1){
+		// 	continue
+		// }
+
 		wg.Add(1)
 		// client, err := ethclient.Dial("https://goerli.infura.io/v3/a07ee340688643dd98ed571bfc1672fb")
 		client, err := ethclient.Dial("https://goerli.davionlabs.com")
@@ -48,7 +64,7 @@ func main() {
 				block, err := client.BlockByNumber(context.Background(), blockNumber)
 				if err != nil {
 					logger.Printf("j: %v, blockNumber: %v, err: %v", j, blockNumber, err)
-					break
+					continue
 				}
 
 				for _, tx := range block.Transactions() {
@@ -62,7 +78,7 @@ func main() {
 				time.Sleep(time.Duration(100) * time.Microsecond)
 			}
 
-			logger.Printf("finish")
+			logger.Printf("finished")
 		}(i, wg)
 	}
 	wg.Wait()
