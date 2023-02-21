@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"math/big"
@@ -121,7 +122,6 @@ func main() {
 
 				blocks := []*types.Block{}
 				blockNumber := big.NewInt(int64(j + a*5800))
-				fmt.Println("blockNumber: ", blockNumber)
 
 				for k := 0; k < clients_len; k++ {
 					b, err := clients[k].BlockByNumber(context.Background(), blockNumber)
@@ -136,6 +136,8 @@ func main() {
 					r := compareBlock(blocks[0], blocks[l])
 					if len(r) > 2 {
 						fmt.Println(urls[0], urls[l], r)
+					} else {
+						fmt.Println("blockNumber: ", blockNumber, "finish!")
 					}
 				}
 
@@ -153,7 +155,8 @@ func compareBlock(b1 *types.Block, b2 *types.Block) []string {
 	res := []string{b1.Number().String(), b2.Number().String()}
 
 	if bytes.Equal(b1.Extra(), b2.Extra()) {
-		res = append(res, "different extraData")
+		res = append(res, fmt.Sprintf("different extraData, b1: %v, b2: %v",
+			hex.EncodeToString(b1.Extra()), hex.EncodeToString(b2.Extra())))
 	}
 
 	if b1.GasLimit() != b2.GasLimit() {
