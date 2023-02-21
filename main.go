@@ -154,7 +154,7 @@ func compareBlock(b1 *types.Block, b2 *types.Block) []string {
 
 	res := []string{b1.Number().String(), b2.Number().String()}
 
-	if bytes.Equal(b1.Extra(), b2.Extra()) {
+	if !bytes.Equal(b1.Extra(), b2.Extra()) {
 		res = append(res, fmt.Sprintf("different extraData, b1: %v, b2: %v",
 			hex.EncodeToString(b1.Extra()), hex.EncodeToString(b2.Extra())))
 	}
