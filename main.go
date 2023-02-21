@@ -90,14 +90,14 @@ func maina() {
 
 func main() {
 	urls := []string{
-		"http://10.45.24.110",
-		"http://10.45.26.179",
-		"http://10.45.27.108",
-		"http://10.45.24.254",
-		"http://10.45.27.102",
-		"http://10.45.26.170",
-		"http://10.45.24.29",
-		"http://10.45.27.101",
+		"http://10.45.24.110:8545",
+		"http://10.45.26.179:8545",
+		"http://10.45.27.108:8545",
+		"http://10.45.24.254:8545",
+		"http://10.45.27.102:8545",
+		"http://10.45.26.170:8545",
+		"http://10.45.24.29:8545",
+		"http://10.45.27.101:8545",
 	}
 
 	clients := []*ethclient.Client{}
@@ -121,6 +121,7 @@ func main() {
 
 				blocks := []*types.Block{}
 				blockNumber := big.NewInt(int64(j + a*5800))
+				fmt.Println("blockNumber: ", blockNumber)
 
 				for k := 0; k < clients_len; k++ {
 					b, err := clients[k].BlockByNumber(context.Background(), blockNumber)
