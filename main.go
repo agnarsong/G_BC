@@ -90,14 +90,14 @@ func maina() {
 
 func main() {
 	urls := []string{
-		"http://10.45.24.110:8545",
-		"http://10.45.26.179:8545",
-		"http://10.45.27.108:8545",
-		"http://10.45.24.254:8545",
+		"http://10.45.25.148:8545",
+		"http://10.45.26.68:8545",
 		"http://10.45.27.102:8545",
-		"http://10.45.26.170:8545",
-		"http://10.45.24.29:8545",
-		"http://10.45.27.101:8545",
+		"http://10.45.24.37:8545",
+		"http://10.45.27.191:8545",
+		"http://10.45.26.205:8545",
+		"http://10.45.24.231:8545",
+		"http://10.45.27.193:8545",
 	}
 
 	clients := []*ethclient.Client{}
@@ -135,7 +135,7 @@ func main() {
 				for l := 1; l < clients_len; l++ {
 					r := compareBlock(blocks[0], blocks[l])
 					if len(r) > 2 {
-						fmt.Println(r)
+						fmt.Println(urls[0], urls[l], r)
 					}
 				}
 
