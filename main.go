@@ -3,223 +3,199 @@ package main
 import (
 	"bytes"
 	"context"
-	"encoding/hex"
+	"encoding/csv"
 	"fmt"
+	"io"
 	"log"
 	"math/big"
-	"math/rand"
+	"os"
+	"sort"
+	"strconv"
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 func maina() {
-	// client, err := ethclient.Dial("https://rpc.testnet.mantle.xyz")
 
-	var wg1 = new(sync.WaitGroup)
-	for i := 0; i < 100; i++ {
+	f, err := os.Open("b.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
 
-		wg1.Add(1)
-		client, err := ethclient.Dial("https://rpc0.testnet.mantle.xyz")
+	r := csv.NewReader(f)
+
+	records, err := r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+	gasPrice := make([]*big.Int, 0)
+	for i, record := range records {
+		if i == 0 {
+			continue
+		}
+		gp, err := strconv.ParseInt(record[7], 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
-		go func(a int, wg *sync.WaitGroup) {
-
-			defer wg.Done()
-			for j := 0; j < 5800; j++ {
-
-				blockNumber := big.NewInt(int64(j + a*5800))
-				block, err := client.BlockByNumber(context.Background(), blockNumber)
-				if err != nil {
-					fmt.Println("get block err, err: ", err, "blockNumber: ", blockNumber)
-					break
-				}
-
-				blockd := block
-				if a > 0 {
-					blockd, err = client.BlockByNumber(context.Background(), big.NewInt(int64(j+a*5800)-1))
-					if err != nil {
-						fmt.Println("get blockd err, err: ", err, "blockNumber: ", big.NewInt(int64(j+a*5800)-1))
-						break
-					}
-				}
-
-				fmt.Println("Block  Nm:", block.Number())
-
-				block1, err := client.BlockByHash(context.Background(), block.Hash())
-				if err != nil {
-					fmt.Println("get BlockByHash err, err: ", err, "BlockHash: ", block.Hash())
-					break
-				}
-
-				if block1.Number().Cmp(block.Number()) != 0 {
-
-					fmt.Printf(
-						"Block 不一致, Block  Nm: %v, BlockHash: %v, Block1 Nm: %v, Block1Hash: %v\n",
-						block.Number(), block.Hash(), block1.Number(), block1.Hash(),
-					)
-				}
-
-				if a > 0 {
-					if block1.ParentHash().Hex() != blockd.Hash().Hex() {
-
-						fmt.Printf(
-							"block1 ParentHash 不一致, Block1 Nm: %v, Blockd Nm: %v, ParentHash: %v, BlockdHash: %v\n",
-							block1.Number(), blockd.Number(), block.ParentHash(), blockd.Hash(),
-						)
-					}
-
-					if block.ParentHash().Hex() != blockd.Hash().Hex() {
-
-						fmt.Printf(
-							"block ParentHash 不一致, Block  Nm: %v, Blockd Nm: %v, ParentHash: %v, BlockdHash: %v\n",
-							block.Number(), blockd.Number(), block.ParentHash(), blockd.Hash(),
-						)
-					}
-				}
-			}
-		}(i, wg1)
+		gasPrice = append(gasPrice, big.NewInt(gp))
 
 	}
-	wg1.Wait()
+
+	sort.Slice(gasPrice, func(a, b int) bool {
+		// sort direction high before low.
+		return gasPrice[a].Cmp(gasPrice[b]) < 0
+	})
+
+	fmt.Println(gasPrice[0], gasPrice[len(gasPrice)-1])
 
 }
 
 func main() {
-	urls := []string{
-		"http://10.45.25.148:8545",
-		"http://10.45.26.68:8545",
-		"http://10.45.27.102:8545",
-		"http://10.45.24.37:8545",
-		"http://10.45.27.191:8545",
-		"http://10.45.26.205:8545",
-		"http://10.45.24.231:8545",
-		"http://10.45.27.193:8545",
-		"http://10.45.27.124:8545",
+
+	f, err := os.Open("b.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	r := csv.NewReader(f)
+
+	records, err := r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	clients := []*ethclient.Client{}
-	for _, u := range urls {
-		c, err := ethclient.Dial(u)
+	var wg = new(sync.WaitGroup)
+	for i := 0; i < 80; i++ {
+		wg.Add(1)
+		// client, err := ethclient.Dial("https://goerli.infura.io/v3/3f31ba1b9fc54dfd92e1e26a64fba7e0")
+		client, err := ethclient.Dial("https://goerli.davionlabs.com")
 		if err != nil {
 			log.Fatal(err)
 		}
-		clients = append(clients, c)
-	}
 
-	clients_len := len(clients)
-	var wg1 = new(sync.WaitGroup)
-	for i := 0; i < 100; i++ {
-
-		wg1.Add(1)
 		go func(a int, wg *sync.WaitGroup) {
+			defer wg.Done()
+			for j := 0; j < 550; j++ {
+
+				lNo := j + 1 + a*550
+				if lNo > len(records)-1 {
+					break
+				}
+
+				// bn := records[lNo][0]
+				// bnI, err := strconv.ParseInt(bn, 10, 64)
+				// if err != nil {
+				// 	panic(err)
+				// }
+
+				// ba, err := client.BalanceAt(context.Background(), common.HexToAddress("0xc4AaE221f1C62E8CBC657Af5b051eA573914cFc7"), big.NewInt(bnI))
+				// if err != nil {
+				// 	fmt.Println("bn: ", bn, err)
+				// 	continue
+				// }
+				// records[lNo][4] = fmt.Sprintf("%v", ba)
+
+				th := records[lNo][1]
+				// tx, _, err := client.TransactionByHash(context.Background(), common.HexToHash(th))
+				// if err != nil {
+				// 	fmt.Println("txHash: ", th, err)
+				// 	continue
+				// }
+
+				// records[lNo][7] = fmt.Sprintf("%v", tx.GasPrice())
+
+				Receipt, err := client.TransactionReceipt(context.Background(), common.HexToHash(th))
+				if err != nil {
+					fmt.Println("txReceipt: ", th, err)
+					continue
+				}
+				records[lNo][8] = fmt.Sprintf("%v", Receipt.GasUsed)
+
+				fmt.Println(records[lNo])
+				time.Sleep(time.Duration(500) * time.Millisecond)
+			}
+		}(i, wg)
+	}
+	wg.Wait()
+
+	fmt.Println("==============", len(records))
+	for _, record := range records {
+		fmt.Println(record)
+	}
+}
+
+func contains(s []int, e int) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func aaa() {
+
+	// again := []int{13, 17, 18, 19, 21, 24, 3, 38, 39, 45, 7, 8}
+
+	bn := 8360000
+
+	var wg = new(sync.WaitGroup)
+
+	for i := 0; i < 100; i++ {
+		// // 异常失败后 补跑数据
+		// if !contains(again, i + 1){
+		// 	continue
+		// }
+
+		wg.Add(1)
+		// client, err := ethclient.Dial("https://goerli.infura.io/v3/a07ee340688643dd98ed571bfc1672fb")
+		client, err := ethclient.Dial("https://goerli.davionlabs.com")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer client.Close()
+
+		go func(a int, wg *sync.WaitGroup) {
+			writer1 := &bytes.Buffer{}
+			writer2 := os.Stdout
+			writer3, err := os.OpenFile(fmt.Sprintf("./logs/%v.log", a+1), os.O_WRONLY|os.O_CREATE, 0755)
+			if err != nil {
+				log.Fatalf("create file log.txt failed: %v", err)
+			}
+			// logger := log.New(io.MultiWriter(writer1, writer2, writer3), "", log.Lshortfile|log.LstdFlags)
+			logger := log.New(io.MultiWriter(writer1, writer2, writer3), "", 0)
 
 			defer wg.Done()
-			for j := 0; j < 5800; j++ {
 
-				blocks := []*types.Block{}
-				blockNumber := big.NewInt(int64(j + a*5800))
+			total := 0
+			for j := bn + a*1000; j < bn+(a+1)*1000; j++ {
 
-				for k := 0; k < clients_len; k++ {
-					b, err := clients[k].BlockByNumber(context.Background(), blockNumber)
-					if err != nil {
-						fmt.Println("get block err, err: ", err, "blockNumber: ", blockNumber)
-						break
-					}
-					blocks = append(blocks, b)
+				blockNumber := big.NewInt(int64(j))
+				block, err := client.BlockByNumber(context.Background(), blockNumber)
+				if err != nil {
+					logger.Printf("j: %v, blockNumber: %v, err: %v", j, blockNumber, err)
+					continue
 				}
 
-				for l := 1; l < clients_len; l++ {
-					r := compareBlock(blocks[0], blocks[l])
-					if len(r) > 2 {
-						fmt.Println(urls[0], urls[l], r)
-					} else {
-						fmt.Println("blockNumber: ", blockNumber, "finish!")
+				for _, tx := range block.Transactions() {
+
+					if tx.To() != nil && tx.To().Hex() == "0x654e6dF111F98374d9e5d908D7a5392C308aA18D" {
+						total += len(tx.Data())
+						logger.Printf("BlockNumber: %v, tx.Hash: %v, input length: %v, time: %v, total: %v\n", block.Number(), tx.Hash(), len(tx.Data()), block.Time(), total)
 					}
 				}
 
-				sleep(500)
+				time.Sleep(time.Duration(100) * time.Microsecond)
 			}
-		}(i, wg1)
 
+			logger.Printf("finished")
+		}(i, wg)
 	}
-
-	wg1.Wait()
-}
-
-func compareBlock(b1 *types.Block, b2 *types.Block) []string {
-
-	res := []string{b1.Number().String(), b2.Number().String()}
-
-	if !bytes.Equal(b1.Extra(), b2.Extra()) {
-		res = append(res, fmt.Sprintf("different extraData, b1: %v, b2: %v",
-			hex.EncodeToString(b1.Extra()), hex.EncodeToString(b2.Extra())))
-	}
-
-	if b1.GasLimit() != b2.GasLimit() {
-		res = append(res, "different GasLimit")
-	}
-
-	if b1.GasUsed() != b2.GasUsed() {
-		res = append(res, "different GasUsed")
-	}
-
-	if b1.Hash().Hex() != b2.Hash().Hex() {
-		res = append(res, "different Hash")
-	}
-
-	if b1.Difficulty().Cmp(b2.Difficulty()) != 0 {
-		res = append(res, "different Difficulty")
-	}
-
-	if b1.Nonce() != b2.Nonce() {
-		res = append(res, "different Nonce")
-	}
-
-	if b1.ParentHash().Hex() != b2.ParentHash().Hex() {
-		res = append(res, "different ParentHash")
-	}
-
-	if b1.MixDigest().Hex() != b2.MixDigest().Hex() {
-		res = append(res, "different MixDigest")
-	}
-
-	if b1.UncleHash().Hex() != b2.UncleHash().Hex() {
-		res = append(res, "different UncleHash")
-	}
-
-	if b1.ReceiptHash().Hex() != b2.ReceiptHash().Hex() {
-		res = append(res, "different ReceiptHash")
-	}
-
-	if b1.Root().Hex() != b2.Root().Hex() {
-		res = append(res, "different Root")
-	}
-
-	if b1.Size() != b1.Size() {
-		res = append(res, "different Size")
-	}
-
-	if b1.Time() != b2.Time() {
-		res = append(res, "different Time")
-	}
-
-	if b1.Bloom() != b2.Bloom() {
-		res = append(res, "different Bloom")
-	}
-
-	if b1.Coinbase().Hex() != b2.Coinbase().Hex() {
-		res = append(res, "different miner")
-	}
-
-	return res
-}
-
-func sleep(ms int) {
-	s := rand.Intn(ms)
-	time.Sleep(time.Millisecond * time.Duration(s))
+	wg.Wait()
 }
