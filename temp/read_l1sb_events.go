@@ -7,7 +7,7 @@ import (
 	"math/big"
 	"strings"
 
-	l1cdm "songys/bc/contracts"
+	l1cdm "mantle/test/contracts"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
