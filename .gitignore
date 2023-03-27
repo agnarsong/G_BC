@@ -19,3 +19,7 @@ yarn.lock
 yarn-error.log
 
 logs/*
+
+packages/contracts/artifacts
+packages/contracts/cache
+*/node_modules

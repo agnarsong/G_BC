@@ -1,0 +1,14 @@
+{
+  "name": "mt",
+  "version": "0.0.1",
+  "description": "mantle tools's contracts",
+  "main": "index.js",
+  "author": "agnar.song",
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.13.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.2"
+  }
+}
