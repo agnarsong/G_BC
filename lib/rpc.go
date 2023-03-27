@@ -179,14 +179,3 @@ func SignedTx(c *ethclient.Client, prik string, toAddress string, tokenAddress s
 
 	return
 }
-
-func SendTransaction(c *ethclient.Client, signedTx *types.Transaction) (txHash string, err error) {
-
-	err = c.SendTransaction(context.Background(), signedTx)
-	if err != nil {
-		return "", err
-	}
-
-	txHash = signedTx.Hash().Hex()
-	return
-}
