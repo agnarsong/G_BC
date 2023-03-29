@@ -124,3 +124,35 @@
 - go run main.go rpc swarm
 - go run main.go rpc whisper
 - go run main.go rpc utility
+
+
+
+# solc
+
+  ## 期望
+  generate the ABI from a solidity source file.
+
+  ```shell
+  cd packages/contracts/contracts
+  rm -rf build
+  solc --abi CustomERC20.sol -o build --base-path './' --include-path '../node_modules/'
+  solc --bin CustomERC20.sol -o build --base-path './' --include-path '../node_modules/'
+  ```
+
+  let's convert the ABI to a Go file that we can import. This new file will contain all the available methods the we can use to interact with the smart contract from our Go application.
+
+  ```shell
+  (anaconda3)➜  contracts git:(main) ✗ pwd
+  /Users/dl00038ml/PKG/projects/blockChain/a_mantlenetworkio/g_bc/contracts
+  (anaconda3)➜  contracts git:(main) ✗ abigen --abi=../packages/contracts/contracts/build/CustomERC20.abi --pkg=CustomERC20 --out=CustomERC20.go
+  ```
+
+  ## 现实
+
+  有import的合约, 并不能使用上述的方法生成包含deploy的合约go代码
+  `abigen --bin` 无效
+
+  所以使用hardhat deploy contracts
+  
+  直接使用下述shell
+  `bash compile.sh`

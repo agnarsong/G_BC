@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -42,7 +42,7 @@ contract CustomERC20 is ERC20, IERC20Test, Ownable {
         }
     }
 
-    function runOutOfGas(uint64 num) public {
+    function runOutOfGas(uint64 num) public pure {
 
         bytes32 h;
         for (uint256 i = 0; i < num; i++) {

@@ -37,17 +37,19 @@ var clientCmd = &cobra.Command{
 }
 
 var url string
-var tokenAddress string
 var c *ethclient.Client
 var b int64
 var bh string
 
 func init() {
-	clientCmd.PersistentFlags().StringVarP(&url, "url", "u", "", "")
+	mtCmd.AddCommand(clientCmd)
 
-	clientCmd.PersistentFlags().StringVar(&tokenAddress, "tokenAddress", "", "token Contract address")
+	clientCmd.PersistentFlags().StringVarP(&url, "url", "u", "", "")
+	clientCmd.PersistentFlags().StringP("contractAddress", "c", "", "Contract address")
 	clientCmd.PersistentFlags().Int64VarP(&b, "blockNum", "b", -1, "区块高度")
 	clientCmd.PersistentFlags().StringVar(&bh, "blockHash", "0", "区块hash")
+	clientCmd.PersistentFlags().StringP("privateKey", "p", "", "privateKey of sender address")
 
-	mtCmd.AddCommand(clientCmd)
+	config.AppConfig.BindPFlag("privateKey", clientCmd.PersistentFlags().Lookup("privateKey"))
+
 }

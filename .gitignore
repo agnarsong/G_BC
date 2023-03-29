@@ -22,4 +22,5 @@ logs/*
 
 packages/contracts/artifacts
 packages/contracts/cache
+packages/contracts/build
 */node_modules

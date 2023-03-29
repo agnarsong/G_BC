@@ -56,7 +56,7 @@ var icCmd = &cobra.Command{
 	Example: "mt client account isContract <address>",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		isContract, err := lib.IsContract(c, address)
+		isContract, err := lib.IsContract(c, args[0])
 
 		fmt.Printf("地址: %v 是否为合约: %v\n", args[0], isContract)
 		return err

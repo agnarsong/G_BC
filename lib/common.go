@@ -17,10 +17,10 @@ func CheckAddress(address string) (a common.Address, b bool) {
 	return common.HexToAddress(address), true
 }
 
-func AnalysePrivateKey(prv string) (p *ecdsa.PrivateKey, publicKeyECDSA *ecdsa.PublicKey,
+func AnalysePrivateKey(prv string) (privateKey *ecdsa.PrivateKey, publicKeyECDSA *ecdsa.PublicKey,
 	fromAddress common.Address, err error) {
 
-	privateKey, err := crypto.HexToECDSA(prv)
+	privateKey, err = crypto.HexToECDSA(prv)
 	if err != nil {
 		return
 	}

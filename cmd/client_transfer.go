@@ -22,13 +22,11 @@ func init() {
 	ctCmd.AddCommand(ethCmd)
 
 	ctCmd.PersistentFlags().StringP("toAddress", "t", "", "receiver address")
-	ctCmd.PersistentFlags().StringP("privateKey", "p", "", "privateKey of sender address")
 
 	ctCmd.PersistentFlags().Int64VarP(&value, "value", "v", 1, "transfer value")
 	ctCmd.PersistentFlags().StringVarP(&dataString, "dataString", "d", "", "transfer message")
 
 	//将配置文件和入参绑定，使用入参替换默认配置
-	config.AppConfig.BindPFlag("privateKey", ctCmd.PersistentFlags().Lookup("privateKey"))
 	config.AppConfig.BindPFlag("to", ctCmd.PersistentFlags().Lookup("to"))
 }
 
@@ -61,8 +59,36 @@ var ctCmd = &cobra.Command{
 var ethCmd = &cobra.Command{
 	Use:     "e",
 	Aliases: []string{"SendETHTransaction"},
-	Short:   "查询最新区块高度",
-	Long:    "查询最新区块高度",
+	Short:   "执行 ETH transfer",
+	Long:    "执行 ETH transfer",
+	RunE: func(cmd *cobra.Command, args []string) error {
+
+		tx, cid, privateKey, err := lib.SignETHTx1(c, prv, from, to, value, []byte(dataString))
+		if err != nil {
+			return err
+		}
+
+		signedTx, err := lib.SignETHTx2(tx, cid, privateKey)
+		if err != nil {
+			return err
+		}
+
+		txHash, err := lib.SendTransaction(c, signedTx)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println("txHash: ", txHash)
+		return nil
+	},
+	PreRunE: ctCmd.PreRunE,
+}
+
+var erc20Cmd = &cobra.Command{
+	Use:     "20",
+	Aliases: []string{"SendERC20Transaction"},
+	Short:   "执行 ERC20 transfer",
+	Long:    "执行 ERC20 transfer",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		tx, cid, privateKey, err := lib.SignETHTx1(c, prv, from, to, value, []byte(dataString))
