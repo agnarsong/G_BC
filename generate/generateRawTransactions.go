@@ -1,10 +1,11 @@
 package generate
 
 import (
-	"context"
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
+	"mantle/test/lib"
 	"math/big"
 	"os"
 
@@ -15,18 +16,18 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-func GRawTransactions(numberOfTransactions int, wFileName string, tFileName string) {
+func GRawTransactions(c *ethclient.Client, numberOfTransactions int, wFileName string, tFileName string) {
 	// 打开包含私钥和地址的文件
 	file, err := os.Open(wFileName)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("os.Open err: ", err)
 	}
 	defer file.Close()
 
 	// 创建名为 RawTransactions.csv 的文件，并写入表头
 	transactionsFile, err := os.Create(tFileName)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("os.Create err: ", err)
 	}
 	defer transactionsFile.Close()
 
@@ -40,18 +41,19 @@ func GRawTransactions(numberOfTransactions int, wFileName string, tFileName stri
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			log.Fatal(err)
+			fmt.Println("reader.Read err: ", err)
 		}
-
 		privateKey, err := crypto.HexToECDSA(record[0])
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(record[0])
+			fmt.Println("crypto.HexToECDSA err: ", err)
+			continue
 		}
 
 		address := common.HexToAddress(record[1])
-		nonce, gasPrice, chainID, err := getNonce(address)
+		nonce, gasPrice, chainID, err := lib.QBasic(c, address)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println("lib.QBasic err: ", err)
 		}
 
 		// 构造交易数据
@@ -65,44 +67,18 @@ func GRawTransactions(numberOfTransactions int, wFileName string, tFileName stri
 		// 使用钱包的私钥进行签名
 		signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println("types.SignTx err: ", err)
 		}
 
 		txb, err := rlp.EncodeToBytes(signedTx)
 		if err != nil {
-			log.Fatalf("encode error: %v", err)
+			fmt.Println("rlp.EncodeToBytes err: ", err)
 		}
 
-		record = []string{common.Bytes2Hex(txb)}
-		if err := transactionsWriter.Write(record); err != nil {
-			log.Fatal(err)
+		if err := transactionsWriter.Write([]string{common.Bytes2Hex(txb)}); err != nil {
+			fmt.Println("transactionsWriter.Writ err: ", err)
 		}
 	}
 
 	log.Printf("%d 笔交易已生成并写入文件！", numberOfTransactions)
-}
-
-func getNonce(address common.Address) (uint64, *big.Int, *big.Int, error) {
-	client, err := ethclient.Dial("http://127.0.0.1:9545")
-	if err != nil {
-		return 0, nil, nil, err
-	}
-	defer client.Close()
-
-	nonce, err := client.PendingNonceAt(context.Background(), address)
-	if err != nil {
-		return 0, nil, nil, err
-	}
-
-	gasPrice, err := client.SuggestGasPrice(context.Background())
-	if err != nil {
-		return 0, nil, nil, err
-	}
-
-	chainID, err := client.NetworkID(context.Background())
-	if err != nil {
-		return 0, nil, nil, err
-	}
-
-	return nonce, gasPrice, chainID, nil
 }

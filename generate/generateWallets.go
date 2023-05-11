@@ -36,6 +36,13 @@ func GWallets(numberOfWallets int, fileName string) {
 		// 将字节序列转换为十六进制字符串
 		privateKeyHex := hex.EncodeToString(privateKeyBytes)
 
+		// 转换一次作为privateKey是否有效的检查
+		_, err = crypto.HexToECDSA(privateKeyHex)
+		if err != nil {
+			i--
+			continue
+		}
+
 		// 根据私钥生成公钥和地址
 		publicKey := privateKey.Public()
 		publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)

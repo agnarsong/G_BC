@@ -3,44 +3,40 @@ package lib
 import (
 	"context"
 	"crypto/ecdsa"
-	"log"
+	"fmt"
 	"math/big"
+	"time"
 
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"golang.org/x/crypto/sha3"
 )
 
-func SignETHTx1(c *ethclient.Client, prv string, from string, to string, v int64, data []byte) (
+func SignETHTx1(c *ethclient.Client, prv string, to string, amount string, data []byte) (
 	tx *types.Transaction, chainID *big.Int, privateKey *ecdsa.PrivateKey, err error) {
 
-	value := big.NewInt(v)
-	gasLimit := uint64(21000)
+	gasLimit := uint64(3_000_000)
 
-	privateKey, err = crypto.HexToECDSA(prv)
-	if err != nil {
-		log.Fatal(err)
+	amountB, b := ParseAmount(amount)
+	if !b {
+		return tx, chainID, privateKey, fmt.Errorf("ParseAmount return false")
 	}
 
-	fromAddress := common.HexToAddress(from)
-	nonce, err := c.PendingNonceAt(context.Background(), fromAddress)
+	privateKey, _, fromAddress, err := AnalysePrivateKey(prv)
 	if err != nil {
-		log.Fatal(err)
+		return nil, common.Big0, nil, fmt.Errorf("AnalysePrivateKey err: %v", err)
 	}
 
-	gasPrice, err := c.SuggestGasPrice(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
+	nonce, gasPrice, chainID, err := QBasic(c, fromAddress)
 
-	chainID, err = c.NetworkID(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		return nil, common.Big0, nil, fmt.Errorf("QBasic err: %v", err)
 	}
 
 	toAddress := common.HexToAddress(to)
-	tx = types.NewTransaction(nonce, toAddress, value, gasLimit, gasPrice, data)
+	tx = types.NewTransaction(nonce, toAddress, amountB, gasLimit, gasPrice, data)
 
 	return
 }
@@ -60,4 +56,166 @@ func SendTransaction(c *ethclient.Client, signedTx *types.Transaction) (txHash s
 
 	txHash = signedTx.Hash().Hex()
 	return
+}
+
+func CheckReceiptStatus(c *ethclient.Client, txHash common.Hash) error {
+
+	for {
+		_, isPending, err := c.TransactionByHash(context.Background(), txHash)
+		if err != nil {
+			return err
+		}
+
+		if !isPending {
+			break
+		}
+		fmt.Println("ReceiptStatus checking……")
+		time.Sleep(time.Second * time.Duration(2))
+	}
+
+	for i := 0; i < 5; i++ {
+		re, err := c.TransactionReceipt(context.Background(), txHash)
+		if err != nil {
+			return err
+		}
+		if re.Status == 1 {
+			break
+		}
+		if re.Status != 1 && i < 5 {
+			time.Sleep(time.Second * time.Duration(2))
+			continue
+		} else {
+			return fmt.Errorf("re.Status is not 1")
+		}
+	}
+
+	return nil
+}
+
+func TransferERC20(c *ethclient.Client, tokenAddress common.Address,
+	pri string, toAddress common.Address, amount *big.Int) (*types.Transaction, error) {
+
+	privateKey, _, fromAddress, err := AnalysePrivateKey(pri)
+	if err != nil {
+		return nil, err
+	}
+
+	transferFnSignature := []byte("transfer(address,uint256)")
+	h := sha3.NewLegacyKeccak256()
+	h.Write(transferFnSignature)
+	methodID := h.Sum(nil)[:4]
+
+	// fmt.Println(hexutil.Encode(methodID)) // 0xa9059cbb
+
+	paddedAddress := common.LeftPadBytes(toAddress.Bytes(), 32)
+	// fmt.Println(hexutil.Encode(paddedAddress)) // 0x0000000000000000000000004592d8f8d7b001e72cb26a73e4fa1806a51ac79d
+
+	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)
+	// fmt.Println(hexutil.Encode(paddedAmount)) // 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
+
+	var data []byte
+	data = append(data, methodID...)
+	data = append(data, paddedAddress...)
+	data = append(data, paddedAmount...)
+
+	gasLimit, err := c.EstimateGas(context.Background(), ethereum.CallMsg{
+		From: fromAddress,
+		To:   &tokenAddress,
+		Data: data,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	nonce, gasPrice, chainID, err := QBasic(c, fromAddress)
+	if err != nil {
+		return nil, err
+	}
+	tx := types.NewTransaction(nonce, tokenAddress, big.NewInt(0), gasLimit, gasPrice, data)
+
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.SendTransaction(context.Background(), signedTx)
+	if err != nil {
+		return nil, err
+	}
+
+	return signedTx, nil
+}
+
+func ApproveERC20(c *ethclient.Client, tokenAddress common.Address,
+	pri string, _spender common.Address, amount *big.Int) (*types.Transaction, error) {
+
+	privateKey, _, fromAddress, err := AnalysePrivateKey(pri)
+	if err != nil {
+		return nil, err
+	}
+
+	transferFnSignature := []byte("approve(address,uint256)")
+	h := sha3.NewLegacyKeccak256()
+	h.Write(transferFnSignature)
+	methodID := h.Sum(nil)[:4]
+
+	// fmt.Println(hexutil.Encode(methodID)) // 0xa9059cbb
+
+	paddedAddress := common.LeftPadBytes(_spender.Bytes(), 32)
+	// fmt.Println(hexutil.Encode(paddedAddress)) // 0x0000000000000000000000004592d8f8d7b001e72cb26a73e4fa1806a51ac79d
+
+	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)
+	// fmt.Println(hexutil.Encode(paddedAmount)) // 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
+
+	var data []byte
+	data = append(data, methodID...)
+	data = append(data, paddedAddress...)
+	data = append(data, paddedAmount...)
+
+	gasLimit, err := c.EstimateGas(context.Background(), ethereum.CallMsg{
+		From: fromAddress,
+		To:   &tokenAddress,
+		Data: data,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	nonce, gasPrice, chainID, err := QBasic(c, fromAddress)
+	if err != nil {
+		return nil, err
+	}
+	tx := types.NewTransaction(nonce, tokenAddress, big.NewInt(0), gasLimit, gasPrice, data)
+
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.SendTransaction(context.Background(), signedTx)
+	if err != nil {
+		return nil, err
+	}
+
+	return signedTx, nil
+}
+
+func TransferNT(c *ethclient.Client, prv string, to string,
+	amount string, data []byte) (tx *types.Transaction, err error) {
+	tx, cid, privateKey, err := SignETHTx1(c, prv, to, amount, data)
+	if err != nil {
+		return tx, err
+	}
+
+	signedTx, err := SignETHTx2(tx, cid, privateKey)
+	if err != nil {
+		return tx, err
+	}
+
+	_, err = SendTransaction(c, signedTx)
+	if err != nil {
+		return tx, err
+	}
+
+	return signedTx, err
 }

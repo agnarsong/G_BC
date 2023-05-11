@@ -35,11 +35,16 @@ var clientCmd = &cobra.Command{
 		}
 	},
 }
-
-var url string
-var c *ethclient.Client
-var b int64
-var bh string
+var (
+	url         string
+	c           *ethclient.Client
+	b           int64
+	bh          string
+	startBlock  uint64
+	endBlock    uint64
+	fromAddress string
+	toAddress   string
+)
 
 func init() {
 	mtCmd.AddCommand(clientCmd)
@@ -47,9 +52,14 @@ func init() {
 	clientCmd.PersistentFlags().StringVarP(&url, "url", "u", "", "")
 	clientCmd.PersistentFlags().StringP("contractAddress", "c", "", "Contract address")
 	clientCmd.PersistentFlags().Int64VarP(&b, "blockNum", "b", -1, "区块高度")
-	clientCmd.PersistentFlags().StringVar(&bh, "blockHash", "0", "区块hash")
 	clientCmd.PersistentFlags().StringP("privateKey", "p", "", "privateKey of sender address")
+	clientCmd.PersistentFlags().Uint64VarP(&startBlock, "startBlock", "s", 0, "start Block number")
+	clientCmd.PersistentFlags().Uint64VarP(&endBlock, "endBlock", "e", 0, "end Block number")
+	clientCmd.PersistentFlags().StringVarP(&fromAddress, "fromAddress", "f", "", "tx's fromAdrress")
+	clientCmd.PersistentFlags().StringVarP(&toAddress, "toAddress", "t", "", "tx's toAddress")
+
+	clientCmd.PersistentFlags().StringVar(&bh, "blockHash", "0", "区块hash")
 
 	config.AppConfig.BindPFlag("privateKey", clientCmd.PersistentFlags().Lookup("privateKey"))
-
+	config.AppConfig.BindPFlag("CustomERC20Address", clientCmd.PersistentFlags().Lookup("contractAddress"))
 }

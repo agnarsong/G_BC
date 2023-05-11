@@ -9,7 +9,7 @@ if [ -z "$1" ]; then
     echo "hardhat compiled\n\n"
 
     echo "deploy contracts..."
-    yarn hardhat run scripts/deploy.js --network l1
+    yarn hardhat run scripts/deploy.js --network l2
     echo "deploy contracts compiled"
     cd -
 fi

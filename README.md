@@ -1,6 +1,55 @@
 
 - 根据rpc链接和address，返回地址是EOA还是合约
 
+# generate 基本功能
+  - go run main.go g w
+  - go run main.go g t
+  - go run main.go g e
+
+# abi 基础功能
+  - go run main.go a -f temp/Lib_AddressManager_abi.json
+
+    打印abi详情
+
+    ```shell
+    (anaconda3)➜  g_bc git:(main) ✗ go run main.go a -f temp/Lib_AddressManager_abi.json
+    Function name: getAddress
+    Input name: _name, type: string
+    Output name: , type: address
+    State Mutability: view
+
+    Function name: owner
+    Output name: , type: address
+    State Mutability: view
+
+    Function name: renounceOwnership
+    State Mutability: nonpayable
+
+    Function name: setAddress
+    Input name: _name, type: string
+    Input name: _address, type: address
+    State Mutability: nonpayable
+
+    Function name: transferOwnership
+    Input name: newOwner, type: address
+    State Mutability: nonpayable
+
+    ======================================
+    Event name: AddressSet
+    Input name: _name, type: string
+    Input name: _newAddress, type: address
+    Input name: _oldAddress, type: address
+    RawName: AddressSet
+    Sig: AddressSet(string,address,address)
+
+    Event name: OwnershipTransferred
+    Input name: previousOwner, type: address
+    Input name: newOwner, type: address
+    RawName: OwnershipTransferred
+    Sig: OwnershipTransferred(address,address)
+
+    ======================================
+    ```
 
 # client 基础功能
   - go run main.go client 
@@ -39,7 +88,7 @@
 
 ## client block
 
-  - go run main.go c block blockNum
+333  - go run main.go c block blockNum
 
     查询最新区块高度
 
@@ -156,3 +205,76 @@
   
   直接使用下述shell
   `bash compile.sh`
+
+
+
+# stress
+
+```shell
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go s e
+ReceiptStatus checking……
+L1ERC20 address:  0x8ac5eE52F70AE01dB914bE459D8B3d50126fd6aE
+L2ERC20 address:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+ReceiptStatus checking……
+DepostERC20 1237940039285380274899124224
+ReceiptStatus checking……
+
+
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go s dnt
+ReceiptStatus checking……
+第 1 次transfer,txHash: 0x8067a508823f4b2c3e6f6408e84027d8137e83946c3f63b7fa29beca74eb6ec2
+ReceiptStatus checking……
+第 2 次transfer,txHash: 0x280429a0ca5a2ce838e0234a680b72aa47b95fd27836d07ef5ad2ad667408500
+ReceiptStatus checking……
+第 3 次transfer,txHash: 0xbdc1a2a3b29606e327e4445601c2d87e149254474ea8bef72761ec9e1debe1cc
+ReceiptStatus checking……
+第 4 次transfer,txHash: 0x89b226549d6884ebb744186c2cd479583be4c811a5cff191dd56b9dc2d8e8313
+ReceiptStatus checking……
+第 5 次transfer,txHash: 0x01bb0f476461fdba513b40a599d8ee2f7462784ddb221b4a2e939adf1cc62c95
+ReceiptStatus checking……
+第 6 次transfer,txHash: 0x59a0ea9e136ec186b784733d04dd808689fe05327ab67eeccba3a6349cfd8737
+ReceiptStatus checking……
+第 7 次transfer,txHash: 0xc3789b024938326ea3f61b463523c81643b3ffe1299574519bf3c0c2eaa337e9
+ReceiptStatus checking……
+第 8 次transfer,txHash: 0x4b00cc0b9c3c191feea6032ef895040897879369e39de4f887a45a494cbcb2bc
+ReceiptStatus checking……
+第 9 次transfer,txHash: 0x1879fc1762d0c4c3a4e50ff3c6d2ebaedbab1ad74362418c6060e30d9086191b
+ReceiptStatus checking……
+第 10 次transfer,txHash: 0xc1aae4b14e297158133b4640cb4b46d9c507bccd95190372843625f3bbe036d2
+
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go s dnt -l l2
+第 1 次transfer,txHash: 0x324c9ac1eec53c2d26ecf4c3e0b04f69a3eb75cd3cf9b32014cd17fa4f72a987
+第 2 次transfer,txHash: 0x2acc63e542813fbb1cc7d0a290ded21ac0e08c9e1768b8e9d1bf6f0c0ad3b7ea
+第 3 次transfer,txHash: 0xc12e5c52a68aca946a57304bef7f0a0f61febb52df56dbdbf7f70659e9b79e38
+第 4 次transfer,txHash: 0x33bf5a204d8c7aa6f2bbf33bde6836a1b4c3d7bc632675254e490a7937796375
+第 5 次transfer,txHash: 0x2823de5e2e4c780c3d01bc60c4d12bd065cc0bcaa6bc639d001fd185b98f7570
+第 6 次transfer,txHash: 0x8406caca7744dde2b8516adbdfd44f244152c65e45b4b1d0287d52f0fe419369
+第 7 次transfer,txHash: 0xcb001150f3e97fda476e2baec16e7fbfe9403c49519f1ee187ea0c89c84e9dc7
+第 8 次transfer,txHash: 0x8e46ac46e65129144cb1bc54ae8e75ca2404505652f4f4f0c6766e845eaa6bc5
+第 9 次transfer,txHash: 0x7ffac5d5443ee0a169b484c4bad7c3e1e21d7ce613f90f4283cfc9a25764993e
+第 10 次transfer,txHash: 0x0092ae4d5254733d912132671dab18094c795544eaf26920334c92354eddc437
+
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go s d20                      
+第 1 次transfer,txHash: 0x777e06c614c801fd2ddbc5320bdf66e1735f262ef00c6379ccfff1d7582e22cb
+第 2 次transfer,txHash: 0x47063eec57abae70224b7d151900fed66c744941eb356c0b6891d815b8b66ba0
+第 3 次transfer,txHash: 0x54adf63dbc3566fd8022070908f2cf9187b83b83ba8c52cd99f4fa9c1b045d8a
+第 4 次transfer,txHash: 0x99515e7f67796b0b5e8ee391b77745d80f57b383323b000baf094fe01268ea13
+第 5 次transfer,txHash: 0x78395f0d2101d4c77c4afa30581a01f2f4deaa5958b321fc9a8e4e54ae662c8f
+第 6 次transfer,txHash: 0x31fa1e991a1a92ee020698cf80faf94856721b15594f6f002a373fccbae91aa6
+第 7 次transfer,txHash: 0x4cdb82fed7b17c63c522522e68324807aef00368baa675e607e76a100aa8e368
+第 8 次transfer,txHash: 0x0f68e8712726c05c28fbee9736ea8997cbea1e6a8e339a15617a080653e88afc
+第 9 次transfer,txHash: 0xf1e1aae915b435e188ff79272ca916518ac02286c98cc20624beb914c48dcab7
+第 10 次transfer,txHash: 0x968233c22f231f2e47ac7578f146a74c3216694310e92be5acc515c48b9d94bc
+
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go s d20 -l l2
+第 1 次transfer,txHash: 0x6cd5e0db35ae3993d95e7f535e065f66ea892cfe438df0b5c0fffc0f800c1949
+第 2 次transfer,txHash: 0xcf38ea579d75fc17b197419087f47725b3df1be061c307a9a4ae909e383c23d0
+第 3 次transfer,txHash: 0xcb829df0f241fdccd7c060b1b9bc260f20158277d9382cc2db646a2756a6addf
+第 4 次transfer,txHash: 0x6cc1947589dbaf88f5213dbd77900e6d2da10f447d8d11c0da5d39b3616b970d
+第 5 次transfer,txHash: 0x419a0b7e3f7f69fb50c2d60c30c2b49396ea2c0bd10732f7f28b6a9b685b26b7
+第 6 次transfer,txHash: 0xc432e0080bdd138c06cf35dba7839d0f4f8f40b93b424d94c30f84afcf4a4482
+第 7 次transfer,txHash: 0x1b021fd888bfb4637184a1942655fb2b9a90cfb40553964a45d9b77d377e3eff
+第 8 次transfer,txHash: 0xaf287fcd540098260d647ad34de36503ee3a1e6e16d938ade29d54233a4ae8a2
+第 9 次transfer,txHash: 0xd8901013701f30101acb57f312d9be600601321cfa68d789256e13826cb3e3c4
+第 10 次transfer,txHash: 0x4b0f58856aafb34ccfd5df2572380c7375237cafded567586a779a9c0ceb0611
+```

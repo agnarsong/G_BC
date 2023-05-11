@@ -14,9 +14,9 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-func executeRawTransactions() {
+func ExecuteRawTransactions(c *ethclient.Client, txFile string) {
 	// 打开包含原始交易数据的文件
-	file, err := os.Open("RawTransactions.csv")
+	file, err := os.Open(txFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,34 +32,32 @@ func executeRawTransactions() {
 			log.Fatal(err)
 		}
 
-		var tx types.Transaction
-		err = rlp.DecodeBytes(common.Hex2Bytes(record[0]), &tx)
+		var signedTx types.Transaction
+		err = rlp.DecodeBytes(common.Hex2Bytes(record[0]), &signedTx)
+		if err != nil {
+			panic(fmt.Sprintf("rlp.DecodeBytes err: %v", err))
+		}
 
-		from, err := types.Sender(types.HomesteadSigner{}, &tx)
+		// 下面这句有问题
+		// from, err := types.Sender(types.HomesteadSigner{}, tx)
+		from, err := types.Sender(types.LatestSignerForChainID(signedTx.ChainId()), &signedTx)
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(from)
-
-		fmt.Println(tx)
 
 		// 提交交易
-		if err := SubmitTransaction(&tx); err != nil {
-			log.Printf("交易 %s 提交失败：%v", tx.Hash().Hex(), err)
+		if err := SubmitTransaction(c, &signedTx); err != nil {
+			log.Printf("交易 %s 提交失败：%v", signedTx.Hash().Hex(), err)
 		} else {
-			log.Printf("交易 %s 提交成功！", tx.Hash().Hex())
+			log.Printf("%v 提交的交易 %s 提交成功！", from, signedTx.Hash().Hex())
 		}
+
 	}
 }
 
-func SubmitTransaction(tx *types.Transaction) error {
-	client, err := ethclient.Dial("http://localhost:8545")
-	if err != nil {
-		return err
-	}
-	defer client.Close()
+func SubmitTransaction(c *ethclient.Client, tx *types.Transaction) error {
 
-	err = client.SendTransaction(context.Background(), tx)
+	err := c.SendTransaction(context.Background(), tx)
 	if err != nil {
 		return err
 	}

@@ -11,19 +11,19 @@ import (
 
 var (
 	prv        string
-	from       string
 	to         string
-	value      int64
+	value      string
 	dataString string
 )
 
 func init() {
 	clientCmd.AddCommand(ctCmd)
 	ctCmd.AddCommand(ethCmd)
+	ctCmd.AddCommand(erc20Cmd)
 
 	ctCmd.PersistentFlags().StringP("toAddress", "t", "", "receiver address")
 
-	ctCmd.PersistentFlags().Int64VarP(&value, "value", "v", 1, "transfer value")
+	ctCmd.PersistentFlags().StringVarP(&value, "value", "v", "1", "transfer value")
 	ctCmd.PersistentFlags().StringVarP(&dataString, "dataString", "d", "", "transfer message")
 
 	//将配置文件和入参绑定，使用入参替换默认配置
@@ -46,12 +46,6 @@ var ctCmd = &cobra.Command{
 		prv = config.AppConfig.GetString("privateKey")
 		to = config.AppConfig.GetString("to")
 
-		_, _, fromAddress, err := lib.AnalysePrivateKey(prv)
-		if err != nil {
-			return err
-		}
-
-		from = fromAddress.Hex()
 		return nil
 	},
 }
@@ -63,7 +57,7 @@ var ethCmd = &cobra.Command{
 	Long:    "执行 ETH transfer",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		tx, cid, privateKey, err := lib.SignETHTx1(c, prv, from, to, value, []byte(dataString))
+		tx, cid, privateKey, err := lib.SignETHTx1(c, prv, to, value, []byte(dataString))
 		if err != nil {
 			return err
 		}
@@ -84,6 +78,7 @@ var ethCmd = &cobra.Command{
 	PreRunE: ctCmd.PreRunE,
 }
 
+// dataString 为空, 并不能transferERC20
 var erc20Cmd = &cobra.Command{
 	Use:     "20",
 	Aliases: []string{"SendERC20Transaction"},
@@ -91,7 +86,7 @@ var erc20Cmd = &cobra.Command{
 	Long:    "执行 ERC20 transfer",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		tx, cid, privateKey, err := lib.SignETHTx1(c, prv, from, to, value, []byte(dataString))
+		tx, cid, privateKey, err := lib.SignETHTx1(c, prv, to, value, []byte(dataString))
 		if err != nil {
 			return err
 		}

@@ -2,6 +2,7 @@ package lib
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -80,4 +81,29 @@ func TransactionCount(c *ethclient.Client, bh string) (count uint, err error) {
 	}
 
 	return
+}
+
+func FindBlockNumberByStateRoot(c *ethclient.Client, startBlock, endBlock uint64, targetStateRoot common.Hash) (*types.Block, error) {
+	for blockNumber := startBlock; blockNumber <= endBlock; blockNumber++ {
+
+		block, err := c.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
+		if err != nil {
+			return nil, err
+		}
+
+		if block.Root() == targetStateRoot {
+			// // header 的stateRoot 和 block的 Root() 返回的内容一致
+			// h, err := HeaderByHash(c, block.Hash().Hex())
+			// if err != nil {
+			// 	return 0, nil
+			// }
+			// fmt.Println(targetStateRoot)
+			// fmt.Println(h.Root.Hex())
+			// fmt.Println(block.Root())
+
+			return block, nil
+
+		}
+	}
+	return nil, fmt.Errorf("target stateRoot not found")
 }

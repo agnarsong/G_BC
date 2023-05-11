@@ -1,0 +1,52 @@
+addresslist:
+    addressdictator: 0xE6A251EefaEE70E8645FBAdf21E9B1246e07C374
+    addressmanager: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
+    bondmanager: 0xEd5166f12FCb48a0804B62FDccB37f59F1F1bc3B
+    bvml1crossdomainmessenger: 0xD076364Fa5de1a4512c58b39ad63DD720B7B9E11
+    canonicaltransactionchain: 0x9faB987C9C469EB23Da31B7848B28aCf30905eA8
+    chainstoragecontainerctcbatches: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    chainstoragecontainersccbatches: 0x0090171f848B2aa86918E5Ef2406Ab3d424fdd83
+    chugsplashdictator: 0x18DF7d7Cc40928f07d3EF0e5404b41F97e8560Ad
+    l1standardbridgeforverificationonly: 0xdf3BD218A936A92be5e43592143ecc7a33cef514
+    libaddressmanager: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
+    proxybvml1crossdomainmessenger: 0xd9e2F450525079e1e29fB23Bc7Caca6F61f8fD4a
+    proxybvml1standardbridge: 0x52753615226F8aC8a464bfecb11Ef798CFF3793f
+    proxytssgroupmanager: 0xa83239cf2b900682001f9144144B5E5e5788A631
+    proxytssstakingslashing: 0xe6cd9e7b620964bECd42c7Ad41e56724f515E284
+    statecommitmentchain: 0x8BAccFF561FDe61D6bC8B6f299fFBa561d2189B9
+    testbittoken: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
+    tssgroupmanager: 0x82e130FF187E787D5DdDFAa4f36CB59e6B1Da6dd
+    tssstakingslashing: 0x36fCf02Fc651c0b7ef2ECA446Dd2405364F85337
+amount: "20123456789123456789"
+bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
+deploybool: true
+envtype: local
+l1chainid: 31337
+l1erc20address: 0x2d13826359803522cCe7a4Cfa2c1b582303DD0B4
+l1gaslimit: 30000000
+l1url: http://localhost:9545
+l2bitaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
+l2bridgeaddress: 0x4200000000000000000000000000000000000010
+l2cdmaddress: 0x4200000000000000000000000000000000000007
+l2erc20address: 0x82e01223d51Eb87e16A03E24687EDF0F294da6f1
+l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
+l2gaslimit: 30000000
+l2url: http://localhost:8545
+rpclist:
+    - chainid: 17
+      url: http://localhost:8545
+statecommitmentchain: aaa
+toaddress: 0xA6A64636584237A2dcacc19B0E0F4e1df336C15C
+tokenaddress: 0xFCcb552cBB310eDD9B72812171BcA4B3cf80b576
+userprivatekeylist:
+    - ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    - f2753d6450ec0c3170217e1987885e60eed629e7b05f7aa94be3ca4d237a0165
+    - f8478279b287ab6fe7ca47b31ad778ba9d4cf37f48308da1b00fd2dd58275268
+    - 4c3445266caf0bf7d0d878c7bb17b25b8fd03f0718b8c5fa3d75fd496a66bf2e
+    - ff3e56edcb4271ddbeeb67231215a688e732a411e7f5975d5be97beaf6eb022e
+    - 7b11dcecc761aca4dad9d716613fb145a1d5024473bb900e481152b9475c39c2
+    - e18c73d4e82b52b4a22ecfd171091187b47ef6609af27f36251d9d1802d2d4c1
+    - 0e05c6b712d784075261be92925c96681decf67f40fd34072ccc603a74ec5c4f
+    - bb6dab237333f04bcfe0006cd147aff62cb30f665e511cb6ba2910d34488d06c
+    - 6d470bbed2b4d2935e138d23da4e1fcd214c4c0350c02d01ffdae930c3452857
+    - 291be0cec2a5477669b58581c2a91cd115b8afcca61baee585ba5952674a474a

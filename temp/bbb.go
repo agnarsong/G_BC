@@ -36,7 +36,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	fmt.Println("input: ", input)
 	// 调用合约函数
 	output, err := client.CallContract(context.Background(), ethereum.CallMsg{
 		To:   &contractAddress,

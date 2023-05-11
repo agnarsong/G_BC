@@ -13,4 +13,6 @@ func InitConfig(cfgFile string) {
 	if err := AppConfig.ReadInConfig(); err != nil {
 		panic("Failed to read config file")
 	}
+
+	AppConfig.WatchConfig()
 }

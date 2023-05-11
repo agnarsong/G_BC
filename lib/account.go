@@ -67,6 +67,12 @@ func GetAuth(c *ethclient.Client, prv string) (auth *bind.TransactOpts, err erro
 		return
 	}
 
+	// // 生成一个随机数种子
+	// rand.Seed(time.Now().UnixNano())
+	// // 生成一个随机的 big.Int 值
+	// randNum := big.NewInt(int64(rand.Intn(10000)) + 150000000000)
+	// gasPrice.Add(gasPrice, randNum)
+
 	cid, err := c.ChainID(context.Background())
 	if err != nil {
 		return
@@ -78,8 +84,8 @@ func GetAuth(c *ethclient.Client, prv string) (auth *bind.TransactOpts, err erro
 	}
 
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(0)     // in wei
-	auth.GasLimit = uint64(300000) // in units
+	auth.Value = big.NewInt(0)       // in wei
+	auth.GasLimit = uint64(30000000) // in units
 	auth.GasPrice = gasPrice
 
 	return

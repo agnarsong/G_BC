@@ -14,6 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rpc"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -178,4 +179,33 @@ func SignedTx(c *ethclient.Client, prik string, toAddress string, tokenAddress s
 	signedTx, err = types.SignTx(tx, types.NewEIP155Signer(cid), privateKey)
 
 	return
+}
+
+func GetNodePublicKeys(c *rpc.Client, nodeURL string) ([]string, error) {
+
+	var publicKeys []string
+	var peers []interface{}
+
+	err := c.CallContext(context.Background(), &peers, "admin_peers")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, peer := range peers {
+		peerInfo, ok := peer.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		if _, ok := peerInfo["enode"]; !ok {
+			continue
+		}
+
+		enode := peerInfo["enode"].(string)
+		nodeID := common.HexToHash(enode[len("enode://") : len("enode://")+64])
+		nodePublicKey := nodeID.Hex()
+		publicKeys = append(publicKeys, nodePublicKey)
+	}
+
+	return publicKeys, nil
 }

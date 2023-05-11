@@ -13,7 +13,7 @@ import (
 var generateCmd = &cobra.Command{
 	Use:       "g",
 	Aliases:   []string{"generate"},
-	ValidArgs: []string{"w", "t", "e"},
+	ValidArgs: []string{"w", "n", "20", "e"},
 	Args:      cobra.OnlyValidArgs,
 	Short:     "生成钱包、序列化交易以及反序列化交易并发起请求",
 	Long:      "生成钱包、序列化交易以及反序列化交易并发起请求",
@@ -31,10 +31,12 @@ var generateCmd = &cobra.Command{
 		switch args[0] {
 		case "w":
 			generate.GWallets(numberOfWR, wfileName)
-		case "t":
-			generate.GRawTransactions(numberOfWR, wfileName, rfileName)
+		case "n":
+			generate.GRawTransactions(c, numberOfWR, wfileName, rfileName)
+		case "20":
+			generate.GRawTransactions(c, numberOfWR, wfileName, rfileName)
 		case "e":
-			fmt.Println("todo……")
+			generate.ExecuteRawTransactions(c, rfileName)
 		}
 
 	},
