@@ -92,6 +92,7 @@ type MantleCenter struct {
 	L2ERC20Address  common.Address
 	L1BITAddress    common.Address
 	L2BITAddress    common.Address
+	L2ETHAddress    common.Address
 	L1Bridge        *bindings.L1StandardBridge
 	L2Bridge        *bindings.L2StandardBridge
 	L1BridgeAddress common.Address
@@ -164,6 +165,7 @@ func InitSc(mc *MantleCenter) (err error) {
 	mc.L2ERC20Address = common.HexToAddress(mc.Env.L2ERC20Address)
 	mc.L1BITAddress = common.HexToAddress(mc.Env.AL.TestBitToken)
 	mc.L2BITAddress = common.HexToAddress(mc.Env.L2BitAddress)
+	mc.L2ETHAddress = common.HexToAddress(mc.Env.L2EthAddress)
 
 	mc.SCCAddress = common.HexToAddress(mc.Env.AL.StateCommitmentChain)
 	mc.SCC, err = bindings.NewStateCommitmentChain(mc.SCCAddress, mc.L1Client)
@@ -520,6 +522,30 @@ func DepostERC20(c *ethclient.Client, tokenAddress common.Address, pri string,
 	return signedTx, nil
 }
 
+func Withdraw(mc *MantleCenter, prk string, l2token common.Address,
+	amount *big.Int) (*types.Transaction, error) {
+
+	auth, err := lib.GetAuth(mc.L2Client, prk)
+	if err != nil {
+		return nil, fmt.Errorf("GetAuth err: %v", err)
+	}
+
+	tx, err := mc.L2Bridge.Withdraw(auth,
+		l2token,
+		amount,
+		3000_000,
+		[]byte("0x"),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
+		return nil, fmt.Errorf("txHash: %v, \nWithdraw GetReStatus err: %v", tx.Hash(), err)
+	}
+	return tx, nil
+}
+
 func BETH(mc *MantleCenter, holder common.Address, blockNumber *big.Int) (l1b *big.Int, l2b *big.Int, err error) {
 
 	l1b, err = mc.L1Client.BalanceAt(context.Background(), holder, blockNumber)
@@ -527,7 +553,7 @@ func BETH(mc *MantleCenter, holder common.Address, blockNumber *big.Int) (l1b *b
 		return l1b, l2b, fmt.Errorf("L1Client.BalanceAt err: %v", err)
 	}
 
-	l2b, err = lib.BalanceOf(mc.L2Client, common.HexToAddress(mc.Env.L2EthAddress), holder, blockNumber)
+	l2b, err = lib.BalanceOf(mc.L2Client, mc.L2ETHAddress, holder, blockNumber)
 	if err != nil {
 		return l1b, l2b, fmt.Errorf("L2Client.BalanceOf err: %v", err)
 	}
@@ -964,35 +990,3 @@ type Result struct {
 	StorageHash   string         `json:"storageHash"`
 	StorageProofs []StorageProof `json:"storageProof"`
 }
-
-// func Withdraw(sc *StressCenter, tokenAddress common.Address,
-// 	amount string, to common.Address) error {
-
-// 	amountB := new(big.Int)
-// 	amountB.SetString(amount, 10)
-// 	if amount == "-1" {
-// 		// 1 << 90
-// 		amountB = new(big.Int).Lsh(big.NewInt(1), 90)
-// 	}
-
-// 	auth, err := lib.GetAuth(sc.L2Client, sc.Env.UserPrivateKeyList[0])
-// 	if err != nil {
-// 		log.Fatalf("bind.NewKeyedTransactorWithChainID err: %v", err)
-
-// 	}
-
-// 	tx, err := sc.L2Bridge.WithdrawTo(auth,
-// 		sc.L2BridgeAddress,
-// 		to,
-// 		amountB,
-// 		300_000,
-// 		[]byte("0x"),
-// 	)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	fmt.Printf("withdraw BIT tx hash is: %s\n", tx.Hash())
-
-// 	return nil
-// }

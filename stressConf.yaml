@@ -22,13 +22,13 @@ bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
 deploybool: true
 envtype: local
 l1chainid: 31337
-l1erc20address: 0x2d13826359803522cCe7a4Cfa2c1b582303DD0B4
+l1erc20address: 0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3
 l1gaslimit: 30000000
 l1url: http://localhost:9545
 l2bitaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
 l2bridgeaddress: 0x4200000000000000000000000000000000000010
 l2cdmaddress: 0x4200000000000000000000000000000000000007
-l2erc20address: 0x82e01223d51Eb87e16A03E24687EDF0F294da6f1
+l2erc20address: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
 l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
 l2gaslimit: 30000000
 l2url: http://localhost:8545

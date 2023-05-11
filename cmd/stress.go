@@ -7,9 +7,11 @@ import (
 	"mantle/test/lib"
 	"mantle/test/lib/layer2"
 	"mantle/test/lib/stress"
+	"math/big"
 	"sync"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -187,131 +189,131 @@ var stCmd = &cobra.Command{
 
 		waitGroup := new(sync.WaitGroup)
 
-		// var holder common.Address
-		// if privateKey == "" {
-		// 	privateKey = mc.Env.UserPrivateKeyList[0]
-		// 	holder = mc.UserAddress
-		// } else {
-		// 	_, _, holder, err = lib.AnalysePrivateKey(privateKey)
-		// 	if err != nil {
-		// 		return err
-		// 	}
-		// }
+		var holder common.Address
+		if privateKey == "" {
+			privateKey = mc.Env.UserPrivateKeyList[0]
+			holder = mc.UserAddress
+		} else {
+			_, _, holder, err = lib.AnalysePrivateKey(privateKey)
+			if err != nil {
+				return err
+			}
+		}
 
 		// a, b := lib.ParseAmount(amount)
 		// if !b {
 		// 	return fmt.Errorf("ParseAmount return false")
 		// }
 
-		// // deposit ETH
-		// waitGroup.Add(1)
-		// // // 给 account1 充值 ETH
-		// // _, _, toAddress, err := lib.AnalysePrivateKey(mc.Env.UserPrivateKeyList[1])
-		// // if err != nil {
-		// // 	return err
-		// // }
-		// // tx, err := lib.TransferNT(mc.L1Client,
-		// // 	mc.Env.UserPrivateKeyList[0],
-		// // 	toAddress.Hex(),
-		// // 	"12123456789123456789",
-		// // 	[]byte(""),
-		// // )
-		// // if err != nil {
-		// // 	return err
-		// // }
-		// // if err := lib.CheckReceiptStatus(mc.L1Client, tx.Hash()); err != nil {
-		// // 	return err
-		// // }
+		// deposit ETH
+		waitGroup.Add(1)
+		// // 给 account1 充值 ETH
+		// _, _, toAddress, err := lib.AnalysePrivateKey(mc.Env.UserPrivateKeyList[1])
+		// if err != nil {
+		// 	return err
+		// }
+		// tx, err := lib.TransferNT(mc.L1Client,
+		// 	mc.Env.UserPrivateKeyList[0],
+		// 	toAddress.Hex(),
+		// 	"12123456789123456789",
+		// 	[]byte(""),
+		// )
+		// if err != nil {
+		// 	return err
+		// }
+		// if err := lib.CheckReceiptStatus(mc.L1Client, tx.Hash()); err != nil {
+		// 	return err
+		// }
 
-		// go func(wg *sync.WaitGroup) {
-		// 	defer wg.Done()
-		// 	for {
-		// 		tx, err := layer2.Deposit(&mc, mc.Env.UserPrivateKeyList[1], common.HexToAddress("0"),
-		// 			common.HexToAddress(l2token), big.NewInt(1))
-		// 		if err != nil {
-		// 			fmt.Println("DepositETH err: ", err)
-		// 		}
-		// 		fmt.Println("DepositETH txHash: ", tx.Hash())
-		// 		time.Sleep(time.Duration(2) * time.Second)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for {
+				tx, err := layer2.Deposit(&mc, mc.Env.UserPrivateKeyList[1], common.HexToAddress("0"),
+					common.HexToAddress(l2token), big.NewInt(1))
+				if err != nil {
+					fmt.Println("DepositETH err: ", err)
+				}
+				fmt.Println("DepositETH txHash: ", tx.Hash())
+				time.Sleep(time.Duration(2) * time.Second)
 
-		// 		l1b, l2b, err := layer2.BETH(&mc, holder, nil)
-		// 		if err != nil {
-		// 			fmt.Println("layer2.BETH err: ", err)
-		// 		}
-		// 		fmt.Println("l1 ETH balance: ", l1b)
-		// 		fmt.Println("l2 ETH balance: ", l2b)
-		// 	}
-		// }(waitGroup)
+				l1b, l2b, err := layer2.BETH(&mc, holder, nil)
+				if err != nil {
+					fmt.Println("layer2.BETH err: ", err)
+				}
+				fmt.Println("l1 ETH balance: ", l1b)
+				fmt.Println("l2 ETH balance: ", l2b)
+			}
+		}(waitGroup)
 
-		// // deposit ERC20
-		// waitGroup.Add(1)
-		// // // 给 account2 充值 ERC20
-		// // _, _, toAddress, err = lib.AnalysePrivateKey(mc.Env.UserPrivateKeyList[2])
-		// // if err != nil {
-		// // 	return err
-		// // }
-		// // a, b = lib.ParseAmount("123456123456789123456789")
-		// // if !b {
-		// // 	return fmt.Errorf("ParseAmount return false")
-		// // }
-		// // tx, err = lib.TransferERC20(mc.L1Client,
-		// // 	mc.L1ERC20Address,
-		// // 	mc.Env.UserPrivateKeyList[0],
-		// // 	toAddress,
-		// // 	a,
-		// // )
-		// // if err != nil {
-		// // 	return err
-		// // }
-		// // if err := lib.CheckReceiptStatus(mc.L1Client, tx.Hash()); err != nil {
-		// // 	return err
-		// // }
+		// deposit ERC20
+		waitGroup.Add(1)
+		// // 给 account2 充值 ERC20
+		// _, _, toAddress, err = lib.AnalysePrivateKey(mc.Env.UserPrivateKeyList[2])
+		// if err != nil {
+		// 	return err
+		// }
+		// a, b = lib.ParseAmount("123456123456789123456789")
+		// if !b {
+		// 	return fmt.Errorf("ParseAmount return false")
+		// }
+		// tx, err = lib.TransferERC20(mc.L1Client,
+		// 	mc.L1ERC20Address,
+		// 	mc.Env.UserPrivateKeyList[0],
+		// 	toAddress,
+		// 	a,
+		// )
+		// if err != nil {
+		// 	return err
+		// }
+		// if err := lib.CheckReceiptStatus(mc.L1Client, tx.Hash()); err != nil {
+		// 	return err
+		// }
 
-		// go func(wg *sync.WaitGroup) {
-		// 	defer wg.Done()
-		// 	for {
-		// 		tx, err := layer2.Deposit(&mc, mc.Env.UserPrivateKeyList[2], mc.L1ERC20Address,
-		// 			mc.L2ERC20Address, big.NewInt(1))
-		// 		if err != nil {
-		// 			fmt.Println("DepositERC20 err: ", err)
-		// 		}
-		// 		fmt.Println("DepositERC20 txHash: ", tx.Hash())
-		// 		time.Sleep(time.Duration(2) * time.Second)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for {
+				tx, err := layer2.Deposit(&mc, mc.Env.UserPrivateKeyList[2], mc.L1ERC20Address,
+					mc.L2ERC20Address, big.NewInt(1))
+				if err != nil {
+					fmt.Println("DepositERC20 err: ", err)
+				}
+				fmt.Println("DepositERC20 txHash: ", tx.Hash())
+				time.Sleep(time.Duration(2) * time.Second)
 
-		// 		l1b, l2b, err := layer2.BERC20(&mc, holder, mc.L1ERC20Address,
-		// 			mc.L2ERC20Address, nil)
-		// 		if err != nil {
-		// 			fmt.Println("layer2.BERC20 err: ", err)
-		// 		}
+				l1b, l2b, err := layer2.BERC20(&mc, holder, mc.L1ERC20Address,
+					mc.L2ERC20Address, nil)
+				if err != nil {
+					fmt.Println("layer2.BERC20 err: ", err)
+				}
 
-		// 		fmt.Println("l1 ERC20 balance: ", l1b)
-		// 		fmt.Println("l2 ERC20 balance: ", l2b)
-		// 	}
-		// }(waitGroup)
+				fmt.Println("l1 ERC20 balance: ", l1b)
+				fmt.Println("l2 ERC20 balance: ", l2b)
+			}
+		}(waitGroup)
 
-		// // deposit BIT
-		// waitGroup.Add(1)
-		// go func(wg *sync.WaitGroup) {
-		// 	defer wg.Done()
-		// 	for {
-		// 		tx, err := layer2.Deposit(&mc, mc.Env.UserPrivateKeyList[3], mc.L1BITAddress,
-		// 			mc.L2BITAddress, big.NewInt(1))
-		// 		if err != nil {
-		// 			fmt.Println("DepositBIT err: ", err)
-		// 		}
-		// 		fmt.Println("DepositBIT txHash: ", tx.Hash())
-		// 		time.Sleep(time.Duration(2) * time.Second)
+		// deposit BIT
+		waitGroup.Add(1)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for {
+				tx, err := layer2.Deposit(&mc, mc.Env.UserPrivateKeyList[3], mc.L1BITAddress,
+					mc.L2BITAddress, big.NewInt(1))
+				if err != nil {
+					fmt.Println("DepositBIT err: ", err)
+				}
+				fmt.Println("DepositBIT txHash: ", tx.Hash())
+				time.Sleep(time.Duration(2) * time.Second)
 
-		// 		l1b, l2b, err := layer2.BERC20(&mc, holder, mc.L1BITAddress,
-		// 			mc.L2BITAddress, nil)
-		// 		if err != nil {
-		// 			fmt.Println("BIT Balance err: ", err)
-		// 		}
+				l1b, l2b, err := layer2.BERC20(&mc, holder, mc.L1BITAddress,
+					mc.L2BITAddress, nil)
+				if err != nil {
+					fmt.Println("BIT Balance err: ", err)
+				}
 
-		// 		fmt.Println("l1 BIT balance: ", l1b)
-		// 		fmt.Println("l2 BIT balance: ", l2b)
-		// 	}
-		// }(waitGroup)
+				fmt.Println("l1 BIT balance: ", l1b)
+				fmt.Println("l2 BIT balance: ", l2b)
+			}
+		}(waitGroup)
 
 		// l2 一直部署erc20的合约
 		waitGroup.Add(1)
@@ -325,6 +327,76 @@ var stCmd = &cobra.Command{
 				}
 				time.Sleep(time.Second * time.Duration(5))
 				fmt.Println("ERC20 address: ", address)
+			}
+		}(waitGroup)
+
+		// Withdraw BIT
+		waitGroup.Add(1)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for {
+				tx, err := layer2.Withdraw(&mc, mc.Env.UserPrivateKeyList[5],
+					mc.L2BITAddress, big.NewInt(1))
+				if err != nil {
+					fmt.Println("Withdraw BIT err: ", err)
+				}
+				fmt.Println("Withdraw BIT txHash: ", tx.Hash())
+				time.Sleep(time.Duration(2) * time.Second)
+
+				l1b, l2b, err := layer2.BERC20(&mc, holder, mc.L1BITAddress,
+					mc.L2BITAddress, nil)
+				if err != nil {
+					fmt.Println("BIT Balance err: ", err)
+				}
+
+				fmt.Println("l1 BIT balance: ", l1b)
+				fmt.Println("l2 BIT balance: ", l2b)
+			}
+		}(waitGroup)
+
+		// Withdraw ERC20
+		waitGroup.Add(1)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for {
+				tx, err := layer2.Withdraw(&mc, mc.Env.UserPrivateKeyList[6],
+					mc.L2ERC20Address, big.NewInt(1))
+				if err != nil {
+					fmt.Println("Withdraw ERC20 err: ", err)
+				}
+				fmt.Println("Withdraw ERC20 txHash: ", tx.Hash())
+				time.Sleep(time.Duration(2) * time.Second)
+
+				l1b, l2b, err := layer2.BERC20(&mc, holder, mc.L1ERC20Address,
+					mc.L2ERC20Address, nil)
+				if err != nil {
+					fmt.Println("ERC20 Balance err: ", err)
+				}
+
+				fmt.Println("l1 ERC20 balance: ", l1b)
+				fmt.Println("l2 ERC20 balance: ", l2b)
+			}
+		}(waitGroup)
+
+		// Withdraw ERC20
+		waitGroup.Add(1)
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			for {
+				tx, err := layer2.Withdraw(&mc, mc.Env.UserPrivateKeyList[7],
+					mc.L2ETHAddress, big.NewInt(1))
+				if err != nil {
+					fmt.Println("Withdraw ETH err: ", err)
+				}
+				fmt.Println("Withdraw ETH txHash: ", tx.Hash())
+				time.Sleep(time.Duration(2) * time.Second)
+
+				l1b, l2b, err := layer2.BETH(&mc, holder, nil)
+				if err != nil {
+					fmt.Println("layer2.BETH err: ", err)
+				}
+				fmt.Println("l1 ETH balance: ", l1b)
+				fmt.Println("l2 ETH balance: ", l2b)
 			}
 		}(waitGroup)
 

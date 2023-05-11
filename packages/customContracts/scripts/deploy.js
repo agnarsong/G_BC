@@ -9,6 +9,7 @@ const hre = require("hardhat");
 async function main() {
 
   const [deployer] = await hre.ethers.getSigners();
+  console.log("nonce:", await deployer.provider.getTransactionCount(deployer.address))
   
   console.log("Deploying contracts with the account:", deployer.address);
 
