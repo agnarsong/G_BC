@@ -137,7 +137,7 @@ func InitSc(mc *MantleCenter) (err error) {
 	var addressURL string
 	switch mc.Env.EnvType {
 	case "local":
-		addressURL = "http://localhost:8081/addresses.json"
+		addressURL = mc.Env.L1URL[:len(mc.Env.L1URL)-4] + "8081/addresses.json"
 	case "qa":
 		addressURL = "http://localhost:8081/addresses.json"
 	}
