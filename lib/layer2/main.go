@@ -67,14 +67,14 @@ type StressEnv struct {
 	L2EthAddress            string      `json:"l2ethaddress"`
 	L2BridgeAddress         string      `json:"l2bridgeaddress"`
 	EnvType                 string      `json:"envtype"`
-	UserPrivateKeyList      []string    `json:"userprivatekeylist"`
+	PrivateKeyList          [][]string  `json:"privatekeylist"`
 	DeployBool              bool        `json:"deploybool"`
 	L1ERC20Address          string      `json:"l1erc20address"`
 	L2ERC20Address          string      `json:"l2erc20address"`
 	L1GasLimit              uint64      `json:"l1gaslimit"`
 	L2GasLimit              uint64      `json:"l2gaslimit"`
 	Amount                  string      `json:"amount"`
-	AL                      AddressList `json:"addresslist"`
+	AddressList             AddressList `json:"addresslist"`
 	L2cdmAddress            string      `json:"l2cdmaddress"`
 	BVM_L2ToL1MessagePasser string      `json:"bvm_l2tol1messagepasser"`
 }
@@ -100,7 +100,7 @@ type MantleCenter struct {
 	SCCAddress      common.Address
 	SCC             *bindings.StateCommitmentChain
 	CTCAddress      common.Address
-	CTC             *bindings.ChainStorageContainer
+	CTC             *bindings.CanonicalTransactionChain
 }
 
 type StateRootBatch struct {
@@ -128,7 +128,7 @@ func InitSc(mc *MantleCenter) (err error) {
 		return fmt.Errorf("sc.L2Client err: %v", err)
 	}
 
-	mc.UserPrivateKey, err = crypto.HexToECDSA(mc.Env.UserPrivateKeyList[0])
+	mc.UserPrivateKey, err = crypto.HexToECDSA(mc.Env.PrivateKeyList[0][0])
 	if err != nil {
 		return fmt.Errorf("sc.UserPrivateKey err: %v", err)
 	}
@@ -159,27 +159,27 @@ func InitSc(mc *MantleCenter) (err error) {
 			return fmt.Errorf("json.Unmarshal err: %v", err)
 		}
 
-		mc.Env.AL = addressList
+		mc.Env.AddressList = addressList
 	}
 	mc.L1ERC20Address = common.HexToAddress(mc.Env.L1ERC20Address)
 	mc.L2ERC20Address = common.HexToAddress(mc.Env.L2ERC20Address)
-	mc.L1BITAddress = common.HexToAddress(mc.Env.AL.TestBitToken)
+	mc.L1BITAddress = common.HexToAddress(mc.Env.AddressList.TestBitToken)
 	mc.L2BITAddress = common.HexToAddress(mc.Env.L2BitAddress)
 	mc.L2ETHAddress = common.HexToAddress(mc.Env.L2EthAddress)
 
-	mc.SCCAddress = common.HexToAddress(mc.Env.AL.StateCommitmentChain)
+	mc.SCCAddress = common.HexToAddress(mc.Env.AddressList.StateCommitmentChain)
 	mc.SCC, err = bindings.NewStateCommitmentChain(mc.SCCAddress, mc.L1Client)
 	if err != nil {
 		return fmt.Errorf("bindings.NewStateCommitmentChain err: %v", err)
 	}
 
-	mc.CTCAddress = common.HexToAddress(mc.Env.AL.CanonicalTransactionChain)
-	mc.CTC, err = bindings.NewChainStorageContainer(mc.CTCAddress, mc.L1Client)
+	mc.CTCAddress = common.HexToAddress(mc.Env.AddressList.CanonicalTransactionChain)
+	mc.CTC, err = bindings.NewCanonicalTransactionChain(mc.CTCAddress, mc.L1Client)
 	if err != nil {
 		return fmt.Errorf("bindings.NewChainStorageContainer err: %v", err)
 	}
 
-	mc.L1BridgeAddress = common.HexToAddress(mc.Env.AL.ProxyBVML1StandardBridge)
+	mc.L1BridgeAddress = common.HexToAddress(mc.Env.AddressList.ProxyBVML1StandardBridge)
 	mc.L1Bridge, err = bindings.NewL1StandardBridge(mc.L1BridgeAddress, mc.L1Client)
 	if err != nil {
 		return fmt.Errorf("bindings.NewL1StandardBridge err: %v", err)
@@ -204,7 +204,7 @@ func InitSc(mc *MantleCenter) (err error) {
 		fmt.Println("reader.ReadAll err: ", err)
 	}
 	for _, r := range record {
-		mc.Env.UserPrivateKeyList = append(mc.Env.UserPrivateKeyList, r[0])
+		mc.Env.PrivateKeyList = append(mc.Env.PrivateKeyList, r)
 	}
 
 	return nil
@@ -234,7 +234,7 @@ func DNT(mc *MantleCenter, layer string) error {
 
 		tx, cid, privateKey, err := lib.SignETHTx1(
 			c,
-			mc.Env.UserPrivateKeyList[0],
+			mc.Env.PrivateKeyList[0][0],
 			preData[i][1],
 			mc.Env.Amount,
 			[]byte(""),
@@ -263,7 +263,7 @@ func DNT(mc *MantleCenter, layer string) error {
 
 func DeployL1CustomERC20(mc *MantleCenter) error {
 
-	auth, err := lib.GetAuth(mc.L1Client, mc.Env.UserPrivateKeyList[0])
+	auth, err := lib.GetAuth(mc.L1Client, mc.Env.PrivateKeyList[0][0])
 	if err != nil {
 		return fmt.Errorf("lib.GetAuth err: %v", err)
 	}
@@ -287,7 +287,7 @@ func DeployL1CustomERC20(mc *MantleCenter) error {
 
 func DeployL2CustomERC20(mc *MantleCenter) error {
 
-	auth, err := lib.GetAuth(mc.L2Client, mc.Env.UserPrivateKeyList[0])
+	auth, err := lib.GetAuth(mc.L2Client, mc.Env.PrivateKeyList[0][0])
 	if err != nil {
 		return fmt.Errorf("lib.GetAuth err: %v", err)
 	}
@@ -379,8 +379,8 @@ func Deposit(mc *MantleCenter, prk string, l1token common.Address, l2token commo
 		auth.Nonce.Add(auth.Nonce, common.Big1)
 		fmt.Println("DepostERC20", amount)
 		tx, err = mc.L1Bridge.DepositERC20(auth,
-			mc.L1ERC20Address,
-			mc.L2ERC20Address,
+			l1token,
+			l2token,
 			amount,
 			2_000_000,
 			[]byte("0x"),
@@ -741,7 +741,7 @@ func GetMessagesByTransaction(mc *MantleCenter, txHash common.Hash) (resolved Re
 
 			resolved = Resolved{
 				Direction:       1,
-				Target:          mc.Env.AL.ProxyBVML1StandardBridge,
+				Target:          mc.Env.AddressList.ProxyBVML1StandardBridge,
 				Sender:          logdata[0].(common.Address),
 				Message:         fmt.Sprintf("0x%x", logdata[1].([]uint8)),
 				MessageNonce:    logdata[2].(*big.Int),
@@ -989,4 +989,20 @@ type Result struct {
 	Nonce         string         `json:"nonce"`
 	StorageHash   string         `json:"storageHash"`
 	StorageProofs []StorageProof `json:"storageProof"`
+}
+
+func DecodeAppendSequencerBatchParams(inputData string) (params AppendSequencerBatchParams, err error) {
+	strs := strings.Split(inputData, "d0f89344")
+
+	rawBytes, err := hex.DecodeString(strs[1])
+	if err != nil {
+		return params, fmt.Errorf("DecodeString err: %v", err)
+	}
+
+	err = params.Read(bytes.NewReader(rawBytes))
+	if err != nil {
+		return params, fmt.Errorf("params.Read err: %v", err)
+	}
+
+	return params, err
 }

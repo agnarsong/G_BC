@@ -40,7 +40,7 @@ func DNT(mc *layer2.MantleCenter, layer string) error {
 	for i := 0; i < len(preData); i++ {
 
 		tx, err := lib.TransferNT(c,
-			mc.Env.UserPrivateKeyList[0],
+			mc.Env.PrivateKeyList[0][0],
 			preData[i][1],
 			mc.Env.Amount,
 			[]byte(""),
@@ -62,7 +62,7 @@ func DNT(mc *layer2.MantleCenter, layer string) error {
 
 func DeployL1CustomERC20(mc *layer2.MantleCenter) error {
 
-	auth, err := lib.GetAuth(mc.L1Client, mc.Env.UserPrivateKeyList[0])
+	auth, err := lib.GetAuth(mc.L1Client, mc.Env.PrivateKeyList[0][0])
 	if err != nil {
 		return fmt.Errorf("lib.GetAuth err: %v", err)
 	}
@@ -85,7 +85,7 @@ func DeployL1CustomERC20(mc *layer2.MantleCenter) error {
 
 func DeployL2CustomERC20(mc *layer2.MantleCenter) error {
 
-	auth, err := lib.GetAuth(mc.L2Client, mc.Env.UserPrivateKeyList[0])
+	auth, err := lib.GetAuth(mc.L2Client, mc.Env.PrivateKeyList[0][0])
 	if err != nil {
 		return fmt.Errorf("lib.GetAuth err: %v", err)
 	}

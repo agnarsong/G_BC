@@ -21,7 +21,7 @@ package bindings
 //go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L1/messaging/L1CrossDomainMessenger.sol/L1CrossDomainMessenger.json --pkg bindings --type L1CrossDomainMessenger --out L1CrossDomainMessenger.go
 //go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L2/messaging/L2CrossDomainMessenger.sol/L2CrossDomainMessenger.json --pkg bindings --type L2CrossDomainMessenger --out L2CrossDomainMessenger.go
 
-//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L1/rollup/ChainStorageContainer.sol/ChainStorageContainer.json --pkg bindings --type ChainStorageContainer --out ChainStorageContainer.go
+//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L1/rollup/CanonicalTransactionChain.sol/CanonicalTransactionChain.json --pkg bindings --type CanonicalTransactionChain --out CanonicalTransactionChain.go
 //go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L1/rollup/StateCommitmentChain.sol/StateCommitmentChain.json --pkg bindings --type StateCommitmentChain --out StateCommitmentChain.go
 
 //go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/customContracts/abi/contracts/L1CustomERC20.sol/CustomERC20.json --bin ../../../packages/customContracts/data/CustomERC20.bin --pkg bindings --type L1CustomERC20 --out L1CustomERC20.go

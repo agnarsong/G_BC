@@ -211,6 +211,21 @@
 # stress
 
 ```shell
+## 增加l1的ETH
+(anaconda3)➜  red2 git:(update_for_run_verifierda) cast rpc "hardhat_setBalance" --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x12345678901234567890123456789
+true
+(anaconda3)➜  red2 git:(update_for_run_verifierda) cast b --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+5907679980460342222050878921467785
+
+## 增加l1的BIT
+(anaconda3)➜  red2 git:(update_for_run_verifierda) cast send --rpc-url http://127.0.0.1:9545 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 0x92aBAD50368175785e4270ca9eFd169c949C4ce1  "mint(uint256)" 12345678901234567890123456789
+
+transactionHash         0x23e8a242e5d05e184fbe7c751f4509c7060871a00261eb45950658e145a08d01
+
+(anaconda3)➜  red2 git:(update_for_run_verifierda) cast 2d `cast call --rpc-url http://127.0.0.1:9545 0x92aBAD50368175785e4270ca9eFd169c949C4ce1 "balanceOf(address)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`
+12445678918654321005543209909
+
+
 (anaconda3)➜  g_bc git:(main) ✗ go run main.go s e
 ReceiptStatus checking……
 L1ERC20 address:  0x8ac5eE52F70AE01dB914bE459D8B3d50126fd6aE
@@ -266,6 +281,19 @@ ReceiptStatus checking……
 第 9 次transfer,txHash: 0xf1e1aae915b435e188ff79272ca916518ac02286c98cc20624beb914c48dcab7
 第 10 次transfer,txHash: 0x968233c22f231f2e47ac7578f146a74c3216694310e92be5acc515c48b9d94bc
 
+
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s d20 --isBIT ture
+第 1 次transfer,txHash: 0x4c0365387ec6addbc4832114cc3f44090b6b035df68726759668f05a9c6a8a62
+第 2 次transfer,txHash: 0x30f195d3a48a19ab9f3f9dd05050292a96bf5484b7e47d2c4277794633872ebd
+第 3 次transfer,txHash: 0x07dd2a58b4bbe061b68d2020f24f3f40fb56f032b22c1f46d1b9c2eb0e9ea145
+第 4 次transfer,txHash: 0x9275c725a2798077df3affcaf44c23e791ebdd64b720ea31e71e47c6a476d280
+第 5 次transfer,txHash: 0xfbe2e8b2649552a3cb5ee4d614830752ed928e61657f797934dc9bcce4827b0f
+第 6 次transfer,txHash: 0x073999663e130c2e4a2008a37ea218f7c5278b5dcb73c72fcd594f4baeb11ea5
+第 7 次transfer,txHash: 0x7e3b9d5c13ff5a4d3945c333019e6d01aa8b6a23cfb0d3e8c30f332e4d4f5e2a
+第 8 次transfer,txHash: 0x85d92000409b5cc30fd792bb4b67b2cc3d58023b20df1f83488cf19f381d67d0
+第 9 次transfer,txHash: 0xc5ebe3c664bcc0689badc748c0f3abf9c4fff0e429c259f6efc271a4291b2b1c
+第 10 次transfer,txHash: 0xd3d5c59ffa40161ea463e5a0364648784926a7a459740468878c330c5d5b7478
+
 (anaconda3)➜  g_bc git:(main) ✗ go run main.go s d20 -l l2
 第 1 次transfer,txHash: 0x6cd5e0db35ae3993d95e7f535e065f66ea892cfe438df0b5c0fffc0f800c1949
 第 2 次transfer,txHash: 0xcf38ea579d75fc17b197419087f47725b3df1be061c307a9a4ae909e383c23d0
@@ -277,4 +305,7 @@ ReceiptStatus checking……
 第 8 次transfer,txHash: 0xaf287fcd540098260d647ad34de36503ee3a1e6e16d938ade29d54233a4ae8a2
 第 9 次transfer,txHash: 0xd8901013701f30101acb57f312d9be600601321cfa68d789256e13826cb3e3c4
 第 10 次transfer,txHash: 0x4b0f58856aafb34ccfd5df2572380c7375237cafded567586a779a9c0ceb0611
+
+
+go run main.go m s st abcdefghij
 ```

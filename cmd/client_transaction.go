@@ -32,7 +32,7 @@ var txCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("根据txHash: %v 查询到txGas: %v\n", args[0], tx.Gas())
+		fmt.Printf("根据txHash: %v 查询到txGas: %v 查询到inputData.len: %v\n", args[0], tx.Gas(), len(tx.Data()))
 		return nil
 	},
 	PreRunE: func(cmd *cobra.Command, args []string) error {

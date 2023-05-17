@@ -181,8 +181,9 @@ func ParseAmount(amount string) (*big.Int, bool) {
 	a := new(big.Int)
 	_, b := a.SetString(amount, 10)
 	if amount == "-1" {
-		// 1 << 90
-		a = new(big.Int).Lsh(big.NewInt(1), 90)
+		// 1 << 78
+		// 302231454903657293676544 / 1e18 = 302231.4549036573
+		a = new(big.Int).Lsh(big.NewInt(1), 80)
 	}
 
 	return a, b

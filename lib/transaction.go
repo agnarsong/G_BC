@@ -2,8 +2,10 @@ package lib
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -32,6 +34,17 @@ func TransactionReceipt(c *ethclient.Client, th string) (tr *types.Receipt, err 
 	return
 }
 
+func L2TransactionReceipt(c *ethclient.Client, th string) (tr *types.Receipt, err error) {
+
+	txHash := common.HexToHash(th)
+	tr, err = c.TransactionReceipt(context.Background(), txHash)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
 type Res struct {
 	Block *types.Block
 	Tx    *types.Transaction
@@ -46,25 +59,29 @@ func TransactionByTo(c *ethclient.Client, startBlock uint64, endBlock uint64, ad
 
 	// 设定要遍历的区块范围
 	if endBlock == 0 {
-		endBlock, err = c.BlockNumber(context.Background())
+		endBlock, err = getBlockNumberWithRetry(c)
 		// fmt.Println("endBlock blockNumber: ", endBlock)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("BlockNumber err: %v", err)
 		}
 	}
 
+	if startBlock > endBlock {
+		return rs, errors.New("startBlock > endBlock ")
+	}
+
 	for blockNumber := startBlock; blockNumber <= endBlock; blockNumber++ {
-		block, err := c.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
+		block, err := getBlockByNumberWithRetry(c, blockNumber)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("BlockByNumber err: %v", err)
 		}
 
 		// 遍历区块中的交易
 		for _, tx := range block.Transactions() {
 			if tx.To() != nil && tx.To().Hex() == address {
-				re, err := c.TransactionReceipt(context.Background(), tx.Hash())
+				re, err := getTransactionReceiptWithRetry(c, tx.Hash())
 				if err != nil {
-					return nil, err
+					return nil, fmt.Errorf("TransactionReceipt err: %v", err)
 				}
 
 				// 获取 v, r, s 值
@@ -208,4 +225,70 @@ func AllTransactions(c *ethclient.Client, startBlock uint64, endBlock uint64) (r
 	}
 
 	return rs, nil
+}
+
+func getBlockNumberWithRetry(c *ethclient.Client) (uint64, error) {
+	var bn uint64
+	var err error
+	maxRetries := 5
+
+	for retry := 0; retry < maxRetries; retry++ {
+		bn, err = c.BlockNumber(context.Background())
+		if err != nil {
+			if retry < maxRetries-1 {
+				// 间隔一段时间后重试
+				fmt.Println("getBlockNumberWithRetry")
+				time.Sleep(time.Second * 5)
+				continue
+			}
+			return 0, fmt.Errorf("BlockNumber err: %v", err)
+		}
+		break
+	}
+
+	return bn, nil
+}
+
+func getBlockByNumberWithRetry(c *ethclient.Client, blockNumber uint64) (*types.Block, error) {
+	var block *types.Block
+	var err error
+	maxRetries := 5
+
+	for retry := 0; retry < maxRetries; retry++ {
+		block, err = c.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
+		if err != nil {
+			if retry < maxRetries-1 {
+				// 间隔一段时间后重试
+				fmt.Println("getBlockByNumberWithRetry")
+				time.Sleep(time.Second * 5)
+				continue
+			}
+			return nil, fmt.Errorf("BlockByNumber err: %v", err)
+		}
+		break
+	}
+
+	return block, nil
+}
+
+func getTransactionReceiptWithRetry(c *ethclient.Client, txHash common.Hash) (*types.Receipt, error) {
+	var receipt *types.Receipt
+	var err error
+	maxRetries := 5
+
+	for retry := 0; retry < maxRetries; retry++ {
+		receipt, err = c.TransactionReceipt(context.Background(), txHash)
+		if err != nil {
+			if retry < maxRetries-1 {
+				// 间隔一段时间后重试
+				fmt.Println("getTransactionReceiptWithRetry")
+				time.Sleep(time.Second * 5)
+				continue
+			}
+			return nil, fmt.Errorf("TransactionReceipt err: %v", err)
+		}
+		break
+	}
+
+	return receipt, nil
 }

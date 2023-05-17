@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 	"math/big"
+	"strings"
 	"time"
 
 	"github.com/ethereum/go-ethereum"
@@ -12,6 +13,8 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"golang.org/x/crypto/sha3"
+
+	"github.com/ethereum/go-ethereum/accounts/abi"
 )
 
 func SignETHTx1(c *ethclient.Client, prv string, to string, amount string, data []byte) (
@@ -160,10 +163,8 @@ func ApproveERC20(c *ethclient.Client, tokenAddress common.Address,
 	methodID := h.Sum(nil)[:4]
 
 	// fmt.Println(hexutil.Encode(methodID)) // 0xa9059cbb
-
 	paddedAddress := common.LeftPadBytes(_spender.Bytes(), 32)
 	// fmt.Println(hexutil.Encode(paddedAddress)) // 0x0000000000000000000000004592d8f8d7b001e72cb26a73e4fa1806a51ac79d
-
 	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)
 	// fmt.Println(hexutil.Encode(paddedAmount)) // 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
 
@@ -218,4 +219,54 @@ func TransferNT(c *ethclient.Client, prv string, to string,
 	}
 
 	return signedTx, err
+}
+
+func Transfers(c *ethclient.Client, tokenAddress common.Address,
+	pri string, contractInput []interface{}) (*types.Transaction, error) {
+
+	privateKey, _, fromAddress, err := AnalysePrivateKey(pri)
+	if err != nil {
+		return nil, err
+	}
+
+	// 构建合约调用参数
+	contractABI := `[{"constant":true,"inputs":[{"name":"_token","type":"address"},{"name":"to","type":"address[]"}],"name":"transfers","outputs":[],"payable":true,"stateMutability":"payable","type":"function"}]`
+	contractMethod := "transfers"
+
+	// 构建合约调用数据
+	parsedABI, err := abi.JSON(strings.NewReader(contractABI))
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := parsedABI.Pack(contractMethod, contractInput...)
+	if err != nil {
+		return nil, err
+	}
+
+	// 构建交易参数
+	gasLimit := uint64(3000000)
+
+	nonce, gasPrice, chainID, err := QBasic(c, fromAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	// 创建交易
+	tx := types.NewTransaction(nonce, tokenAddress, big.NewInt(0), gasLimit, gasPrice, data)
+
+	// 使用私钥签名交易
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	// 发送交易
+	err = c.SendTransaction(context.Background(), signedTx)
+	if err != nil {
+		return nil, err
+	}
+
+	return signedTx, nil
+
 }
