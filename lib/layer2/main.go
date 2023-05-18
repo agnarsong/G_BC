@@ -1,6 +1,7 @@
 package layer2
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"crypto/ecdsa"
@@ -13,6 +14,7 @@ import (
 	"math/big"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -541,7 +543,7 @@ func Withdraw(mc *MantleCenter, prk string, l2token common.Address,
 	}
 
 	if err = lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
-		return nil, fmt.Errorf("txHash: %v, \nWithdraw GetReStatus err: %v", tx.Hash(), err)
+		return tx, fmt.Errorf("Withdraw GetReStatus err: %v", err)
 	}
 	return tx, nil
 }
@@ -1005,4 +1007,45 @@ func DecodeAppendSequencerBatchParams(inputData string) (params AppendSequencerB
 	}
 
 	return params, err
+}
+
+func FinalizeMessage(mc *MantleCenter, txHash common.Hash) {
+
+	command := fmt.Sprintf("node packages/finalize/index.js pri=%s l1url=%s l2url=%s hash=%s",
+		mc.Env.PrivateKeyList[0][0], mc.Env.L1URL, mc.Env.L2URL, txHash)
+
+	cmd := exec.Command("bash", "-c", command)
+
+	// output, err := cmd.CombinedOutput()
+	// if err != nil {
+	// 	return "", fmt.Errorf("error executing command: %v", err)
+	// }
+	// fmt.Println("===2")
+
+	// return string(output), nil
+
+	// 创建管道获取脚本的标准输出
+	stdoutPipe, err := cmd.StdoutPipe()
+	if err != nil {
+		fmt.Printf("创建标准输出管道出错：%v\n", err)
+	}
+	// 启动命令
+	err = cmd.Start()
+	if err != nil {
+		fmt.Printf("启动命令出错：%v\n", err)
+	}
+
+	// 实时获取输出并处理
+	scanner := bufio.NewScanner(stdoutPipe)
+	for scanner.Scan() {
+		line := scanner.Text()
+		// 处理每行输出
+		fmt.Println(line)
+	}
+
+	// 等待命令执行完成
+	err = cmd.Wait()
+	if err != nil {
+		fmt.Printf("等待命令执行完成出错：%v\n", err)
+	}
 }

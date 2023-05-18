@@ -35,6 +35,7 @@ func init() {
 	stressCmd.AddCommand(rCmd)
 
 	d20Cmd.Flags().BoolVarP(&isBIT, "isBIT", "", false, "the l1 ERC20 is BIT")
+	d20Cmd.Flags().BoolVarP(&isETH, "isETH", "", false, "the l2 ERC20 is ETH")
 
 }
 
@@ -135,7 +136,8 @@ var d20Cmd = &cobra.Command{
 用于支付压测时的gasFee
 --layer == l1, 转账l1的L1ERC20
 --layer == l1 --isBIT == true, 转账l1的BIT
---layer == l2, 转账l2的L2ERC20`,
+--layer == l2, 转账l2的L2ERC20
+--layer == l2 --isETH == true, 转账l2的ETH`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		c := mc.L1Client
@@ -149,7 +151,11 @@ var d20Cmd = &cobra.Command{
 
 		if layer == "l2" {
 			c = mc.L2Client
-			tokenAddress = mc.L2ERC20Address
+			if isETH {
+				tokenAddress = mc.L2ETHAddress
+			} else {
+				tokenAddress = mc.L2ERC20Address
+			}
 		}
 
 		err := stress.D20(c, tokenAddress, mc.Env.PrivateKeyList[0][0], mc.Env.Amount)
@@ -282,13 +288,14 @@ var stCmd = &cobra.Command{
 					fmt.Println("Withdraw BIT txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
+					layer2.FinalizeMessage(&mc, tx.Hash())
+
 					l1b, _, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[5][1]), mc.L1BITAddress,
 						mc.L2BITAddress, nil)
 					if err != nil {
 						fmt.Println("BIT Balance err: ", err)
 					}
 
-					// 目前withdraw之后不会自动finalize,balance不变
 					fmt.Println("l1 BIT balance: ", l1b)
 				}
 			}(waitGroup)
@@ -308,6 +315,8 @@ var stCmd = &cobra.Command{
 					fmt.Println("Withdraw ERC20 txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
+					layer2.FinalizeMessage(&mc, tx.Hash())
+
 					l1b, _, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[6][1]), mc.L1ERC20Address,
 						mc.L2ERC20Address, nil)
 					if err != nil {
@@ -319,7 +328,7 @@ var stCmd = &cobra.Command{
 			}(waitGroup)
 		}
 
-		// Withdraw ERC20
+		// Withdraw ETH
 		if strings.Contains(args[0], "g") {
 			waitGroup.Add(1)
 			go func(wg *sync.WaitGroup) {
@@ -333,10 +342,13 @@ var stCmd = &cobra.Command{
 					fmt.Println("Withdraw ETH txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
-					l1b, _, err := layer2.BETH(&mc, common.HexToAddress(mc.Env.PrivateKeyList[7][0]), nil)
+					layer2.FinalizeMessage(&mc, tx.Hash())
+
+					l1b, _, err := layer2.BETH(&mc, common.HexToAddress(mc.Env.PrivateKeyList[7][1]), nil)
 					if err != nil {
 						fmt.Println("layer2.BETH err: ", err)
 					}
+
 					fmt.Println("l1 ETH balance: ", l1b)
 				}
 			}(waitGroup)
@@ -348,16 +360,25 @@ var stCmd = &cobra.Command{
 			go func(wg *sync.WaitGroup) {
 				defer wg.Done()
 				for {
-					tx, err := lib.TransferERC20(mc.L2Client,
-						mc.L2ERC20Address,
-						mc.Env.PrivateKeyList[8][0],
-						common.HexToAddress("1"),
-						big.NewInt(1),
-					)
-					if err != nil {
-						fmt.Println("l2 TransferERC20 err: ", err)
+					for retry := 0; retry < maxRetries; retry++ {
+						tx, err := lib.TransferERC20(mc.L2Client,
+							mc.L2ERC20Address,
+							mc.Env.PrivateKeyList[8][0],
+							common.HexToAddress("1"),
+							big.NewInt(1),
+						)
+						if err != nil {
+							if retry < maxRetries-1 {
+								// 间隔一段时间后重试
+								fmt.Println("TransferERC20 Retry", retry+1)
+								time.Sleep(time.Second * 5)
+								continue
+							}
+							fmt.Println("l2 TransferERC20 err: ", err)
+						}
+						fmt.Println("TransferERC20 txHash: ", tx.Hash())
+						break
 					}
-					fmt.Println("TransferERC20 txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
 					_, l2b, err := layer2.BERC20(&mc, common.HexToAddress("1"), mc.L1ERC20Address, mc.L2ERC20Address, nil)
@@ -375,19 +396,30 @@ var stCmd = &cobra.Command{
 			go func(wg *sync.WaitGroup) {
 				defer wg.Done()
 				for {
-					tx, err := lib.TransferNT(mc.L2Client,
-						mc.Env.PrivateKeyList[9][0],
-						"2",
-						"1",
-						[]byte(""),
-					)
-					if err != nil {
-						fmt.Println("l2 Transfer BIT err: ", err)
+					for retry := 0; retry < maxRetries; retry++ {
+						tx, err := lib.TransferNT(mc.L2Client,
+							mc.Env.PrivateKeyList[9][0],
+							"2",
+							"1",
+							[]byte(""),
+						)
+						if err != nil {
+							if retry < maxRetries-1 {
+								// 间隔一段时间后重试
+								fmt.Println("TransferNT Retry", retry+1)
+								time.Sleep(time.Second * 5)
+								continue
+							}
+
+							fmt.Println("l2 Transfer BIT err: ", err)
+
+						}
+						if err := lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
+							fmt.Println("l2 Transfer BIT CheckReceiptStatus err: ", err)
+						}
+						fmt.Println("TransferBIT txHash: ", tx.Hash())
+						break
 					}
-					if err := lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
-						fmt.Println("l2 Transfer BIT CheckReceiptStatus err: ", err)
-					}
-					fmt.Println("TransferBIT txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
 					_, l2b, err := layer2.BERC20(&mc, common.HexToAddress("2"), mc.L1BITAddress, mc.L2BITAddress, nil)

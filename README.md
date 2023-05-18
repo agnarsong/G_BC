@@ -306,6 +306,17 @@ ReceiptStatus checking……
 第 9 次transfer,txHash: 0xd8901013701f30101acb57f312d9be600601321cfa68d789256e13826cb3e3c4
 第 10 次transfer,txHash: 0x4b0f58856aafb34ccfd5df2572380c7375237cafded567586a779a9c0ceb0611
 
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s d20 -l l2 --isETH true
+第 1 次transfer,txHash: 0xeeb9cea9c2cd2bd046d764ddc15bf430c883037a447afe655e2f0a0fc94d96f5
+第 2 次transfer,txHash: 0x5c64de9088602404d2544c62d652170a6fdeffc31d5f4f2e4cbb98b259334e3f
+第 3 次transfer,txHash: 0xc67ac17eac23375f97739ac6087507c969a151a7daf0ab21c7f79527647c3d8d
+第 4 次transfer,txHash: 0xf97e8dd423e69617bc8653f88afcf813ed0c10b79280bbfcc5cb1802cf614f20
+第 5 次transfer,txHash: 0x10773b679df7cc378b10fb24a6de716b431716e779ca68ae2739942ff12b9ade
+第 6 次transfer,txHash: 0x0091045882b2364e7d155244a3b42b986b7b9b1dd76ce5036257531816818e83
+第 7 次transfer,txHash: 0xf310ab81998bece9c3c7bc81f8cdf7b2692ef6227ed25c88221e796f449a882b
+第 8 次transfer,txHash: 0x217c12cbd9ad252de59c768a455e0ebe4693135a87c45d3521f67d65f7aed4c0
+第 9 次transfer,txHash: 0xabae3547b03a937b8e87a88d1262c695a1f26620e3858b2d424fc4ae753dee35
+第 10 次transfer,txHash: 0x2729526debdfe1555e51571ea5828e5bdba2a24a086503f61cb8e2a97f0a240e
 
 go run main.go m s st abcdefghij
 ```

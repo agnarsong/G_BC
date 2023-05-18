@@ -33,10 +33,10 @@ let l1ChainId
 let l2ChainId
 let withdrawETHtx
 let finalizeMessageResponse
-let success
+let success = false
 
-// 定义异步函数以便使用 await
-async function finalizeWithdrwaTx(l1url, l2url, pri, txhash) {
+async function finalizeMessage(l1url, l2url, pri, txhash) {
+
     try {
         l1Wallet = createSignerOrProvider(pri, l1url)
       } catch (error) {
@@ -63,37 +63,37 @@ async function finalizeWithdrwaTx(l1url, l2url, pri, txhash) {
         console.error('l2ChainId Error:', error);
     }
 
-      let crossChainMessenger = new mantleneSDK.CrossChainMessenger({
-          l1ChainId: l1ChainId,
-          l2ChainId: l2ChainId,
-          l1SignerOrProvider: l1Wallet,
-          l2SignerOrProvider: l2Wallet
-      })
-
     try {
         withdrawETHtx = await l2Wallet.provider.getTransaction(txhash)
     } catch (error) {
         console.error('getTransaction Error:', error);
     }
 
-    try {
-        finalizeMessageResponse = await crossChainMessenger.finalizeMessage(withdrawETHtx)
-    } catch (error) {
-        console.error('finalizeMessage Error:', error);
-        return
-    }
+    let crossChainMessenger = new mantleneSDK.CrossChainMessenger({
+        l1ChainId: l1ChainId,
+        l2ChainId: l2ChainId,
+        l1SignerOrProvider: l1Wallet,
+        l2SignerOrProvider: l2Wallet,
+    })
 
-    try {
-        success = await isTransactionSuccessful(l1Wallet, finalizeMessageResponse.hash);
-    } catch (error) {
-        console.error('isTransactionSuccessful Error:', error);
-    }
+    while (!success) {
+        try{
+            finalizeMessageResponse = await crossChainMessenger.finalizeMessage(withdrawETHtx)
+        } catch(error){
+            // console.log('getTransaction Error:', error);
+            console.log("未完成 finalizeMessage……")
+            await sleep(5000);
+            continue
+        }
 
-    if (success){
-        console.log("finalizeMessageResponse.hash: ", finalizeMessageResponse.hash)
-        return
-    }else {
-        throw new Error(`Failed to finalizeMessage receipt for txHash: ${finalizeMessageResponse.hash}`);
+        success = await isTransactionSuccessful(l1Wallet.provider, finalizeMessageResponse.hash);
+        if (success){
+            console.log("finalizeMessage hash: ", finalizeMessageResponse.hash)
+            console.log("finalizeMessage type: ", finalizeMessageResponse.type)
+            return true
+        }else {
+            throw new Error(`Failed to finalizeMessage receipt for txHash: ${finalizeMessageResponse.hash}`);
+        }
     }
 }
 
@@ -104,8 +104,13 @@ async function isTransactionSuccessful(provider, txHash) {
         if (receipt) {
             return receipt.status === 1;
         }
-        await delay(1000); // 等待1秒再继续查
+        await sleep(5000); // 等待1秒再继续查
     }
 }
 
-finalizeWithdrwaTx(args["l1url"],args["l2url"],args["pri"],args["hash"]);
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  
+
+finalizeMessage(args["l1url"],args["l2url"],args["pri"],args["hash"]);

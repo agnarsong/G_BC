@@ -50,6 +50,8 @@ var (
 	amount     string
 	privateKey string
 	isBIT      bool
+	isETH      bool
+	maxRetries = 10
 )
 
 var mantleCmd = &cobra.Command{

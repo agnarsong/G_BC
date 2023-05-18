@@ -72,11 +72,11 @@ func CheckReceiptStatus(c *ethclient.Client, txHash common.Hash) error {
 		if !isPending {
 			break
 		}
-		fmt.Println("ReceiptStatus checking……")
+		fmt.Println("ReceiptStatus checking: TransactionByHash……")
 		time.Sleep(time.Second * time.Duration(2))
 	}
 
-	for i := 0; i < 5; i++ {
+	for i := 0; ; i++ {
 		re, err := c.TransactionReceipt(context.Background(), txHash)
 		if err != nil {
 			return err
@@ -85,6 +85,8 @@ func CheckReceiptStatus(c *ethclient.Client, txHash common.Hash) error {
 			break
 		}
 		if re.Status != 1 && i < 5 {
+
+			fmt.Println("ReceiptStatus checking: TransactionReceipt……")
 			time.Sleep(time.Second * time.Duration(2))
 			continue
 		} else {
