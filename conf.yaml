@@ -22,7 +22,7 @@ layer2:
   l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
   l2gaslimit: 30000000
   rpclist:
-      - chainid: 17
+      - chainid: 5000
         url: http://localhost:8545
   toaddress: 0xA6A64636584237A2dcacc19B0E0F4e1df336C15C
   tokenaddress: 0xFCcb552cBB310eDD9B72812171BcA4B3cf80b576

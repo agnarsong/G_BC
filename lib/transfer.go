@@ -20,7 +20,7 @@ import (
 func SignETHTx1(c *ethclient.Client, prv string, to string, amount string, data []byte) (
 	tx *types.Transaction, chainID *big.Int, privateKey *ecdsa.PrivateKey, err error) {
 
-	gasLimit := uint64(3_000_000)
+	gasLimit := uint64(15_000_000)
 
 	amountB, b := ParseAmount(amount)
 	if !b {

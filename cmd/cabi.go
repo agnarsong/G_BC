@@ -44,6 +44,25 @@ var abiCmd = &cobra.Command{
 	Long:    "加强的abi工具",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
+		// tssnode0: 8e09231cd4e10460b4b4b0b291055ba5d2c900daed32642b47bca8c034c895ef
+		// tssnode1: 00f75cacb3ff9b4ed18e093dbbf6f7e7188060fabfb352d2253ea0e26f96a3eb
+		// tssnode2: de87f566d458c0e53eb866cadd4e8e39a83cb8e20801e57e1fb55a3e4107027b
+		// tssnode3: 32a79d56c34105915ad71b6e0fc52b4cd6e7212dfa7b4dd0b24602282ee605ef
+		// tssnode4: 6f900861d9dc69be839ab01f4dfc1c7c2076545880ff310c385ee49087ec47d1
+		// tssnode5: 813a6d06a23daed107fa1a6f2cacb2c88488667889afa1d607199c4624273c51
+		// tssnode6: e8f33f1fb0edb7a2fd4150dab6486bb0ecb29bf5aab27deceee16597c45efaf1
+
+		// tssnode0: 0xd5750ebe91654ab6e345fd1c6f97348265e5ef9f
+		// tssnode1: 0xd5751caac4cc34f9147fd2d856abef1c54e8b22b
+		// tssnode2: 0xd5752dbebc3fbdee41f2f8dd7286d471517de7e9
+		// tssnode3: 0xd5753cf7f8a55bb03e24841af6b7e98644c28836
+		// tssnode4: 0xd575435e464252d8297bd79dd35eb57b14b62e81
+		// tssnode5: 0xd57559b6edca44ebdbb2b618c3574ef3077afb5e
+		// tssnode6: 0xd575667cf7b120fdb6662a083ddb75624f21ad5a
+
+		// a, b, c, _ := lib.AnalysePrivateKey("8e09231cd4e10460b4b4b0b291055ba5d2c900daed32642b47bca8c034c895ef")
+		// fmt.Println(common.Bytes2Hex(crypto.FromECDSA(a)), common.Bytes2Hex(crypto.FromECDSAPub(b)), c)
+		// fmt.Println(common.Bytes2Hex(crypto.FromECDSA(a)), common.Bytes2Hex(crypto.CompressPubkey(b)), c)
 		// 解析abi文件
 		// abiJson的优先级比文件高
 		pabi, err := lib.GetABI(filePath, abiJson)
@@ -88,7 +107,7 @@ var piCmd = &cobra.Command{
 		}
 
 		inputDataBytes := common.FromHex(data)
-
+		// {\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"vmHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"inboxSize\",\"type\":\"uint256\"},{\"internalType\":\"bytes32[]\",\"name\":\"_batch\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint256\",\"name\":\"_shouldStartAtElement\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_signature\",\"type\":\"bytes\"}],\"name\":\"createAssertionWithStateBatch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}
 		funcName, inputArgs, err := lib.ParseContractFunctionInputs(abiJson, inputDataBytes)
 		if err != nil {
 			return fmt.Errorf("ParseContractFunctionInputs err: %v", err)

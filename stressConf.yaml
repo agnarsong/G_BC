@@ -22,13 +22,13 @@ bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
 deploybool: true
 envtype: local
 l1chainid: 31337
-l1erc20address: 0x2B0d36FACD61B71CC05ab8F3D2355ec3631C0dd5
+l1erc20address: 0x413b1AfCa96a3df5A686d8BFBF93d30688a7f7D9
 l1gaslimit: 30000000
 l1url: http://localhost:9545
 l2bitaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
 l2bridgeaddress: 0x4200000000000000000000000000000000000010
 l2cdmaddress: 0x4200000000000000000000000000000000000007
-l2erc20address: 0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+l2erc20address: 0x4b6aB5F819A515382B0dEB6935D793817bB4af28
 l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
 l2gaslimit: 30000000
 l2url: http://localhost:8545
@@ -36,9 +36,8 @@ privatekeylist:
     - - ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
       - 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 rpclist:
-    - chainid: 17
+    - chainid: 5000
       url: http://localhost:8545
-statecommitmentchain: aaa
 toaddress: 0xA6A64636584237A2dcacc19B0E0F4e1df336C15C
 tokenaddress: 0xFCcb552cBB310eDD9B72812171BcA4B3cf80b576
 userprivatekeylist:

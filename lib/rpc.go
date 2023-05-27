@@ -61,8 +61,9 @@ func QBasic(c *ethclient.Client, address common.Address) (nonce uint64,
 	if err != nil {
 		return 0, nil, nil, err
 	}
-
-	chainID, err = c.NetworkID(context.Background())
+	// 目前 NetworkID 返回是异常的
+	// chainID, err = c.NetworkID(context.Background())
+	chainID, err = c.ChainID(context.Background())
 
 	return
 }

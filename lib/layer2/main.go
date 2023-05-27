@@ -1049,3 +1049,78 @@ func FinalizeMessage(mc *MantleCenter, txHash common.Hash) {
 		fmt.Printf("等待命令执行完成出错：%v\n", err)
 	}
 }
+
+func GetDataLogs(c *ethclient.Client, contractAddress common.Address, contractAbi abi.ABI, funcString string) error {
+
+	query := ethereum.FilterQuery{
+		Addresses: []common.Address{
+			contractAddress,
+		},
+	}
+
+	logs, err := c.FilterLogs(context.Background(), query)
+	if err != nil {
+		return fmt.Errorf("c.FilterLogs err: %v", err)
+	}
+
+	funcSig := []byte(funcString)
+	funcHash := crypto.Keccak256Hash(funcSig)
+
+	for _, vLog := range logs {
+		fmt.Printf("Log Block Number: %d\n", vLog.BlockNumber)
+		fmt.Printf("Log Index: %d\n", vLog.Index)
+
+		switch vLog.Topics[0].Hex() {
+		case funcHash.Hex():
+			logdata, err := contractAbi.Unpack(strings.Split(funcString, "(")[0], vLog.Data)
+			if err != nil {
+				return fmt.Errorf("contractAbi.Unpack err: %v", err)
+			}
+			fmt.Println(logdata)
+		}
+	}
+	return nil
+}
+
+func GetMapLogs(c *ethclient.Client, contractAddress common.Address, contractAbi abi.ABI, funcString string, v map[string]interface{}) (
+	blockNumber uint64,
+	logIndex uint,
+	err error,
+) {
+
+	query := ethereum.FilterQuery{
+		Addresses: []common.Address{
+			contractAddress,
+		},
+	}
+
+	logs, err := c.FilterLogs(context.Background(), query)
+	if err != nil {
+		return blockNumber, logIndex, fmt.Errorf("c.FilterLogs err: %v", err)
+	}
+
+	funcSig := []byte(funcString)
+	funcHash := crypto.Keccak256Hash(funcSig)
+
+	for _, vLog := range logs {
+		blockNumber = vLog.BlockNumber
+		logIndex = vLog.Index
+
+		// for i, funcHash := range funcHashs {
+		// 	if vLog.Topics[0].Hex() == funcHash.Hex() {
+		// 		err := contractAbi.UnpackIntoMap(v, strings.Split(funcStrings[i], "(")[0], vLog.Data)
+		// 		if err != nil {
+		// 			return blockNumber, logIndex, fmt.Errorf("contractAbi.Unpack err: %v", err)
+		// 		}
+		// 	}
+		// }
+		switch vLog.Topics[0].Hex() {
+		case funcHash.Hex():
+			err := contractAbi.UnpackIntoMap(v, strings.Split(funcString, "(")[0], vLog.Data)
+			if err != nil {
+				return blockNumber, logIndex, fmt.Errorf("contractAbi.Unpack err: %v", err)
+			}
+		}
+	}
+	return blockNumber, logIndex, err
+}

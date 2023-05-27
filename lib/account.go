@@ -2,6 +2,7 @@ package lib
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -54,17 +55,17 @@ func GetAuth(c *ethclient.Client, prv string) (auth *bind.TransactOpts, err erro
 
 	privateKey, _, fromAddress, err := AnalysePrivateKey(prv)
 	if err != nil {
-		return
+		return auth, err
 	}
 
 	nonce, err := c.PendingNonceAt(context.Background(), fromAddress)
 	if err != nil {
-		return
+		return auth, err
 	}
 
 	gasPrice, err := c.SuggestGasPrice(context.Background())
 	if err != nil {
-		return
+		return auth, err
 	}
 
 	// // 生成一个随机数种子
@@ -75,17 +76,22 @@ func GetAuth(c *ethclient.Client, prv string) (auth *bind.TransactOpts, err erro
 
 	cid, err := c.ChainID(context.Background())
 	if err != nil {
-		return
+		return auth, err
 	}
 
 	auth, err = bind.NewKeyedTransactorWithChainID(privateKey, cid)
 	if err != nil {
-		return
+		return auth, err
 	}
-
+	fmt.Println("cid: ", cid)
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(0)       // in wei
-	auth.GasLimit = uint64(30000000) // in units
+	auth.Value = big.NewInt(0) // in wei
+
+	b, err := BlockByNumber(c, -1)
+	if err != nil {
+		return auth, err
+	}
+	auth.GasLimit = b.GasLimit() // in units
 	auth.GasPrice = gasPrice
 
 	return

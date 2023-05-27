@@ -68,7 +68,7 @@ async function finalizeMessage(l1url, l2url, pri, txhash) {
     } catch (error) {
         console.error('getTransaction Error:', error);
     }
-
+    console.log("============1")
     let crossChainMessenger = new mantleneSDK.CrossChainMessenger({
         l1ChainId: l1ChainId,
         l2ChainId: l2ChainId,
@@ -76,11 +76,12 @@ async function finalizeMessage(l1url, l2url, pri, txhash) {
         l2SignerOrProvider: l2Wallet,
     })
 
+    console.log("============2")
     while (!success) {
         try{
             finalizeMessageResponse = await crossChainMessenger.finalizeMessage(withdrawETHtx)
         } catch(error){
-            // console.log('getTransaction Error:', error);
+            console.log('getTransaction Error:', error);
             console.log("未完成 finalizeMessage……")
             await sleep(5000);
             continue

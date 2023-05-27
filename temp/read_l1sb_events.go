@@ -62,10 +62,8 @@ func main() {
 	}
 
 	// 0x Protocol (ZRX) token address
-	contractAddress := common.HexToAddress("0x9faB987C9C469EB23Da31B7848B28aCf30905eA8")
+	contractAddress := common.HexToAddress("0xd9e2F450525079e1e29fB23Bc7Caca6F61f8fD4a")
 	query := ethereum.FilterQuery{
-		FromBlock: big.NewInt(0),
-		ToBlock:   big.NewInt(155),
 		Addresses: []common.Address{
 			contractAddress,
 		},
@@ -107,16 +105,25 @@ func main() {
 
 	// UnpausedSig := []byte("Unpaused(address)")
 	// UnpausedSigHash := crypto.Keccak256Hash(UnpausedSig)
-	contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_startingQueueIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_numQueueElements\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_totalElements\",\"type\":\"uint256\"}],\"name\":\"SequencerBatchAppended\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"_batchIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"_batchRoot\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_batchSize\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_prevTotalElements\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_signature\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_extraData\",\"type\":\"bytes\"}],\"name\":\"TransactionBatchAppended\",\"type\":\"event\"}]")))
+
+	// // 获取合约 ABI
+	// contractAbi, err := getContractABI(client, contractAddress)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"messageNonce\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"gasLimit\",\"type\":\"uint256\"}],\"name\":\"SentMessage\",\"type\":\"event\"}]")))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	SequencerBatchAppendedSig := []byte("SequencerBatchAppended(uint256,uint256,uint256)")
-	SequencerBatchAppendedSigHash := crypto.Keccak256Hash(SequencerBatchAppendedSig)
+	// SequencerBatchAppendedSig := []byte("SequencerBatchAppended(uint256,uint256,uint256)")
+	// SequencerBatchAppendedSigHash := crypto.Keccak256Hash(SequencerBatchAppendedSig)
 
-	TransactionBatchAppendedSig := []byte("TransactionBatchAppended(uint256,bytes32,uint256,uint256,bytes,bytes)")
-	TransactionBatchAppendedSigHash := crypto.Keccak256Hash(TransactionBatchAppendedSig)
+	// TransactionBatchAppendedSig := []byte("TransactionBatchAppended(uint256,bytes32,uint256,uint256,bytes,bytes)")
+	// TransactionBatchAppendedSigHash := crypto.Keccak256Hash(TransactionBatchAppendedSig)
+	SentMessageSig := []byte("SentMessage(address,address,bytes,uint256,uint256)")
+	SentMessageHash := crypto.Keccak256Hash(SentMessageSig)
 
 	for _, vLog := range logs {
 		fmt.Printf("Log Block Number: %d\n", vLog.BlockNumber)
@@ -187,17 +194,27 @@ func main() {
 		// 	}
 		// 	fmt.Println(logdata)
 
-		case SequencerBatchAppendedSigHash.Hex():
-			fmt.Printf("Log Name: SequencerBatchAppended\n")
-			logdata, err := contractAbi.Unpack("SequencerBatchAppended", vLog.Data)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println(logdata)
+		// case SequencerBatchAppendedSigHash.Hex():
+		// 	fmt.Printf("Log Name: SequencerBatchAppended\n")
+		// 	logdata, err := contractAbi.Unpack("SequencerBatchAppended", vLog.Data)
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		// 	fmt.Println(logdata)
 
-		case TransactionBatchAppendedSigHash.Hex():
-			fmt.Printf("Log Name: TransactionBatchAppended\n")
-			logdata, err := contractAbi.Unpack("TransactionBatchAppended", vLog.Data)
+		// case TransactionBatchAppendedSigHash.Hex():
+		// 	fmt.Printf("Log Name: TransactionBatchAppended\n")
+		// 	logdata, err := contractAbi.Unpack("TransactionBatchAppended", vLog.Data)
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		// 	fmt.Println(logdata)
+
+		// 	fmt.Println(common.Bytes2Hex(vLog.Data))
+
+		case SentMessageHash.Hex():
+			fmt.Printf("Log Name: SentMessage\n")
+			logdata, err := contractAbi.Unpack("SentMessage", vLog.Data)
 			if err != nil {
 				log.Fatal(err)
 			}

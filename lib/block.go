@@ -48,6 +48,14 @@ func HeaderByHash(c *ethclient.Client, bh string) (header *types.Header, err err
 
 func BlockByNumber(c *ethclient.Client, bn int64) (block *types.Block, err error) {
 
+	if bn == -1 {
+		bnt, err := BlockNumber(c)
+		if err != nil {
+			return block, err
+		}
+		bn = int64(bnt)
+	}
+
 	blockNumber := big.NewInt(bn)
 	block, err = c.BlockByNumber(context.Background(), blockNumber)
 	if err != nil {

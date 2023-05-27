@@ -57,7 +57,6 @@ var stressCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-
 		return nil
 	},
 	PersistentPreRunE: mantleCmd.PersistentPreRunE,
@@ -73,7 +72,9 @@ var dntCmd = &cobra.Command{
 --layer == l2, 转账l2的nativeToken`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		stress.DNT(&mc, layer)
+		if err := stress.DNT(&mc, layer); err != nil {
+			return err
+		}
 		return nil
 	},
 	PreRunE: stressCmd.PersistentPreRunE,
