@@ -1014,6 +1014,7 @@ func FinalizeMessage(mc *MantleCenter, txHash common.Hash) {
 	command := fmt.Sprintf("node packages/finalize/index.js pri=%s l1url=%s l2url=%s hash=%s",
 		mc.Env.PrivateKeyList[0][0], mc.Env.L1URL, mc.Env.L2URL, txHash)
 
+	fmt.Println(command)
 	cmd := exec.Command("bash", "-c", command)
 
 	// output, err := cmd.CombinedOutput()

@@ -1,34 +1,34 @@
 addresslist:
-    addressdictator: 0xE6A251EefaEE70E8645FBAdf21E9B1246e07C374
-    addressmanager: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
-    bondmanager: 0xEd5166f12FCb48a0804B62FDccB37f59F1F1bc3B
-    bvml1crossdomainmessenger: 0xD076364Fa5de1a4512c58b39ad63DD720B7B9E11
-    canonicaltransactionchain: 0x9faB987C9C469EB23Da31B7848B28aCf30905eA8
-    chainstoragecontainerctcbatches: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
-    chainstoragecontainersccbatches: 0x0090171f848B2aa86918E5Ef2406Ab3d424fdd83
-    chugsplashdictator: 0x18DF7d7Cc40928f07d3EF0e5404b41F97e8560Ad
-    l1standardbridgeforverificationonly: 0xdf3BD218A936A92be5e43592143ecc7a33cef514
-    libaddressmanager: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
-    proxybvml1crossdomainmessenger: 0xd9e2F450525079e1e29fB23Bc7Caca6F61f8fD4a
-    proxybvml1standardbridge: 0x52753615226F8aC8a464bfecb11Ef798CFF3793f
-    proxytssgroupmanager: 0xa83239cf2b900682001f9144144B5E5e5788A631
-    proxytssstakingslashing: 0xe6cd9e7b620964bECd42c7Ad41e56724f515E284
-    statecommitmentchain: 0x8BAccFF561FDe61D6bC8B6f299fFBa561d2189B9
-    testbittoken: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
-    tssgroupmanager: 0x82e130FF187E787D5DdDFAa4f36CB59e6B1Da6dd
-    tssstakingslashing: 0x36fCf02Fc651c0b7ef2ECA446Dd2405364F85337
-amount: "20123456789123456789"
+    addressdictator: 0xb6D72946Bdf23Aa23b7434A02ae6a3e3843496b9
+    addressmanager: 0x327903410307971Ca7Ba8A6CB2291D3b8825d7F5
+    bondmanager: 0xc723Cb5f3337c2F6Eab9b29E78CE42a28B8661d1
+    bvml1crossdomainmessenger: 0x22ae16fDdB0eA926e5E710E9f90Ca53e64a956d5
+    canonicaltransactionchain: 0x258e80D5371fD7fFdDFE29E60b366f9FC44844c8
+    chainstoragecontainerctcbatches: 0x208911db669A2E54F736607917519353C80b7D3E
+    chainstoragecontainersccbatches: 0x936f12a99b49324B6Ccc311003Ab270Aa2AD1b24
+    chugsplashdictator: 0x9Fa15AFBB93Ba554b488356C333cfD2D58BA1E4a
+    l1standardbridgeforverificationonly: 0x63c3b6092662A2b90dAb51d56994dee25E213a0E
+    libaddressmanager: 0x327903410307971Ca7Ba8A6CB2291D3b8825d7F5
+    proxybvml1crossdomainmessenger: 0x3f41DAcb2dB659e45826126d004ad3E0C8eA680e
+    proxybvml1standardbridge: 0x4cf99b9BC9B2Da64033D1Fb65146Ea60fbe8AD4B
+    proxytssgroupmanager: 0x310AFdDA90095Fdc91B6c0aE95e020B82A68444F
+    proxytssstakingslashing: 0x8178887b6370226B27697603dA72162DC00F0d93
+    statecommitmentchain: 0x88EC574e2ef0EcF9043373139099f7E535F94dBC
+    testbittoken: 0x7230Dd8766a9de839665B59cd875E5E7A36Ba78e
+    tssgroupmanager: 0x41B103a51d50C834508656427915Fd4817acA2b3
+    tssstakingslashing: 0xe4D8A9C9948f7740C912931275Bb74fb5Cd2Ed3a
+amount: "1123456789123456789"
 bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
 deploybool: true
 envtype: local
 l1chainid: 31337
-l1erc20address: 0x413b1AfCa96a3df5A686d8BFBF93d30688a7f7D9
+l1erc20address: 0xc96304e3c037f81dA488ed9dEa1D8F2a48278a75
 l1gaslimit: 30000000
 l1url: http://localhost:9545
 l2bitaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
 l2bridgeaddress: 0x4200000000000000000000000000000000000010
 l2cdmaddress: 0x4200000000000000000000000000000000000007
-l2erc20address: 0x4b6aB5F819A515382B0dEB6935D793817bB4af28
+l2erc20address: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
 l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
 l2gaslimit: 30000000
 l2url: http://localhost:8545

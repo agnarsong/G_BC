@@ -2,7 +2,6 @@ package lib
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -83,7 +82,7 @@ func GetAuth(c *ethclient.Client, prv string) (auth *bind.TransactOpts, err erro
 	if err != nil {
 		return auth, err
 	}
-	fmt.Println("cid: ", cid)
+
 	auth.Nonce = big.NewInt(int64(nonce))
 	auth.Value = big.NewInt(0) // in wei
 
