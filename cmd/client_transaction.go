@@ -84,6 +84,7 @@ var btCmd = &cobra.Command{
 			fmt.Println("txFrom: ", r.From)
 			fmt.Println("txTo: ", r.Tx.To())
 			fmt.Println("txGas: ", r.Tx.Gas())
+			fmt.Println("time: ", r.Block.Time())
 			fmt.Println("txGasPrice: ", r.Tx.GasPrice().Uint64())
 			fmt.Println("txInputData: ", common.Bytes2Hex(r.Tx.Data()))
 			fmt.Println("reGasUsed: ", r.Re.GasUsed)

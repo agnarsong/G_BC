@@ -90,6 +90,13 @@ func GetAuth(c *ethclient.Client, prv string) (auth *bind.TransactOpts, err erro
 	if err != nil {
 		return auth, err
 	}
+
+	// tx, _, _ := c.TransactionByHash(context.Background(), common.HexToHash("0xbbea37ab960fcc25b4bf78114079df0be43395b6086499bb238b12fc0e79d459"))
+	// gasLimit, _ := c.EstimateGas(context.Background(), ethereum.CallMsg{
+	// 	Data: tx.Data(),
+	// })
+	// fmt.Println("gasLimit: ", gasLimit, b.GasLimit())
+
 	auth.GasLimit = b.GasLimit() // in units
 	auth.GasPrice = gasPrice
 

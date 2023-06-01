@@ -28,3 +28,5 @@ package bindings
 //go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/customContracts/abi/contracts/L2CustomERC20.sol/L2CustomERC20.json --bin ../../../packages/customContracts/data/L2CustomERC20.bin --pkg bindings --type L2CustomERC20 --out L2CustomERC20.go
 
 //go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L1/fraud-proof/Rollup.sol/Rollup.json --pkg bindings --type Rollup --out Rollup.go
+
+//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen --abi ../../../packages/contracts/abi/contracts/L2/predeploys/TssRewardContract.sol/TssRewardContract.json --pkg bindings --type TssRewardContract --out TssRewardContract.go

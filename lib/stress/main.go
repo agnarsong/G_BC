@@ -124,6 +124,7 @@ func DL2CERC20(mc *layer2.MantleCenter, pri string) (string, error) {
 		mc.L2BridgeAddress,
 		mc.L1ERC20Address,
 	)
+
 	if err != nil {
 		return "", fmt.Errorf("bindings.DeployL2CustomERC20 err: %v", err)
 	}
@@ -131,7 +132,7 @@ func DL2CERC20(mc *layer2.MantleCenter, pri string) (string, error) {
 	if err := lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
 		return "", fmt.Errorf("lib.CheckReceiptStatus err: %v", err)
 	}
-
+	fmt.Println("deploy txHash: ", tx.Hash())
 	return L2ERC20Address.Hex(), nil
 }
 
