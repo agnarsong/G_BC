@@ -128,7 +128,7 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-] as const;
+];
 
 export class IVerifierEntry__factory {
   static readonly abi = _abi;

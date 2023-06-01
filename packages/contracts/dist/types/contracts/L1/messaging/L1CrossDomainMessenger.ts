@@ -97,6 +97,7 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     "libAddressManager()": FunctionFragment;
     "owner()": FunctionFragment;
     "pause()": FunctionFragment;
+    "pauseByPOwner()": FunctionFragment;
     "paused()": FunctionFragment;
     "relayMessage(address,address,bytes,uint256,(bytes32,(uint256,bytes32,uint256,uint256,bytes,bytes),(uint256,bytes32[]),bytes,bytes))": FunctionFragment;
     "relayedMessages(bytes32)": FunctionFragment;
@@ -104,8 +105,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     "replayMessage(address,address,bytes,uint256,uint32,uint32)": FunctionFragment;
     "resolve(string)": FunctionFragment;
     "sendMessage(address,bytes,uint32)": FunctionFragment;
+    "setPauseOwner(address)": FunctionFragment;
     "successfulMessages(bytes32)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "unpause()": FunctionFragment;
     "xDomainMessageSender()": FunctionFragment;
   };
 
@@ -118,6 +121,7 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
       | "libAddressManager"
       | "owner"
       | "pause"
+      | "pauseByPOwner"
       | "paused"
       | "relayMessage"
       | "relayedMessages"
@@ -125,8 +129,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
       | "replayMessage"
       | "resolve"
       | "sendMessage"
+      | "setPauseOwner"
       | "successfulMessages"
       | "transferOwnership"
+      | "unpause"
       | "xDomainMessageSender"
   ): FunctionFragment;
 
@@ -152,6 +158,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "pauseByPOwner",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "relayMessage",
@@ -195,6 +205,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPauseOwner",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "successfulMessages",
     values: [PromiseOrValue<BytesLike>]
   ): string;
@@ -202,6 +216,7 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "xDomainMessageSender",
     values?: undefined
@@ -226,6 +241,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "pauseByPOwner",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "relayMessage",
@@ -249,6 +268,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setPauseOwner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "successfulMessages",
     data: BytesLike
   ): Result;
@@ -256,6 +279,7 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "xDomainMessageSender",
     data: BytesLike
@@ -427,6 +451,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    pauseByPOwner(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     relayMessage(
@@ -469,6 +497,11 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setPauseOwner(
+      _pauseOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     successfulMessages(
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -476,6 +509,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -507,6 +544,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
   owner(overrides?: CallOverrides): Promise<string>;
 
   pause(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  pauseByPOwner(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -552,6 +593,11 @@ export interface L1CrossDomainMessenger extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setPauseOwner(
+    _pauseOwner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   successfulMessages(
     arg0: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
@@ -559,6 +605,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -590,6 +640,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     pause(overrides?: CallOverrides): Promise<void>;
+
+    pauseByPOwner(overrides?: CallOverrides): Promise<void>;
 
     paused(overrides?: CallOverrides): Promise<boolean>;
 
@@ -631,6 +683,11 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setPauseOwner(
+      _pauseOwner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     successfulMessages(
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -640,6 +697,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    unpause(overrides?: CallOverrides): Promise<void>;
 
     xDomainMessageSender(overrides?: CallOverrides): Promise<string>;
   };
@@ -736,6 +795,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    pauseByPOwner(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     relayMessage(
@@ -778,6 +841,11 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setPauseOwner(
+      _pauseOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     successfulMessages(
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -785,6 +853,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -817,6 +889,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    pauseByPOwner(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -862,6 +938,11 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setPauseOwner(
+      _pauseOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     successfulMessages(
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -869,6 +950,10 @@ export interface L1CrossDomainMessenger extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

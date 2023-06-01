@@ -31,8 +31,8 @@ export interface IL1ERC20BridgeInterface extends utils.Interface {
   functions: {
     "depositERC20(address,address,uint256,uint32,bytes)": FunctionFragment;
     "depositERC20To(address,address,address,uint256,uint32,bytes)": FunctionFragment;
-    "finalizeBitWithdrawal(address,address,uint256,bytes)": FunctionFragment;
     "finalizeERC20Withdrawal(address,address,address,address,uint256,bytes)": FunctionFragment;
+    "finalizeMantleWithdrawal(address,address,uint256,bytes)": FunctionFragment;
     "l2TokenBridge()": FunctionFragment;
   };
 
@@ -40,8 +40,8 @@ export interface IL1ERC20BridgeInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "depositERC20"
       | "depositERC20To"
-      | "finalizeBitWithdrawal"
       | "finalizeERC20Withdrawal"
+      | "finalizeMantleWithdrawal"
       | "l2TokenBridge"
   ): FunctionFragment;
 
@@ -67,8 +67,10 @@ export interface IL1ERC20BridgeInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "finalizeBitWithdrawal",
+    functionFragment: "finalizeERC20Withdrawal",
     values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
@@ -76,10 +78,8 @@ export interface IL1ERC20BridgeInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "finalizeERC20Withdrawal",
+    functionFragment: "finalizeMantleWithdrawal",
     values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
@@ -100,11 +100,11 @@ export interface IL1ERC20BridgeInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "finalizeBitWithdrawal",
+    functionFragment: "finalizeERC20Withdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "finalizeERC20Withdrawal",
+    functionFragment: "finalizeMantleWithdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -199,7 +199,9 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    finalizeBitWithdrawal(
+    finalizeERC20Withdrawal(
+      _l1Token: PromiseOrValue<string>,
+      _l2Token: PromiseOrValue<string>,
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -207,9 +209,7 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    finalizeERC20Withdrawal(
-      _l1Token: PromiseOrValue<string>,
-      _l2Token: PromiseOrValue<string>,
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -241,7 +241,9 @@ export interface IL1ERC20Bridge extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  finalizeBitWithdrawal(
+  finalizeERC20Withdrawal(
+    _l1Token: PromiseOrValue<string>,
+    _l2Token: PromiseOrValue<string>,
     _from: PromiseOrValue<string>,
     _to: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
@@ -249,9 +251,7 @@ export interface IL1ERC20Bridge extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  finalizeERC20Withdrawal(
-    _l1Token: PromiseOrValue<string>,
-    _l2Token: PromiseOrValue<string>,
+  finalizeMantleWithdrawal(
     _from: PromiseOrValue<string>,
     _to: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
@@ -283,7 +283,9 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    finalizeBitWithdrawal(
+    finalizeERC20Withdrawal(
+      _l1Token: PromiseOrValue<string>,
+      _l2Token: PromiseOrValue<string>,
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -291,9 +293,7 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    finalizeERC20Withdrawal(
-      _l1Token: PromiseOrValue<string>,
-      _l2Token: PromiseOrValue<string>,
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -360,7 +360,9 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    finalizeBitWithdrawal(
+    finalizeERC20Withdrawal(
+      _l1Token: PromiseOrValue<string>,
+      _l2Token: PromiseOrValue<string>,
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -368,9 +370,7 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    finalizeERC20Withdrawal(
-      _l1Token: PromiseOrValue<string>,
-      _l2Token: PromiseOrValue<string>,
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -403,7 +403,9 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    finalizeBitWithdrawal(
+    finalizeERC20Withdrawal(
+      _l1Token: PromiseOrValue<string>,
+      _l2Token: PromiseOrValue<string>,
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -411,9 +413,7 @@ export interface IL1ERC20Bridge extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    finalizeERC20Withdrawal(
-      _l1Token: PromiseOrValue<string>,
-      _l2Token: PromiseOrValue<string>,
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,

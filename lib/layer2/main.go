@@ -47,10 +47,20 @@ type AddressList struct {
 	ProxyTSSGroupManager                string `json:"Proxy__TSS_GroupManager"`
 	ProxyTSSStakingSlashing             string `json:"Proxy__TSS_StakingSlashing"`
 	StateCommitmentChain                string `json:"StateCommitmentChain"`
-	TestBitToken                        string `json:"TestBitToken"`
 	TssGroupManager                     string `json:"TssGroupManager"`
 	TssStakingSlashing                  string `json:"TssStakingSlashing"`
 	AddressManager                      string `json:"AddressManager"`
+	Proxy__L1MantleToken                string `json:"Proxy__L1MantleToken"`
+	Proxy__Verifier                     string `json:"Proxy__Verifier"`
+	BVM_EigenDataLayrFee                string `json:"BVM_EigenDataLayrFee"`
+	Rollup                              string `json:"Rollup"`
+	Proxy__BVM_EigenDataLayrFee         string `json:"Proxy__BVM_EigenDataLayrFee"`
+	VerifierEntry                       string `json:"VerifierEntry"`
+	BVM_EigenDataLayrChain              string `json:"BVM_EigenDataLayrChain"`
+	Proxy__BVM_EigenDataLayrChain       string `json:"Proxy__BVM_EigenDataLayrChain"`
+	L1MantleToken                       string `json:"L1MantleToken"`
+	AssertionMap                        string `json:"AssertionMap"`
+	Proxy__Rollup                       string `json:"Proxy__Rollup"`
 }
 
 type Rpc struct {
@@ -65,7 +75,7 @@ type StressEnv struct {
 	RpcList                 []Rpc       `json:"rpclist"`
 	ToAddress               string      `json:"toaddress"`
 	TokenAddress            string      `json:"tokenaddress"`
-	L2BitAddress            string      `json:"l2bitaddress"`
+	L2MNTAddress            string      `json:"l2mntaddress"`
 	L2EthAddress            string      `json:"l2ethaddress"`
 	L2BridgeAddress         string      `json:"l2bridgeaddress"`
 	EnvType                 string      `json:"envtype"`
@@ -92,8 +102,8 @@ type MantleCenter struct {
 	L2ERC20         *bindings.L2CustomERC20
 	L1ERC20Address  common.Address
 	L2ERC20Address  common.Address
-	L1BITAddress    common.Address
-	L2BITAddress    common.Address
+	L1MNTAddress    common.Address
+	L2MNTAddress    common.Address
 	L2ETHAddress    common.Address
 	L1Bridge        *bindings.L1StandardBridge
 	L2Bridge        *bindings.L2StandardBridge
@@ -165,8 +175,8 @@ func InitSc(mc *MantleCenter) (err error) {
 	}
 	mc.L1ERC20Address = common.HexToAddress(mc.Env.L1ERC20Address)
 	mc.L2ERC20Address = common.HexToAddress(mc.Env.L2ERC20Address)
-	mc.L1BITAddress = common.HexToAddress(mc.Env.AddressList.TestBitToken)
-	mc.L2BITAddress = common.HexToAddress(mc.Env.L2BitAddress)
+	mc.L1MNTAddress = common.HexToAddress(mc.Env.AddressList.Proxy__L1MantleToken)
+	mc.L2MNTAddress = common.HexToAddress(mc.Env.L2MNTAddress)
 	mc.L2ETHAddress = common.HexToAddress(mc.Env.L2EthAddress)
 
 	mc.SCCAddress = common.HexToAddress(mc.Env.AddressList.StateCommitmentChain)

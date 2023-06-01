@@ -280,7 +280,20 @@
         "type": "address[]"
       }
     ],
-    "name": "addToWhitelist",
+    "name": "addToOperatorWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "toAddAddresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "addToStakerWhitelist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -387,19 +400,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "challengePeriod",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -422,19 +422,6 @@
     "name": "confirmFirstUnresolvedAssertion",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "confirmationPeriod",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -543,16 +530,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "_confirmationPeriod",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_challengePeriod",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "_minimumAssertionPeriod",
         "type": "uint256"
       },
@@ -568,7 +545,12 @@
       },
       {
         "internalType": "address[]",
-        "name": "whitelists",
+        "name": "stakerWhitelists",
+        "type": "address[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "operatorWhitelists",
         "type": "address[]"
       }
     ],
@@ -675,8 +657,46 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "operatorWhitelist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "registers",
     "outputs": [
       {
         "internalType": "address",
@@ -702,7 +722,20 @@
         "type": "address[]"
       }
     ],
-    "name": "removeFromWhitelist",
+    "name": "removeFromOperatorWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "toRemoveAddresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "removeFromStakerWhitelist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -747,10 +780,21 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "stakeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
     "name": "stake",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -761,6 +805,25 @@
         "internalType": "contract IERC20",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "stakerWhitelist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -790,6 +853,11 @@
         "internalType": "uint256",
         "name": "assertionID",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
       },
       {
         "internalType": "address",
@@ -834,25 +902,6 @@
         "internalType": "contract IVerifierEntry",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "whitelist",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",

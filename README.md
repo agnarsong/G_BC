@@ -217,7 +217,7 @@ true
 (anaconda3)➜  red2 git:(update_for_run_verifierda) cast b --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 5907679980460342222050878921467785
 
-## 增加l1的BIT
+## 增加l1的MNT
 (anaconda3)➜  red2 git:(update_for_run_verifierda) cast send --rpc-url http://127.0.0.1:9545 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 0x92aBAD50368175785e4270ca9eFd169c949C4ce1  "mint(uint256)" 12345678901234567890123456789
 
 transactionHash         0x23e8a242e5d05e184fbe7c751f4509c7060871a00261eb45950658e145a08d01
@@ -282,7 +282,7 @@ ReceiptStatus checking……
 第 10 次transfer,txHash: 0x968233c22f231f2e47ac7578f146a74c3216694310e92be5acc515c48b9d94bc
 
 
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s d20 --isBIT ture
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s d20 --isMNT ture
 第 1 次transfer,txHash: 0x4c0365387ec6addbc4832114cc3f44090b6b035df68726759668f05a9c6a8a62
 第 2 次transfer,txHash: 0x30f195d3a48a19ab9f3f9dd05050292a96bf5484b7e47d2c4277794633872ebd
 第 3 次transfer,txHash: 0x07dd2a58b4bbe061b68d2020f24f3f40fb56f032b22c1f46d1b9c2eb0e9ea145

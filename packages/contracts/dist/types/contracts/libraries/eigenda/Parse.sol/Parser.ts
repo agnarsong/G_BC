@@ -7,8 +7,6 @@ import type {
   BigNumberish,
   BytesLike,
   CallOverrides,
-  ContractTransaction,
-  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -75,16 +73,16 @@ export interface Parser extends BaseContract {
       polys: PromiseOrValue<BytesLike>[],
       startIndex: PromiseOrValue<BigNumberish>,
       length: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[string] & { provenString: string }>;
   };
 
   parse(
     polys: PromiseOrValue<BytesLike>[],
     startIndex: PromiseOrValue<BigNumberish>,
     length: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   callStatic: {
     parse(
@@ -102,7 +100,7 @@ export interface Parser extends BaseContract {
       polys: PromiseOrValue<BytesLike>[],
       startIndex: PromiseOrValue<BigNumberish>,
       length: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
@@ -111,7 +109,7 @@ export interface Parser extends BaseContract {
       polys: PromiseOrValue<BytesLike>[],
       startIndex: PromiseOrValue<BigNumberish>,
       length: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

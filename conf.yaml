@@ -10,13 +10,13 @@ layer2:
   amount: "10000000000000000"
   deploybool: true
   envtype: local
-  l1bitaddress: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
+  l1mntaddress: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
   l1bridgeaddress: 0x52753615226F8aC8a464bfecb11Ef798CFF3793f
   l1chainid: 31337
   l1erc20address: 0x4EE6eCAD1c2Dae9f525404De8555724e3c35d07B
   l1gaslimit: 30000000
   l1url: http://localhost:9545
-  l2bitaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
+  l2mntaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
   l2bridgeaddress: 0x4200000000000000000000000000000000000010
   l2erc20address: 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
   l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111

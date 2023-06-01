@@ -49,7 +49,7 @@ var (
 	layer      string
 	amount     string
 	privateKey string
-	isBIT      bool
+	isMNT      bool
 	isETH      bool
 	maxRetries = 10
 )
@@ -88,7 +88,7 @@ var mantleCmd = &cobra.Command{
 		}
 
 		// 更新配置文件
-		if viper.Get("addresslist.testbittoken") != mc.Env.AddressList.TestBitToken {
+		if viper.Get("addresslist.Proxy__L1MantleToken") != mc.Env.AddressList.Proxy__L1MantleToken {
 			viper.Set("addresslist", mc.Env.AddressList)
 			viper.Set("userprivatekeylist", mc.Env.PrivateKeyList)
 

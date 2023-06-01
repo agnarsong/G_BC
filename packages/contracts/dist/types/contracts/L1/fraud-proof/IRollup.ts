@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -42,7 +41,7 @@ export interface IRollupInterface extends utils.Interface {
     "isStaked(address)": FunctionFragment;
     "rejectFirstUnresolvedAssertion()": FunctionFragment;
     "removeStake(address)": FunctionFragment;
-    "stake()": FunctionFragment;
+    "stake(uint256,address)": FunctionFragment;
     "unstake(uint256)": FunctionFragment;
     "withdraw()": FunctionFragment;
   };
@@ -123,7 +122,10 @@ export interface IRollupInterface extends utils.Interface {
     functionFragment: "removeStake",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "stake",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "unstake",
     values: [PromiseOrValue<BigNumberish>]
@@ -337,7 +339,9 @@ export interface IRollup extends BaseContract {
     ): Promise<ContractTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unstake(
@@ -407,7 +411,9 @@ export interface IRollup extends BaseContract {
   ): Promise<ContractTransaction>;
 
   stake(
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    stakeAmount: PromiseOrValue<BigNumberish>,
+    operator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unstake(
@@ -475,7 +481,11 @@ export interface IRollup extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stake(overrides?: CallOverrides): Promise<void>;
+    stake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     unstake(
       stakeAmount: PromiseOrValue<BigNumberish>,
@@ -589,7 +599,9 @@ export interface IRollup extends BaseContract {
     ): Promise<BigNumber>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unstake(
@@ -667,7 +679,9 @@ export interface IRollup extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unstake(

@@ -43,7 +43,7 @@ export declare namespace IStakingSlashing {
 
 export interface TssStakingSlashingInterface extends utils.Interface {
   functions: {
-    "BitToken()": FunctionFragment;
+    "MantleToken()": FunctionFragment;
     "batchGetDeposits(address[])": FunctionFragment;
     "clearQuitRequestList()": FunctionFragment;
     "deposits(address)": FunctionFragment;
@@ -72,7 +72,7 @@ export interface TssStakingSlashingInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "BitToken"
+      | "MantleToken"
       | "batchGetDeposits"
       | "clearQuitRequestList"
       | "deposits"
@@ -99,7 +99,10 @@ export interface TssStakingSlashingInterface extends utils.Interface {
       | "withdrawToken"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "BitToken", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "MantleToken",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "batchGetDeposits",
     values: [PromiseOrValue<string>[]]
@@ -194,7 +197,10 @@ export interface TssStakingSlashingInterface extends utils.Interface {
     values?: undefined
   ): string;
 
-  decodeFunctionResult(functionFragment: "BitToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "MantleToken",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "batchGetDeposits",
     data: BytesLike
@@ -353,7 +359,7 @@ export interface TssStakingSlashing extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    BitToken(overrides?: CallOverrides): Promise<[string]>;
+    MantleToken(overrides?: CallOverrides): Promise<[string]>;
 
     batchGetDeposits(
       users: PromiseOrValue<string>[],
@@ -398,7 +404,7 @@ export interface TssStakingSlashing extends BaseContract {
     ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
 
     initialize(
-      _bitToken: PromiseOrValue<string>,
+      _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -477,7 +483,7 @@ export interface TssStakingSlashing extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  BitToken(overrides?: CallOverrides): Promise<string>;
+  MantleToken(overrides?: CallOverrides): Promise<string>;
 
   batchGetDeposits(
     users: PromiseOrValue<string>[],
@@ -522,7 +528,7 @@ export interface TssStakingSlashing extends BaseContract {
   ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
 
   initialize(
-    _bitToken: PromiseOrValue<string>,
+    _mantleToken: PromiseOrValue<string>,
     _tssGroupContract: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -598,7 +604,7 @@ export interface TssStakingSlashing extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    BitToken(overrides?: CallOverrides): Promise<string>;
+    MantleToken(overrides?: CallOverrides): Promise<string>;
 
     batchGetDeposits(
       users: PromiseOrValue<string>[],
@@ -641,7 +647,7 @@ export interface TssStakingSlashing extends BaseContract {
     ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
 
     initialize(
-      _bitToken: PromiseOrValue<string>,
+      _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -739,7 +745,7 @@ export interface TssStakingSlashing extends BaseContract {
   };
 
   estimateGas: {
-    BitToken(overrides?: CallOverrides): Promise<BigNumber>;
+    MantleToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchGetDeposits(
       users: PromiseOrValue<string>[],
@@ -776,7 +782,7 @@ export interface TssStakingSlashing extends BaseContract {
     getSlashingParams(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
-      _bitToken: PromiseOrValue<string>,
+      _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -856,7 +862,7 @@ export interface TssStakingSlashing extends BaseContract {
   };
 
   populateTransaction: {
-    BitToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MantleToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     batchGetDeposits(
       users: PromiseOrValue<string>[],
@@ -895,7 +901,7 @@ export interface TssStakingSlashing extends BaseContract {
     getSlashingParams(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
-      _bitToken: PromiseOrValue<string>,
+      _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

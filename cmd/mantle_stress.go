@@ -34,7 +34,7 @@ func init() {
 	stressCmd.AddCommand(stCmd)
 	stressCmd.AddCommand(rCmd)
 
-	d20Cmd.Flags().BoolVarP(&isBIT, "isBIT", "", false, "the l1 ERC20 is BIT")
+	d20Cmd.Flags().BoolVarP(&isMNT, "isMNT", "", false, "the l1 ERC20 is MNT")
 	d20Cmd.Flags().BoolVarP(&isETH, "isETH", "", false, "the l2 ERC20 is ETH")
 
 }
@@ -136,7 +136,7 @@ var d20Cmd = &cobra.Command{
 	Long: `向./wallets.csv中的钱包地址转账ERC20 tokne
 用于支付压测时的gasFee
 --layer == l1, 转账l1的L1ERC20
---layer == l1 --isBIT == true, 转账l1的BIT
+--layer == l1 --isMNT == true, 转账l1的MNT
 --layer == l2, 转账l2的L2ERC20
 --layer == l2 --isETH == true, 转账l2的ETH`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -144,8 +144,8 @@ var d20Cmd = &cobra.Command{
 		c := mc.L1Client
 
 		var tokenAddress common.Address
-		if isBIT {
-			tokenAddress = mc.L1BITAddress
+		if isMNT {
+			tokenAddress = mc.L1MNTAddress
 		} else {
 			tokenAddress = mc.L1ERC20Address
 		}
@@ -233,27 +233,27 @@ var stCmd = &cobra.Command{
 			}(waitGroup)
 		}
 
-		// deposit BIT
+		// deposit MNT
 		if strings.Contains(args[0], "c") {
 			waitGroup.Add(1)
 			go func(wg *sync.WaitGroup) {
 				defer wg.Done()
 				for {
-					tx, err := layer2.Deposit(&mc, mc.Env.PrivateKeyList[3][0], mc.L1BITAddress,
-						mc.L2BITAddress, big.NewInt(1))
+					tx, err := layer2.Deposit(&mc, mc.Env.PrivateKeyList[3][0], mc.L1MNTAddress,
+						mc.L2MNTAddress, big.NewInt(1))
 					if err != nil {
-						fmt.Println("DepositBIT err: ", err)
+						fmt.Println("DepositMNT err: ", err)
 					}
-					fmt.Println("DepositBIT txHash: ", tx.Hash())
+					fmt.Println("DepositMNT txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
-					_, l2b, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[3][1]), mc.L1BITAddress,
-						mc.L2BITAddress, nil)
+					_, l2b, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[3][1]), mc.L1MNTAddress,
+						mc.L2MNTAddress, nil)
 					if err != nil {
-						fmt.Println("BIT Balance err: ", err)
+						fmt.Println("MNT Balance err: ", err)
 					}
 
-					fmt.Println("l2 BIT balance: ", l2b)
+					fmt.Println("l2 MNT balance: ", l2b)
 				}
 			}(waitGroup)
 		}
@@ -275,29 +275,29 @@ var stCmd = &cobra.Command{
 			}(waitGroup)
 		}
 
-		// Withdraw BIT
+		// Withdraw MNT
 		if strings.Contains(args[0], "e") {
 			waitGroup.Add(1)
 			go func(wg *sync.WaitGroup) {
 				defer wg.Done()
 				for {
 					tx, err := layer2.Withdraw(&mc, mc.Env.PrivateKeyList[5][0],
-						mc.L2BITAddress, big.NewInt(1))
+						mc.L2MNTAddress, big.NewInt(1))
 					if err != nil {
-						fmt.Println("Withdraw BIT err: ", err)
+						fmt.Println("Withdraw MNT err: ", err)
 					}
-					fmt.Println("Withdraw BIT txHash: ", tx.Hash())
+					fmt.Println("Withdraw MNT txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
 					layer2.FinalizeMessage(&mc, tx.Hash())
 
-					l1b, _, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[5][1]), mc.L1BITAddress,
-						mc.L2BITAddress, nil)
+					l1b, _, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[5][1]), mc.L1MNTAddress,
+						mc.L2MNTAddress, nil)
 					if err != nil {
-						fmt.Println("BIT Balance err: ", err)
+						fmt.Println("MNT Balance err: ", err)
 					}
 
-					fmt.Println("l1 BIT balance: ", l1b)
+					fmt.Println("l1 MNT balance: ", l1b)
 				}
 			}(waitGroup)
 		}
@@ -391,7 +391,7 @@ var stCmd = &cobra.Command{
 			}(waitGroup)
 		}
 
-		// BIT transfer
+		// MNT transfer
 		if strings.Contains(args[0], "i") {
 			waitGroup.Add(1)
 			go func(wg *sync.WaitGroup) {
@@ -412,22 +412,22 @@ var stCmd = &cobra.Command{
 								continue
 							}
 
-							fmt.Println("l2 Transfer BIT err: ", err)
+							fmt.Println("l2 Transfer MNT err: ", err)
 
 						}
 						if err := lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
-							fmt.Println("l2 Transfer BIT CheckReceiptStatus err: ", err)
+							fmt.Println("l2 Transfer MNT CheckReceiptStatus err: ", err)
 						}
-						fmt.Println("TransferBIT txHash: ", tx.Hash())
+						fmt.Println("TransferMNT txHash: ", tx.Hash())
 						break
 					}
 					time.Sleep(time.Duration(2) * time.Second)
 
-					_, l2b, err := layer2.BERC20(&mc, common.HexToAddress("2"), mc.L1BITAddress, mc.L2BITAddress, nil)
+					_, l2b, err := layer2.BERC20(&mc, common.HexToAddress("2"), mc.L1MNTAddress, mc.L2MNTAddress, nil)
 					if err != nil {
 						fmt.Println("layer2.BERC20 err: ", err)
 					}
-					fmt.Println("l2 BIT balance: ", l2b)
+					fmt.Println("l2 MNT balance: ", l2b)
 				}
 			}(waitGroup)
 		}

@@ -2,5 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as parseSol from "./Parse.sol";
-export * as lib from "./lib";
-export { DataLayrDisclosureLogic__factory } from "./DataLayrDisclosureLogic__factory";
+export * as interfaces from "./interfaces";
+export { DataStoreUtils__factory } from "./DataStoreUtils__factory";

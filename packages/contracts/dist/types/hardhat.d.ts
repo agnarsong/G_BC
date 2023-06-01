@@ -17,6 +17,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OwnableUpgradeable__factory>;
     getContractFactory(
+      name: "IVotesUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVotesUpgradeable__factory>;
+    getContractFactory(
       name: "Initializable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Initializable__factory>;
@@ -29,9 +33,41 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ReentrancyGuardUpgradeable__factory>;
     getContractFactory(
+      name: "ERC20Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Upgradeable__factory>;
+    getContractFactory(
+      name: "ERC20PermitUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20PermitUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC20PermitUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20PermitUpgradeable__factory>;
+    getContractFactory(
+      name: "ERC20BurnableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20BurnableUpgradeable__factory>;
+    getContractFactory(
+      name: "ERC20VotesUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20VotesUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC20MetadataUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20MetadataUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC20Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20Upgradeable__factory>;
+    getContractFactory(
       name: "ContextUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ContextUpgradeable__factory>;
+    getContractFactory(
+      name: "EIP712Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EIP712Upgradeable__factory>;
     getContractFactory(
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -169,9 +205,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Whitelist__factory>;
     getContractFactory(
-      name: "BitTokenERC20",
+      name: "L1MantleToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.BitTokenERC20__factory>;
+    ): Promise<Contracts.L1MantleToken__factory>;
     getContractFactory(
       name: "IL1CrossDomainMessenger",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -261,10 +297,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.L2StandardTokenFactory__factory>;
     getContractFactory(
-      name: "BVM_BIT",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.BVM_BIT__factory>;
-    getContractFactory(
       name: "BVM_DeployerWhitelist",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BVM_DeployerWhitelist__factory>;
@@ -280,6 +312,10 @@ declare module "hardhat/types/runtime" {
       name: "BVM_L2ToL1MessagePasser",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BVM_L2ToL1MessagePasser__factory>;
+    getContractFactory(
+      name: "BVM_MANTLE",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BVM_MANTLE__factory>;
     getContractFactory(
       name: "BVM_SequencerFeeVault",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -309,13 +345,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WETH9__factory>;
     getContractFactory(
-      name: "WBIT9",
+      name: "WMANTLE9",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WBIT9__factory>;
+    ): Promise<Contracts.WMANTLE9__factory>;
     getContractFactory(
-      name: "WBITDeployer",
+      name: "WMANTLEDeployer",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WBITDeployer__factory>;
+    ): Promise<Contracts.WMANTLEDeployer__factory>;
     getContractFactory(
       name: "CrossDomainEnabled",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -325,9 +361,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ICrossDomainMessenger__factory>;
     getContractFactory(
-      name: "DataLayrDisclosureLogic",
+      name: "DataStoreUtils",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.DataLayrDisclosureLogic__factory>;
+    ): Promise<Contracts.DataStoreUtils__factory>;
     getContractFactory(
       name: "IDataLayrPaymentManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -336,6 +372,10 @@ declare module "hardhat/types/runtime" {
       name: "IDataLayrServiceManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IDataLayrServiceManager__factory>;
+    getContractFactory(
+      name: "IDelayedService",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelayedService__factory>;
     getContractFactory(
       name: "IDelegationTerms",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -353,29 +393,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IPaymentManager__factory>;
     getContractFactory(
-      name: "IRegistry",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IRegistry__factory>;
-    getContractFactory(
-      name: "IRepository",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IRepository__factory>;
-    getContractFactory(
-      name: "IRepositoryAccess",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IRepositoryAccess__factory>;
-    getContractFactory(
       name: "IServiceManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IServiceManager__factory>;
-    getContractFactory(
-      name: "IVoteWeigher",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IVoteWeigher__factory>;
-    getContractFactory(
-      name: "DataStoreUtils",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.DataStoreUtils__factory>;
     getContractFactory(
       name: "Parser",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -475,6 +495,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.OwnableUpgradeable>;
     getContractAt(
+      name: "IVotesUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVotesUpgradeable>;
+    getContractAt(
       name: "Initializable",
       address: string,
       signer?: ethers.Signer
@@ -490,10 +515,50 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ReentrancyGuardUpgradeable>;
     getContractAt(
+      name: "ERC20Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Upgradeable>;
+    getContractAt(
+      name: "ERC20PermitUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20PermitUpgradeable>;
+    getContractAt(
+      name: "IERC20PermitUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20PermitUpgradeable>;
+    getContractAt(
+      name: "ERC20BurnableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20BurnableUpgradeable>;
+    getContractAt(
+      name: "ERC20VotesUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20VotesUpgradeable>;
+    getContractAt(
+      name: "IERC20MetadataUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20MetadataUpgradeable>;
+    getContractAt(
+      name: "IERC20Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20Upgradeable>;
+    getContractAt(
       name: "ContextUpgradeable",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ContextUpgradeable>;
+    getContractAt(
+      name: "EIP712Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EIP712Upgradeable>;
     getContractAt(
       name: "Ownable",
       address: string,
@@ -665,10 +730,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Whitelist>;
     getContractAt(
-      name: "BitTokenERC20",
+      name: "L1MantleToken",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.BitTokenERC20>;
+    ): Promise<Contracts.L1MantleToken>;
     getContractAt(
       name: "IL1CrossDomainMessenger",
       address: string,
@@ -780,11 +845,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.L2StandardTokenFactory>;
     getContractAt(
-      name: "BVM_BIT",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.BVM_BIT>;
-    getContractAt(
       name: "BVM_DeployerWhitelist",
       address: string,
       signer?: ethers.Signer
@@ -804,6 +864,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BVM_L2ToL1MessagePasser>;
+    getContractAt(
+      name: "BVM_MANTLE",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BVM_MANTLE>;
     getContractAt(
       name: "BVM_SequencerFeeVault",
       address: string,
@@ -840,15 +905,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.WETH9>;
     getContractAt(
-      name: "WBIT9",
+      name: "WMANTLE9",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.WBIT9>;
+    ): Promise<Contracts.WMANTLE9>;
     getContractAt(
-      name: "WBITDeployer",
+      name: "WMANTLEDeployer",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.WBITDeployer>;
+    ): Promise<Contracts.WMANTLEDeployer>;
     getContractAt(
       name: "CrossDomainEnabled",
       address: string,
@@ -860,10 +925,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ICrossDomainMessenger>;
     getContractAt(
-      name: "DataLayrDisclosureLogic",
+      name: "DataStoreUtils",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.DataLayrDisclosureLogic>;
+    ): Promise<Contracts.DataStoreUtils>;
     getContractAt(
       name: "IDataLayrPaymentManager",
       address: string,
@@ -874,6 +939,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IDataLayrServiceManager>;
+    getContractAt(
+      name: "IDelayedService",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelayedService>;
     getContractAt(
       name: "IDelegationTerms",
       address: string,
@@ -895,35 +965,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IPaymentManager>;
     getContractAt(
-      name: "IRegistry",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IRegistry>;
-    getContractAt(
-      name: "IRepository",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IRepository>;
-    getContractAt(
-      name: "IRepositoryAccess",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IRepositoryAccess>;
-    getContractAt(
       name: "IServiceManager",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IServiceManager>;
-    getContractAt(
-      name: "IVoteWeigher",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IVoteWeigher>;
-    getContractAt(
-      name: "DataStoreUtils",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.DataStoreUtils>;
     getContractAt(
       name: "Parser",
       address: string,
