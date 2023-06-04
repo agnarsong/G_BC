@@ -1,6 +1,5 @@
 const ethers = require('ethers');
 const mantleneSDK = require("@mantleio/sdk");
-// const mantleneSDK = require("tianwei-qa-test");
 
 function createSignerOrProvider(privateKey, providerUrl) {
     // 检查 privateKey 和 providerUrl 参数是否存在
@@ -63,11 +62,11 @@ async function finalizeMessage(l1url, l2url, pri, txhash) {
     } catch (error) {
         console.error('l2ChainId Error:', error);
     }
-
+    
     try {
         withdrawETHtx = await l2Wallet.provider.getTransaction(txhash)
     } catch (error) {
-        console.error('getTransaction Error:', error);
+        console.error('getwithdrawETHtx Error:', error);
     }
 
     let crossChainMessenger = new mantleneSDK.CrossChainMessenger({
@@ -81,7 +80,7 @@ async function finalizeMessage(l1url, l2url, pri, txhash) {
         try{
             finalizeMessageResponse = await crossChainMessenger.finalizeMessage(withdrawETHtx)
         } catch(error){
-            console.log('getTransaction Error:', error);
+            console.log('getFinalizeMessage Error:', error);
             console.log("未完成 finalizeMessage……")
             await sleep(5000);
             continue

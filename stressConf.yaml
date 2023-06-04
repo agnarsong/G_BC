@@ -1,22 +1,22 @@
 addresslist:
-    addressdictator: 0x1FB27316e91e477943A87Eb215E40Fab6b382Fda
-    bvml1crossdomainmessenger: 0x30558AbcBf63c80F88320B47c8A8C60E1ab2Ab2e
-    bondmanager: 0xD076364Fa5de1a4512c58b39ad63DD720B7B9E11
-    canonicaltransactionchain: 0xEd5166f12FCb48a0804B62FDccB37f59F1F1bc3B
-    chainstoragecontainerctcbatches: 0x0090171f848B2aa86918E5Ef2406Ab3d424fdd83
-    chainstoragecontainersccbatches: 0x9faB987C9C469EB23Da31B7848B28aCf30905eA8
-    chugsplashdictator: 0xC346c14AA2c1001eee47CCEc1404D193ab1667Ab
-    l1standardbridgeforverificationonly: 0xc2E4F2038D456AfEFfF2351234BCaFCB6837baC1
-    libaddressmanager: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    addressdictator: 0x86E10B59cFDFeFBCf3ED5b40D018949CbFCE8B59
+    bvml1crossdomainmessenger: 0xD076364Fa5de1a4512c58b39ad63DD720B7B9E11
+    bondmanager: 0xEd5166f12FCb48a0804B62FDccB37f59F1F1bc3B
+    canonicaltransactionchain: 0x9faB987C9C469EB23Da31B7848B28aCf30905eA8
+    chainstoragecontainerctcbatches: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    chainstoragecontainersccbatches: 0x0090171f848B2aa86918E5Ef2406Ab3d424fdd83
+    chugsplashdictator: 0x91dC1bd9704151B0Bc4cAD3BB5c24494188aA00B
+    l1standardbridgeforverificationonly: 0x90c9E4f7F11C93BCec2e1F272b2063640d3bb264
+    libaddressmanager: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
     proxybvml1crossdomainmessenger: 0x8BAccFF561FDe61D6bC8B6f299fFBa561d2189B9
     proxybvml1standardbridge: 0x82e130FF187E787D5DdDFAa4f36CB59e6B1Da6dd
-    proxytssgroupmanager: 0xe6cd9e7b620964bECd42c7Ad41e56724f515E284
-    proxytssstakingslashing: 0xD007896d9E3e4514a1f1216A91d33a72e15bf5C0
+    proxytssgroupmanager: 0x7d0f87007795438DBCF67e4a91c03Bb3eDe152dE
+    proxytssstakingslashing: 0xF48398a3D94D57AE1406B343D2a7C541336Ea2c2
     statecommitmentchain: 0x52753615226F8aC8a464bfecb11Ef798CFF3793f
-    testbittoken: ""
-    tssgroupmanager: 0x36fCf02Fc651c0b7ef2ECA446Dd2405364F85337
-    tssstakingslashing: 0xa83239cf2b900682001f9144144B5E5e5788A631
-    addressmanager: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    testbittoken: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
+    tssgroupmanager: 0xE6A251EefaEE70E8645FBAdf21E9B1246e07C374
+    tssstakingslashing: 0x1FB27316e91e477943A87Eb215E40Fab6b382Fda
+    addressmanager: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
 amount: "1123456789123456789"
 bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
 deploybool: true

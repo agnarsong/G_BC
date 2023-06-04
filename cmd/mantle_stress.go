@@ -289,6 +289,9 @@ var stCmd = &cobra.Command{
 					fmt.Println("Withdraw BIT txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
+					if err = lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
+						fmt.Printf("txHash: %v, \nWithdrawBIT GetReStatus err: %v\n", tx.Hash(), err)
+					}
 					layer2.FinalizeMessage(&mc, tx.Hash())
 
 					l1b, _, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[5][1]), mc.L1BITAddress,
