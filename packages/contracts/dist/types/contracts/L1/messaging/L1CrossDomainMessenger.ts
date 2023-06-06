@@ -93,6 +93,7 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
     "allowMessage(bytes32)": FunctionFragment;
     "blockMessage(bytes32)": FunctionFragment;
     "blockedMessages(bytes32)": FunctionFragment;
+    "getPauseOwner()": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "libAddressManager()": FunctionFragment;
     "owner()": FunctionFragment;
@@ -117,6 +118,7 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
       | "allowMessage"
       | "blockMessage"
       | "blockedMessages"
+      | "getPauseOwner"
       | "initialize"
       | "libAddressManager"
       | "owner"
@@ -147,6 +149,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "blockedMessages",
     values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPauseOwner",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -232,6 +238,10 @@ export interface L1CrossDomainMessengerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "blockedMessages",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPauseOwner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
@@ -438,6 +448,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    getPauseOwner(overrides?: CallOverrides): Promise<[string]>;
+
     initialize(
       _libAddressManager: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -534,6 +546,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  getPauseOwner(overrides?: CallOverrides): Promise<string>;
+
   initialize(
     _libAddressManager: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -629,6 +643,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    getPauseOwner(overrides?: CallOverrides): Promise<string>;
 
     initialize(
       _libAddressManager: PromiseOrValue<string>,
@@ -782,6 +798,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getPauseOwner(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
       _libAddressManager: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -878,6 +896,8 @@ export interface L1CrossDomainMessenger extends BaseContract {
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getPauseOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _libAddressManager: PromiseOrValue<string>,

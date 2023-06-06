@@ -11,44 +11,28 @@ import type {
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "",
-        type: "address[]",
-      },
-    ],
-    name: "batchGetDeposits",
+    inputs: [],
+    name: "canCompleteQueuedWithdrawal",
     outputs: [
       {
-        components: [
-          {
-            internalType: "address",
-            name: "pledgor",
-            type: "address",
-          },
-          {
-            internalType: "bytes",
-            name: "pubKey",
-            type: "bytes",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct IStakingSlashing.DepositInfo[]",
+        internalType: "bool",
         name: "",
-        type: "tuple[]",
+        type: "bool",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
     name: "clearQuitRequestList",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "completeWithdraw",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -61,29 +45,25 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "getDeposits",
+    name: "delegateTo",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "deposit",
     outputs: [
       {
-        components: [
-          {
-            internalType: "address",
-            name: "pledgor",
-            type: "address",
-          },
-          {
-            internalType: "bytes",
-            name: "pubKey",
-            type: "bytes",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct IStakingSlashing.DepositInfo",
+        internalType: "uint256",
         name: "",
-        type: "tuple",
+        type: "uint256",
       },
     ],
     stateMutability: "nonpayable",
@@ -135,13 +115,27 @@ const _abi = [
         name: "",
         type: "uint256[2]",
       },
-      {
-        internalType: "uint256[2]",
-        name: "",
-        type: "uint256[2]",
-      },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "isCanOperator",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -173,6 +167,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    name: "registerAsOperator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "",
         type: "address",
@@ -183,7 +190,33 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "setAddress",
+    name: "setClaimer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    name: "setPublicKey",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "setRegulatoryAccount",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -195,13 +228,34 @@ const _abi = [
         name: "",
         type: "uint256[2]",
       },
-      {
-        internalType: "uint256[2]",
-        name: "",
-        type: "uint256[2]",
-      },
     ],
     name: "setSlashingParams",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "setTokenAddress",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "setTssGroupAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -225,19 +279,8 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
-      },
-    ],
-    name: "staking",
+    inputs: [],
+    name: "startWithdraw",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -251,12 +294,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "withdrawToken",
+    name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class IStakingSlashing__factory {
   static readonly abi = _abi;

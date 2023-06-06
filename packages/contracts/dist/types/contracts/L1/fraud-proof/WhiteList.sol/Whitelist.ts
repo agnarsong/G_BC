@@ -4,6 +4,7 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -31,10 +32,12 @@ export interface WhitelistInterface extends utils.Interface {
     "addToOperatorWhitelist(address[])": FunctionFragment;
     "addToStakerWhitelist(address[])": FunctionFragment;
     "operatorWhitelist(address)": FunctionFragment;
+    "operatorslist(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "removeFromOperatorWhitelist(address[])": FunctionFragment;
     "removeFromStakerWhitelist(address[])": FunctionFragment;
     "stakerWhitelist(address)": FunctionFragment;
+    "stakerslist(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
@@ -43,10 +46,12 @@ export interface WhitelistInterface extends utils.Interface {
       | "addToOperatorWhitelist"
       | "addToStakerWhitelist"
       | "operatorWhitelist"
+      | "operatorslist"
       | "owner"
       | "removeFromOperatorWhitelist"
       | "removeFromStakerWhitelist"
       | "stakerWhitelist"
+      | "stakerslist"
       | "transferOwnership"
   ): FunctionFragment;
 
@@ -62,6 +67,10 @@ export interface WhitelistInterface extends utils.Interface {
     functionFragment: "operatorWhitelist",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "operatorslist",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "removeFromOperatorWhitelist",
@@ -74,6 +83,10 @@ export interface WhitelistInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "stakerWhitelist",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "stakerslist",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -92,6 +105,10 @@ export interface WhitelistInterface extends utils.Interface {
     functionFragment: "operatorWhitelist",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "operatorslist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeFromOperatorWhitelist",
@@ -103,6 +120,10 @@ export interface WhitelistInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "stakerWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "stakerslist",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -169,7 +190,12 @@ export interface Whitelist extends BaseContract {
     operatorWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -186,7 +212,12 @@ export interface Whitelist extends BaseContract {
     stakerWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -207,7 +238,12 @@ export interface Whitelist extends BaseContract {
   operatorWhitelist(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<BigNumber>;
+
+  operatorslist(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -224,7 +260,12 @@ export interface Whitelist extends BaseContract {
   stakerWhitelist(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<BigNumber>;
+
+  stakerslist(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
@@ -245,7 +286,12 @@ export interface Whitelist extends BaseContract {
     operatorWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -262,7 +308,12 @@ export interface Whitelist extends BaseContract {
     stakerWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -297,6 +348,11 @@ export interface Whitelist extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     removeFromOperatorWhitelist(
@@ -311,6 +367,11 @@ export interface Whitelist extends BaseContract {
 
     stakerWhitelist(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -336,6 +397,11 @@ export interface Whitelist extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     removeFromOperatorWhitelist(
@@ -350,6 +416,11 @@ export interface Whitelist extends BaseContract {
 
     stakerWhitelist(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

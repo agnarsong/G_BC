@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as iTssStakingSlashingSol from "./ITssStakingSlashing.sol";
 export type { iTssStakingSlashingSol };
+import type * as delegation from "./delegation";
+export type { delegation };
 export type { ITssGroupManager } from "./ITssGroupManager";
 export type { TssGroupManager } from "./TssGroupManager";
 export type { TssStakingSlashing } from "./TssStakingSlashing";

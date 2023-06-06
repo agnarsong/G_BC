@@ -358,7 +358,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class IChallenge__factory {
   static readonly abi = _abi;

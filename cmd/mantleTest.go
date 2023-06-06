@@ -22,11 +22,18 @@ func Execute() {
 	mtCmd.Execute()
 }
 
-var conf string
+var (
+	conf       string
+	startBlock uint64
+	endBlock   uint64
+)
 
 func init() {
 	cobra.OnInitialize(initConfig)
 	mtCmd.PersistentFlags().StringVar(&conf, "config", "conf.yaml", "")
+
+	mtCmd.PersistentFlags().Uint64VarP(&startBlock, "startBlock", "s", 0, "start Block number")
+	mtCmd.PersistentFlags().Uint64VarP(&endBlock, "endBlock", "e", 0, "end Block number")
 }
 
 func initConfig() {

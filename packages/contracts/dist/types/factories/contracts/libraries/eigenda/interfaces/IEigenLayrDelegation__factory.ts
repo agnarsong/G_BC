@@ -247,7 +247,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class IEigenLayrDelegation__factory {
   static readonly abi = _abi;

@@ -31,7 +31,7 @@ var (
 
 // L1StandardBridgeMetaData contains all meta data concerning the L1StandardBridge contract.
 var L1StandardBridgeMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ERC20DepositInitiated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ERC20WithdrawalFinalized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ETHDepositInitiated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ETHWithdrawalFinalized\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositERC20To\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositETH\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositETHTo\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"deposits\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"donateETH\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"finalizeBitWithdrawal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"finalizeERC20Withdrawal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"finalizeETHWithdrawal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1messenger\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2TokenBridge\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l1BitAddress\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"l1BitAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"l2TokenBridge\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"messenger\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ERC20DepositInitiated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ERC20WithdrawalFinalized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ETHDepositInitiated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"ETHWithdrawalFinalized\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositERC20To\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositETH\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"_l2Gas\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"depositETHTo\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"deposits\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"donateETH\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"finalizeERC20Withdrawal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"finalizeETHWithdrawal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"finalizeMantleWithdrawal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1messenger\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2TokenBridge\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l1MantleAddress\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"l1MantleAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"l2TokenBridge\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"messenger\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
 }
 
 // L1StandardBridgeABI is the input ABI used to generate the binding from.
@@ -211,12 +211,12 @@ func (_L1StandardBridge *L1StandardBridgeCallerSession) Deposits(arg0 common.Add
 	return _L1StandardBridge.Contract.Deposits(&_L1StandardBridge.CallOpts, arg0, arg1)
 }
 
-// L1BitAddress is a free data retrieval call binding the contract method 0x9e8a83ec.
+// L1MantleAddress is a free data retrieval call binding the contract method 0x33151848.
 //
-// Solidity: function l1BitAddress() view returns(address)
-func (_L1StandardBridge *L1StandardBridgeCaller) L1BitAddress(opts *bind.CallOpts) (common.Address, error) {
+// Solidity: function l1MantleAddress() view returns(address)
+func (_L1StandardBridge *L1StandardBridgeCaller) L1MantleAddress(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _L1StandardBridge.contract.Call(opts, &out, "l1BitAddress")
+	err := _L1StandardBridge.contract.Call(opts, &out, "l1MantleAddress")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -228,18 +228,18 @@ func (_L1StandardBridge *L1StandardBridgeCaller) L1BitAddress(opts *bind.CallOpt
 
 }
 
-// L1BitAddress is a free data retrieval call binding the contract method 0x9e8a83ec.
+// L1MantleAddress is a free data retrieval call binding the contract method 0x33151848.
 //
-// Solidity: function l1BitAddress() view returns(address)
-func (_L1StandardBridge *L1StandardBridgeSession) L1BitAddress() (common.Address, error) {
-	return _L1StandardBridge.Contract.L1BitAddress(&_L1StandardBridge.CallOpts)
+// Solidity: function l1MantleAddress() view returns(address)
+func (_L1StandardBridge *L1StandardBridgeSession) L1MantleAddress() (common.Address, error) {
+	return _L1StandardBridge.Contract.L1MantleAddress(&_L1StandardBridge.CallOpts)
 }
 
-// L1BitAddress is a free data retrieval call binding the contract method 0x9e8a83ec.
+// L1MantleAddress is a free data retrieval call binding the contract method 0x33151848.
 //
-// Solidity: function l1BitAddress() view returns(address)
-func (_L1StandardBridge *L1StandardBridgeCallerSession) L1BitAddress() (common.Address, error) {
-	return _L1StandardBridge.Contract.L1BitAddress(&_L1StandardBridge.CallOpts)
+// Solidity: function l1MantleAddress() view returns(address)
+func (_L1StandardBridge *L1StandardBridgeCallerSession) L1MantleAddress() (common.Address, error) {
+	return _L1StandardBridge.Contract.L1MantleAddress(&_L1StandardBridge.CallOpts)
 }
 
 // L2TokenBridge is a free data retrieval call binding the contract method 0x91c49bf8.
@@ -409,27 +409,6 @@ func (_L1StandardBridge *L1StandardBridgeTransactorSession) DonateETH() (*types.
 	return _L1StandardBridge.Contract.DonateETH(&_L1StandardBridge.TransactOpts)
 }
 
-// FinalizeBitWithdrawal is a paid mutator transaction binding the contract method 0x839f0ec6.
-//
-// Solidity: function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes _data) returns()
-func (_L1StandardBridge *L1StandardBridgeTransactor) FinalizeBitWithdrawal(opts *bind.TransactOpts, _from common.Address, _to common.Address, _amount *big.Int, _data []byte) (*types.Transaction, error) {
-	return _L1StandardBridge.contract.Transact(opts, "finalizeBitWithdrawal", _from, _to, _amount, _data)
-}
-
-// FinalizeBitWithdrawal is a paid mutator transaction binding the contract method 0x839f0ec6.
-//
-// Solidity: function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes _data) returns()
-func (_L1StandardBridge *L1StandardBridgeSession) FinalizeBitWithdrawal(_from common.Address, _to common.Address, _amount *big.Int, _data []byte) (*types.Transaction, error) {
-	return _L1StandardBridge.Contract.FinalizeBitWithdrawal(&_L1StandardBridge.TransactOpts, _from, _to, _amount, _data)
-}
-
-// FinalizeBitWithdrawal is a paid mutator transaction binding the contract method 0x839f0ec6.
-//
-// Solidity: function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes _data) returns()
-func (_L1StandardBridge *L1StandardBridgeTransactorSession) FinalizeBitWithdrawal(_from common.Address, _to common.Address, _amount *big.Int, _data []byte) (*types.Transaction, error) {
-	return _L1StandardBridge.Contract.FinalizeBitWithdrawal(&_L1StandardBridge.TransactOpts, _from, _to, _amount, _data)
-}
-
 // FinalizeERC20Withdrawal is a paid mutator transaction binding the contract method 0xa9f9e675.
 //
 // Solidity: function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes _data) returns()
@@ -472,25 +451,46 @@ func (_L1StandardBridge *L1StandardBridgeTransactorSession) FinalizeETHWithdrawa
 	return _L1StandardBridge.Contract.FinalizeETHWithdrawal(&_L1StandardBridge.TransactOpts, _from, _to, _amount, _data)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
+// FinalizeMantleWithdrawal is a paid mutator transaction binding the contract method 0xf82b418e.
 //
-// Solidity: function initialize(address _l1messenger, address _l2TokenBridge, address _l1BitAddress) returns()
-func (_L1StandardBridge *L1StandardBridgeTransactor) Initialize(opts *bind.TransactOpts, _l1messenger common.Address, _l2TokenBridge common.Address, _l1BitAddress common.Address) (*types.Transaction, error) {
-	return _L1StandardBridge.contract.Transact(opts, "initialize", _l1messenger, _l2TokenBridge, _l1BitAddress)
+// Solidity: function finalizeMantleWithdrawal(address _from, address _to, uint256 _amount, bytes _data) returns()
+func (_L1StandardBridge *L1StandardBridgeTransactor) FinalizeMantleWithdrawal(opts *bind.TransactOpts, _from common.Address, _to common.Address, _amount *big.Int, _data []byte) (*types.Transaction, error) {
+	return _L1StandardBridge.contract.Transact(opts, "finalizeMantleWithdrawal", _from, _to, _amount, _data)
+}
+
+// FinalizeMantleWithdrawal is a paid mutator transaction binding the contract method 0xf82b418e.
+//
+// Solidity: function finalizeMantleWithdrawal(address _from, address _to, uint256 _amount, bytes _data) returns()
+func (_L1StandardBridge *L1StandardBridgeSession) FinalizeMantleWithdrawal(_from common.Address, _to common.Address, _amount *big.Int, _data []byte) (*types.Transaction, error) {
+	return _L1StandardBridge.Contract.FinalizeMantleWithdrawal(&_L1StandardBridge.TransactOpts, _from, _to, _amount, _data)
+}
+
+// FinalizeMantleWithdrawal is a paid mutator transaction binding the contract method 0xf82b418e.
+//
+// Solidity: function finalizeMantleWithdrawal(address _from, address _to, uint256 _amount, bytes _data) returns()
+func (_L1StandardBridge *L1StandardBridgeTransactorSession) FinalizeMantleWithdrawal(_from common.Address, _to common.Address, _amount *big.Int, _data []byte) (*types.Transaction, error) {
+	return _L1StandardBridge.Contract.FinalizeMantleWithdrawal(&_L1StandardBridge.TransactOpts, _from, _to, _amount, _data)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
 //
-// Solidity: function initialize(address _l1messenger, address _l2TokenBridge, address _l1BitAddress) returns()
-func (_L1StandardBridge *L1StandardBridgeSession) Initialize(_l1messenger common.Address, _l2TokenBridge common.Address, _l1BitAddress common.Address) (*types.Transaction, error) {
-	return _L1StandardBridge.Contract.Initialize(&_L1StandardBridge.TransactOpts, _l1messenger, _l2TokenBridge, _l1BitAddress)
+// Solidity: function initialize(address _l1messenger, address _l2TokenBridge, address _l1MantleAddress) returns()
+func (_L1StandardBridge *L1StandardBridgeTransactor) Initialize(opts *bind.TransactOpts, _l1messenger common.Address, _l2TokenBridge common.Address, _l1MantleAddress common.Address) (*types.Transaction, error) {
+	return _L1StandardBridge.contract.Transact(opts, "initialize", _l1messenger, _l2TokenBridge, _l1MantleAddress)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
 //
-// Solidity: function initialize(address _l1messenger, address _l2TokenBridge, address _l1BitAddress) returns()
-func (_L1StandardBridge *L1StandardBridgeTransactorSession) Initialize(_l1messenger common.Address, _l2TokenBridge common.Address, _l1BitAddress common.Address) (*types.Transaction, error) {
-	return _L1StandardBridge.Contract.Initialize(&_L1StandardBridge.TransactOpts, _l1messenger, _l2TokenBridge, _l1BitAddress)
+// Solidity: function initialize(address _l1messenger, address _l2TokenBridge, address _l1MantleAddress) returns()
+func (_L1StandardBridge *L1StandardBridgeSession) Initialize(_l1messenger common.Address, _l2TokenBridge common.Address, _l1MantleAddress common.Address) (*types.Transaction, error) {
+	return _L1StandardBridge.Contract.Initialize(&_L1StandardBridge.TransactOpts, _l1messenger, _l2TokenBridge, _l1MantleAddress)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
+//
+// Solidity: function initialize(address _l1messenger, address _l2TokenBridge, address _l1MantleAddress) returns()
+func (_L1StandardBridge *L1StandardBridgeTransactorSession) Initialize(_l1messenger common.Address, _l2TokenBridge common.Address, _l1MantleAddress common.Address) (*types.Transaction, error) {
+	return _L1StandardBridge.Contract.Initialize(&_L1StandardBridge.TransactOpts, _l1messenger, _l2TokenBridge, _l1MantleAddress)
 }
 
 // Receive is a paid mutator transaction binding the contract receive function.

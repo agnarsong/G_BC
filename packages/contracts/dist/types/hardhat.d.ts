@@ -89,6 +89,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Proxy__factory>;
     getContractFactory(
+      name: "IERC1155",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC1155__factory>;
+    getContractFactory(
       name: "ERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20__factory>;
@@ -124,6 +128,58 @@ declare module "hardhat/types/runtime" {
       name: "BVM_EigenDataLayrFee",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BVM_EigenDataLayrFee__factory>;
+    getContractFactory(
+      name: "Delegation",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Delegation__factory>;
+    getContractFactory(
+      name: "DelegationCallbackBase",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DelegationCallbackBase__factory>;
+    getContractFactory(
+      name: "DelegationManager",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DelegationManager__factory>;
+    getContractFactory(
+      name: "DelegationManagerStorage",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DelegationManagerStorage__factory>;
+    getContractFactory(
+      name: "DelegationShareBase",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DelegationShareBase__factory>;
+    getContractFactory(
+      name: "DelegationSlasher",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DelegationSlasher__factory>;
+    getContractFactory(
+      name: "DelegationStorage",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DelegationStorage__factory>;
+    getContractFactory(
+      name: "IDelegation",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelegation__factory>;
+    getContractFactory(
+      name: "IDelegationCallback",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelegationCallback__factory>;
+    getContractFactory(
+      name: "IDelegationManager",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelegationManager__factory>;
+    getContractFactory(
+      name: "IDelegationShare",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelegationShare__factory>;
+    getContractFactory(
+      name: "IDelegationSlasher",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelegationSlasher__factory>;
+    getContractFactory(
+      name: "WhiteList",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.WhiteList__factory>;
     getContractFactory(
       name: "AddressDictator",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -252,6 +308,18 @@ declare module "hardhat/types/runtime" {
       name: "StateCommitmentChain",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.StateCommitmentChain__factory>;
+    getContractFactory(
+      name: "TssDelegation",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TssDelegation__factory>;
+    getContractFactory(
+      name: "TssDelegationManager",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TssDelegationManager__factory>;
+    getContractFactory(
+      name: "TssDelegationSlasher",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TssDelegationSlasher__factory>;
     getContractFactory(
       name: "ITssGroupManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -421,6 +489,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.L2StandardERC20__factory>;
     getContractFactory(
+      name: "EmptyContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EmptyContract__factory>;
+    getContractFactory(
       name: "FailingReceiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FailingReceiver__factory>;
@@ -585,6 +657,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Proxy>;
     getContractAt(
+      name: "IERC1155",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC1155>;
+    getContractAt(
       name: "ERC20",
       address: string,
       signer?: ethers.Signer
@@ -629,6 +706,71 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BVM_EigenDataLayrFee>;
+    getContractAt(
+      name: "Delegation",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Delegation>;
+    getContractAt(
+      name: "DelegationCallbackBase",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DelegationCallbackBase>;
+    getContractAt(
+      name: "DelegationManager",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DelegationManager>;
+    getContractAt(
+      name: "DelegationManagerStorage",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DelegationManagerStorage>;
+    getContractAt(
+      name: "DelegationShareBase",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DelegationShareBase>;
+    getContractAt(
+      name: "DelegationSlasher",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DelegationSlasher>;
+    getContractAt(
+      name: "DelegationStorage",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DelegationStorage>;
+    getContractAt(
+      name: "IDelegation",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelegation>;
+    getContractAt(
+      name: "IDelegationCallback",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelegationCallback>;
+    getContractAt(
+      name: "IDelegationManager",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelegationManager>;
+    getContractAt(
+      name: "IDelegationShare",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelegationShare>;
+    getContractAt(
+      name: "IDelegationSlasher",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelegationSlasher>;
+    getContractAt(
+      name: "WhiteList",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.WhiteList>;
     getContractAt(
       name: "AddressDictator",
       address: string,
@@ -789,6 +931,21 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.StateCommitmentChain>;
+    getContractAt(
+      name: "TssDelegation",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TssDelegation>;
+    getContractAt(
+      name: "TssDelegationManager",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TssDelegationManager>;
+    getContractAt(
+      name: "TssDelegationSlasher",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TssDelegationSlasher>;
     getContractAt(
       name: "ITssGroupManager",
       address: string,
@@ -999,6 +1156,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.L2StandardERC20>;
+    getContractAt(
+      name: "EmptyContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EmptyContract>;
     getContractAt(
       name: "FailingReceiver",
       address: string,

@@ -32,6 +32,8 @@ export interface DeployConfig {
     gasPriceOracleL1BaseFee?: number;
     gasPriceOracleL2GasPrice?: number;
     hfBerlinBlock?: number;
+    contractsDeployerKey: string;
+    contractsRpcUrl: string;
 }
 export declare const getDeployConfig: (network: string) => Required<DeployConfig>;
 export declare const parseDeployConfig: (config: DeployConfig) => Required<DeployConfig>;

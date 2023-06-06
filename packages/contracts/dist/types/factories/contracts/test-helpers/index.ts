@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as testUpgradeSol from "./TestUpgrade.sol";
+export { EmptyContract__factory } from "./EmptyContract__factory";
 export { FailingReceiver__factory } from "./FailingReceiver__factory";
 export { L1StandardBridgeUpgrade__factory } from "./L1StandardBridgeUpgrade__factory";
 export { MockStateCommitmentChain__factory } from "./MockStateCommitmentChain__factory";

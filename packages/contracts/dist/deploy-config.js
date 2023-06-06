@@ -114,6 +114,12 @@ const configSpec = {
         type: 'number',
         default: 0,
     },
+    contractsDeployerKey: {
+        type: 'string',
+    },
+    contractsRpcUrl: {
+        type: 'string',
+    },
 };
 const getDeployConfig = (network) => {
     let config;

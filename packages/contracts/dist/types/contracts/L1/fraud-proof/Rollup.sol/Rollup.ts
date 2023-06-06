@@ -27,6 +27,33 @@ import type {
   PromiseOrValue,
 } from "../../../../common";
 
+export declare namespace Lib_BVMCodec {
+  export type ChainBatchHeaderStruct = {
+    batchIndex: PromiseOrValue<BigNumberish>;
+    batchRoot: PromiseOrValue<BytesLike>;
+    batchSize: PromiseOrValue<BigNumberish>;
+    prevTotalElements: PromiseOrValue<BigNumberish>;
+    signature: PromiseOrValue<BytesLike>;
+    extraData: PromiseOrValue<BytesLike>;
+  };
+
+  export type ChainBatchHeaderStructOutput = [
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    string
+  ] & {
+    batchIndex: BigNumber;
+    batchRoot: string;
+    batchSize: BigNumber;
+    prevTotalElements: BigNumber;
+    signature: string;
+    extraData: string;
+  };
+}
+
 export interface RollupInterface extends utils.Interface {
   functions: {
     "addToOperatorWhitelist(address[])": FunctionFragment;
@@ -51,9 +78,11 @@ export interface RollupInterface extends utils.Interface {
     "minimumAssertionPeriod()": FunctionFragment;
     "numStakers()": FunctionFragment;
     "operatorWhitelist(address)": FunctionFragment;
+    "operatorslist(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "registers(address)": FunctionFragment;
     "rejectFirstUnresolvedAssertion()": FunctionFragment;
+    "rejectLatestCreatedAssertionWithBatch((uint256,bytes32,uint256,uint256,bytes,bytes))": FunctionFragment;
     "removeFromOperatorWhitelist(address[])": FunctionFragment;
     "removeFromStakerWhitelist(address[])": FunctionFragment;
     "removeOldZombies()": FunctionFragment;
@@ -63,6 +92,7 @@ export interface RollupInterface extends utils.Interface {
     "stakeToken()": FunctionFragment;
     "stakerWhitelist(address)": FunctionFragment;
     "stakers(address)": FunctionFragment;
+    "stakerslist(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unstake(uint256)": FunctionFragment;
     "verifier()": FunctionFragment;
@@ -95,9 +125,11 @@ export interface RollupInterface extends utils.Interface {
       | "minimumAssertionPeriod"
       | "numStakers"
       | "operatorWhitelist"
+      | "operatorslist"
       | "owner"
       | "registers"
       | "rejectFirstUnresolvedAssertion"
+      | "rejectLatestCreatedAssertionWithBatch"
       | "removeFromOperatorWhitelist"
       | "removeFromStakerWhitelist"
       | "removeOldZombies"
@@ -107,6 +139,7 @@ export interface RollupInterface extends utils.Interface {
       | "stakeToken"
       | "stakerWhitelist"
       | "stakers"
+      | "stakerslist"
       | "transferOwnership"
       | "unstake"
       | "verifier"
@@ -223,6 +256,10 @@ export interface RollupInterface extends utils.Interface {
     functionFragment: "operatorWhitelist",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "operatorslist",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "registers",
@@ -231,6 +268,10 @@ export interface RollupInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "rejectFirstUnresolvedAssertion",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
+    values: [Lib_BVMCodec.ChainBatchHeaderStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "removeFromOperatorWhitelist",
@@ -267,6 +308,10 @@ export interface RollupInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "stakers",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "stakerslist",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -363,10 +408,18 @@ export interface RollupInterface extends utils.Interface {
     functionFragment: "operatorWhitelist",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "operatorslist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "registers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "rejectFirstUnresolvedAssertion",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -393,6 +446,10 @@ export interface RollupInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stakers", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stakerslist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -634,7 +691,12 @@ export interface Rollup extends BaseContract {
     operatorWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -644,6 +706,11 @@ export interface Rollup extends BaseContract {
     ): Promise<[string]>;
 
     rejectFirstUnresolvedAssertion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -682,7 +749,7 @@ export interface Rollup extends BaseContract {
     stakerWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
 
     stakers(
       arg0: PromiseOrValue<string>,
@@ -696,6 +763,11 @@ export interface Rollup extends BaseContract {
         currentChallenge: string;
       }
     >;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -830,7 +902,12 @@ export interface Rollup extends BaseContract {
   operatorWhitelist(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<BigNumber>;
+
+  operatorslist(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -840,6 +917,11 @@ export interface Rollup extends BaseContract {
   ): Promise<string>;
 
   rejectFirstUnresolvedAssertion(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  rejectLatestCreatedAssertionWithBatch(
+    _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -878,7 +960,7 @@ export interface Rollup extends BaseContract {
   stakerWhitelist(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<BigNumber>;
 
   stakers(
     arg0: PromiseOrValue<string>,
@@ -892,6 +974,11 @@ export interface Rollup extends BaseContract {
       currentChallenge: string;
     }
   >;
+
+  stakerslist(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
@@ -1024,7 +1111,12 @@ export interface Rollup extends BaseContract {
     operatorWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -1034,6 +1126,11 @@ export interface Rollup extends BaseContract {
     ): Promise<string>;
 
     rejectFirstUnresolvedAssertion(overrides?: CallOverrides): Promise<void>;
+
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     removeFromOperatorWhitelist(
       toRemoveAddresses: PromiseOrValue<string>[],
@@ -1068,7 +1165,7 @@ export interface Rollup extends BaseContract {
     stakerWhitelist(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
 
     stakers(
       arg0: PromiseOrValue<string>,
@@ -1082,6 +1179,11 @@ export interface Rollup extends BaseContract {
         currentChallenge: string;
       }
     >;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -1264,6 +1366,11 @@ export interface Rollup extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     registers(
@@ -1272,6 +1379,11 @@ export interface Rollup extends BaseContract {
     ): Promise<BigNumber>;
 
     rejectFirstUnresolvedAssertion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1314,6 +1426,11 @@ export interface Rollup extends BaseContract {
 
     stakers(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1452,6 +1569,11 @@ export interface Rollup extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     registers(
@@ -1460,6 +1582,11 @@ export interface Rollup extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     rejectFirstUnresolvedAssertion(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1502,6 +1629,11 @@ export interface Rollup extends BaseContract {
 
     stakers(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

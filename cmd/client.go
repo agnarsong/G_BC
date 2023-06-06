@@ -40,8 +40,6 @@ var (
 	c           *ethclient.Client
 	b           int64
 	bh          string
-	startBlock  uint64
-	endBlock    uint64
 	fromAddress string
 	toAddress   string
 )
@@ -53,8 +51,6 @@ func init() {
 	clientCmd.PersistentFlags().StringP("contractAddress", "c", "", "Contract address")
 	clientCmd.PersistentFlags().Int64VarP(&b, "blockNum", "b", -1, "区块高度")
 	clientCmd.PersistentFlags().StringP("privateKey", "p", "", "privateKey of sender address")
-	clientCmd.PersistentFlags().Uint64VarP(&startBlock, "startBlock", "s", 0, "start Block number")
-	clientCmd.PersistentFlags().Uint64VarP(&endBlock, "endBlock", "e", 0, "end Block number")
 	clientCmd.PersistentFlags().StringVarP(&fromAddress, "fromAddress", "f", "", "tx's fromAdrress")
 	clientCmd.PersistentFlags().StringVarP(&toAddress, "toAddress", "t", "", "tx's toAddress")
 

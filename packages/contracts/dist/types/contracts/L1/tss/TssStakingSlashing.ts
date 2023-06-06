@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -27,101 +28,195 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
-export declare namespace IStakingSlashing {
-  export type DepositInfoStruct = {
-    pledgor: PromiseOrValue<string>;
-    pubKey: PromiseOrValue<BytesLike>;
-    amount: PromiseOrValue<BigNumberish>;
+export declare namespace IDelegationManager {
+  export type WithdrawerAndNonceStruct = {
+    withdrawer: PromiseOrValue<string>;
+    nonce: PromiseOrValue<BigNumberish>;
   };
 
-  export type DepositInfoStructOutput = [string, string, BigNumber] & {
-    pledgor: string;
-    pubKey: string;
-    amount: BigNumber;
+  export type WithdrawerAndNonceStructOutput = [string, BigNumber] & {
+    withdrawer: string;
+    nonce: BigNumber;
   };
 }
 
 export interface TssStakingSlashingInterface extends utils.Interface {
   functions: {
-    "MantleToken()": FunctionFragment;
-    "batchGetDeposits(address[])": FunctionFragment;
+    "canCompleteQueuedWithdrawal()": FunctionFragment;
+    "claimerOperators(address)": FunctionFragment;
     "clearQuitRequestList()": FunctionFragment;
-    "deposits(address)": FunctionFragment;
-    "exIncome(uint256)": FunctionFragment;
-    "getDeposits(address)": FunctionFragment;
+    "completeWithdraw()": FunctionFragment;
+    "delegateTo(address)": FunctionFragment;
+    "delegation()": FunctionFragment;
+    "delegationManager()": FunctionFragment;
+    "delegators(address)": FunctionFragment;
+    "deposit(address,address,uint256)": FunctionFragment;
+    "deposit(uint256)": FunctionFragment;
+    "explanation()": FunctionFragment;
     "getQuitRequestList()": FunctionFragment;
     "getSlashRecord(uint256,address)": FunctionFragment;
     "getSlashingParams()": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
-    "isEqual(bytes,bytes)": FunctionFragment;
+    "initialize(address,address,address,address,address,address)": FunctionFragment;
+    "isCanOperator(address)": FunctionFragment;
     "isJailed(address)": FunctionFragment;
+    "isSetParam()": FunctionFragment;
+    "messenger()": FunctionFragment;
+    "onDelegationReceived(address,address[],uint256[])": FunctionFragment;
+    "onDelegationReceived(address,address,address[],uint256[])": FunctionFragment;
+    "onDelegationWithdrawn(address,address,address[],uint256[])": FunctionFragment;
+    "onDelegationWithdrawn(address,address[],uint256[])": FunctionFragment;
+    "operatorClaimers(address)": FunctionFragment;
+    "operators(address)": FunctionFragment;
     "owner()": FunctionFragment;
+    "paused()": FunctionFragment;
+    "payForService(address,uint256)": FunctionFragment;
     "quitRequest()": FunctionFragment;
     "quitRequestList(uint256)": FunctionFragment;
+    "registerAsOperator(bytes)": FunctionFragment;
+    "regulatoryAccount()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "setAddress(address,address)": FunctionFragment;
-    "setSlashingParams(uint256[2],uint256[2])": FunctionFragment;
+    "setClaimer(address,address)": FunctionFragment;
+    "setPublicKey(bytes)": FunctionFragment;
+    "setRegulatoryAccount(address)": FunctionFragment;
+    "setSlashingParams(uint256[2])": FunctionFragment;
+    "setTokenAddress(address)": FunctionFragment;
+    "setTssGroupAddress(address)": FunctionFragment;
+    "shares(address)": FunctionFragment;
+    "sharesToUnderlying(uint256)": FunctionFragment;
+    "sharesToUnderlyingView(uint256)": FunctionFragment;
     "slashAmount(uint256)": FunctionFragment;
     "slashing(bytes,bytes)": FunctionFragment;
-    "staking(uint256,bytes)": FunctionFragment;
+    "stakers(address,uint256)": FunctionFragment;
+    "startWithdraw()": FunctionFragment;
+    "totalShares()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "tssDelegationContract()": FunctionFragment;
+    "tssDelegationManagerContract()": FunctionFragment;
     "tssGroupContract()": FunctionFragment;
     "unJail()": FunctionFragment;
-    "withdrawToken()": FunctionFragment;
+    "underlyingToShares(uint256)": FunctionFragment;
+    "underlyingToSharesView(uint256)": FunctionFragment;
+    "underlyingToken()": FunctionFragment;
+    "userUnderlying(address)": FunctionFragment;
+    "userUnderlyingView(address)": FunctionFragment;
+    "withdraw()": FunctionFragment;
+    "withdraw(address,address,uint256)": FunctionFragment;
+    "withdrawalRoots(address)": FunctionFragment;
+    "withdrawals(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "MantleToken"
-      | "batchGetDeposits"
+      | "canCompleteQueuedWithdrawal"
+      | "claimerOperators"
       | "clearQuitRequestList"
-      | "deposits"
-      | "exIncome"
-      | "getDeposits"
+      | "completeWithdraw"
+      | "delegateTo"
+      | "delegation"
+      | "delegationManager"
+      | "delegators"
+      | "deposit(address,address,uint256)"
+      | "deposit(uint256)"
+      | "explanation"
       | "getQuitRequestList"
       | "getSlashRecord"
       | "getSlashingParams"
       | "initialize"
-      | "isEqual"
+      | "isCanOperator"
       | "isJailed"
+      | "isSetParam"
+      | "messenger"
+      | "onDelegationReceived(address,address[],uint256[])"
+      | "onDelegationReceived(address,address,address[],uint256[])"
+      | "onDelegationWithdrawn(address,address,address[],uint256[])"
+      | "onDelegationWithdrawn(address,address[],uint256[])"
+      | "operatorClaimers"
+      | "operators"
       | "owner"
+      | "paused"
+      | "payForService"
       | "quitRequest"
       | "quitRequestList"
+      | "registerAsOperator"
+      | "regulatoryAccount"
       | "renounceOwnership"
-      | "setAddress"
+      | "setClaimer"
+      | "setPublicKey"
+      | "setRegulatoryAccount"
       | "setSlashingParams"
+      | "setTokenAddress"
+      | "setTssGroupAddress"
+      | "shares"
+      | "sharesToUnderlying"
+      | "sharesToUnderlyingView"
       | "slashAmount"
       | "slashing"
-      | "staking"
+      | "stakers"
+      | "startWithdraw"
+      | "totalShares"
       | "transferOwnership"
+      | "tssDelegationContract"
+      | "tssDelegationManagerContract"
       | "tssGroupContract"
       | "unJail"
-      | "withdrawToken"
+      | "underlyingToShares"
+      | "underlyingToSharesView"
+      | "underlyingToken"
+      | "userUnderlying"
+      | "userUnderlyingView"
+      | "withdraw()"
+      | "withdraw(address,address,uint256)"
+      | "withdrawalRoots"
+      | "withdrawals"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "MantleToken",
+    functionFragment: "canCompleteQueuedWithdrawal",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "batchGetDeposits",
-    values: [PromiseOrValue<string>[]]
+    functionFragment: "claimerOperators",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "clearQuitRequestList",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "deposits",
+    functionFragment: "completeWithdraw",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegateTo",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "exIncome",
+    functionFragment: "delegation",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegationManager",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegators",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address,address,uint256)",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(uint256)",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getDeposits",
-    values: [PromiseOrValue<string>]
+    functionFragment: "explanation",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getQuitRequestList",
@@ -137,17 +232,76 @@ export interface TssStakingSlashingInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "isEqual",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
+    functionFragment: "isCanOperator",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "isJailed",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "isSetParam",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "messenger", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "onDelegationReceived(address,address[],uint256[])",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "onDelegationReceived(address,address,address[],uint256[])",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "onDelegationWithdrawn(address,address,address[],uint256[])",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "onDelegationWithdrawn(address,address[],uint256[])",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "operatorClaimers",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "operators",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "payForService",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "quitRequest",
     values?: undefined
@@ -157,19 +311,52 @@ export interface TssStakingSlashingInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "registerAsOperator",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "regulatoryAccount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "setAddress",
+    functionFragment: "setClaimer",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPublicKey",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRegulatoryAccount",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setSlashingParams",
-    values: [
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-    ]
+    values: [[PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setTokenAddress",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setTssGroupAddress",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "shares",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sharesToUnderlying",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sharesToUnderlyingView",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "slashAmount",
@@ -180,12 +367,28 @@ export interface TssStakingSlashingInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
-    functionFragment: "staking",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    functionFragment: "stakers",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "startWithdraw",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalShares",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tssDelegationContract",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tssDelegationManagerContract",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "tssGroupContract",
@@ -193,26 +396,79 @@ export interface TssStakingSlashingInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "unJail", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "withdrawToken",
+    functionFragment: "underlyingToShares",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "underlyingToSharesView",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "underlyingToken",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "userUnderlying",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "userUnderlyingView",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw()",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw(address,address,uint256)",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawalRoots",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawals",
+    values: [PromiseOrValue<string>]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "MantleToken",
+    functionFragment: "canCompleteQueuedWithdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "batchGetDeposits",
+    functionFragment: "claimerOperators",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "clearQuitRequestList",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "deposits", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "exIncome", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getDeposits",
+    functionFragment: "completeWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "delegateTo", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "delegation", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "delegationManager",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "delegators", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address,address,uint256)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(uint256)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "explanation",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -228,9 +484,40 @@ export interface TssStakingSlashingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "isEqual", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "isCanOperator",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isJailed", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "isSetParam", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "messenger", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "onDelegationReceived(address,address[],uint256[])",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "onDelegationReceived(address,address,address[],uint256[])",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "onDelegationWithdrawn(address,address,address[],uint256[])",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "onDelegationWithdrawn(address,address[],uint256[])",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "operatorClaimers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "operators", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "payForService",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "quitRequest",
     data: BytesLike
@@ -240,12 +527,45 @@ export interface TssStakingSlashingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "registerAsOperator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "regulatoryAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setAddress", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setClaimer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setPublicKey",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setRegulatoryAccount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setSlashingParams",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setTokenAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setTssGroupAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "shares", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "sharesToUnderlying",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "sharesToUnderlyingView",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -253,9 +573,25 @@ export interface TssStakingSlashingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "slashing", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "staking", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "stakers", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "startWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalShares",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "tssDelegationContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "tssDelegationManagerContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -264,35 +600,71 @@ export interface TssStakingSlashingInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "unJail", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawToken",
+    functionFragment: "underlyingToShares",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "underlyingToSharesView",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "underlyingToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "userUnderlying",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "userUnderlyingView",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "withdraw()", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdraw(address,address,uint256)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawalRoots",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawals",
     data: BytesLike
   ): Result;
 
   events: {
-    "AddDeposit(address,tuple)": EventFragment;
+    "Deposit(address,address,uint256)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "Paused(address)": EventFragment;
     "Slashing(address,uint8)": EventFragment;
-    "Withdraw(address,uint256)": EventFragment;
+    "Unpaused(address)": EventFragment;
+    "Withdraw(address,address,uint256)": EventFragment;
+    "WithdrawQueue(address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AddDeposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Slashing"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawQueue"): EventFragment;
 }
 
-export interface AddDepositEventObject {
-  arg0: string;
-  arg1: IStakingSlashing.DepositInfoStructOutput;
+export interface DepositEventObject {
+  depositor: string;
+  token: string;
+  amount: BigNumber;
 }
-export type AddDepositEvent = TypedEvent<
-  [string, IStakingSlashing.DepositInfoStructOutput],
-  AddDepositEventObject
+export type DepositEvent = TypedEvent<
+  [string, string, BigNumber],
+  DepositEventObject
 >;
 
-export type AddDepositEventFilter = TypedEventFilter<AddDepositEvent>;
+export type DepositEventFilter = TypedEventFilter<DepositEvent>;
 
 export interface InitializedEventObject {
   version: number;
@@ -313,6 +685,13 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
+export interface PausedEventObject {
+  account: string;
+}
+export type PausedEvent = TypedEvent<[string], PausedEventObject>;
+
+export type PausedEventFilter = TypedEventFilter<PausedEvent>;
+
 export interface SlashingEventObject {
   arg0: string;
   arg1: number;
@@ -321,16 +700,35 @@ export type SlashingEvent = TypedEvent<[string, number], SlashingEventObject>;
 
 export type SlashingEventFilter = TypedEventFilter<SlashingEvent>;
 
+export interface UnpausedEventObject {
+  account: string;
+}
+export type UnpausedEvent = TypedEvent<[string], UnpausedEventObject>;
+
+export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>;
+
 export interface WithdrawEventObject {
-  arg0: string;
-  arg1: BigNumber;
+  depositor: string;
+  token: string;
+  amount: BigNumber;
 }
 export type WithdrawEvent = TypedEvent<
-  [string, BigNumber],
+  [string, string, BigNumber],
   WithdrawEventObject
 >;
 
 export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
+
+export interface WithdrawQueueEventObject {
+  arg0: string;
+  arg1: BigNumber;
+}
+export type WithdrawQueueEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawQueueEventObject
+>;
+
+export type WithdrawQueueEventFilter = TypedEventFilter<WithdrawQueueEvent>;
 
 export interface TssStakingSlashing extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -359,37 +757,50 @@ export interface TssStakingSlashing extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    MantleToken(overrides?: CallOverrides): Promise<[string]>;
+    canCompleteQueuedWithdrawal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    batchGetDeposits(
-      users: PromiseOrValue<string>[],
+    claimerOperators(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[IStakingSlashing.DepositInfoStructOutput[]]>;
+    ): Promise<[string]>;
 
     clearQuitRequestList(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    deposits(
+    completeWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    delegateTo(
+      _operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    delegation(overrides?: CallOverrides): Promise<[string]>;
+
+    delegationManager(overrides?: CallOverrides): Promise<[string]>;
+
+    delegators(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<
-      [string, string, BigNumber] & {
-        pledgor: string;
-        pubKey: string;
-        amount: BigNumber;
-      }
-    >;
+    ): Promise<[string]>;
 
-    exIncome(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "deposit(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    getDeposits(
-      user: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[IStakingSlashing.DepositInfoStructOutput]>;
+    "deposit(uint256)"(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    explanation(overrides?: CallOverrides): Promise<[string]>;
 
     getQuitRequestList(overrides?: CallOverrides): Promise<[string[]]>;
 
@@ -401,26 +812,81 @@ export interface TssStakingSlashing extends BaseContract {
 
     getSlashingParams(
       overrides?: CallOverrides
-    ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
+    ): Promise<[[BigNumber, BigNumber]]>;
 
     initialize(
       _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
+      _delegationManager: PromiseOrValue<string>,
+      _delegation: PromiseOrValue<string>,
+      _l1messenger: PromiseOrValue<string>,
+      _regulatoryAccount: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    isEqual(
-      byteListA: PromiseOrValue<BytesLike>,
-      byteListB: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    isCanOperator(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     isJailed(
       user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    isSetParam(overrides?: CallOverrides): Promise<[boolean]>;
+
+    messenger(overrides?: CallOverrides): Promise<[string]>;
+
+    "onDelegationReceived(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "onDelegationReceived(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "onDelegationWithdrawn(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "onDelegationWithdrawn(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    operatorClaimers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    operators(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
+
+    payForService(
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     quitRequest(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -431,13 +897,30 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    registerAsOperator(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    regulatoryAccount(overrides?: CallOverrides): Promise<[string]>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setAddress(
-      _token: PromiseOrValue<string>,
-      _tssGroup: PromiseOrValue<string>,
+    setClaimer(
+      _operator: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPublicKey(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setRegulatoryAccount(
+      _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -446,9 +929,33 @@ export interface TssStakingSlashing extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
-      _exIncome: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    setTokenAddress(
+      _token: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setTssGroupAddress(
+      _tssGroup: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    shares(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    sharesToUnderlying(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    sharesToUnderlyingView(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     slashAmount(
       arg0: PromiseOrValue<BigNumberish>,
@@ -461,16 +968,26 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    staking(
-      _amount: PromiseOrValue<BigNumberish>,
-      _pubKey: PromiseOrValue<BytesLike>,
+    stakers(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    startWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    totalShares(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    tssDelegationContract(overrides?: CallOverrides): Promise<[string]>;
+
+    tssDelegationManagerContract(overrides?: CallOverrides): Promise<[string]>;
 
     tssGroupContract(overrides?: CallOverrides): Promise<[string]>;
 
@@ -478,42 +995,100 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    withdrawToken(
+    underlyingToShares(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    underlyingToSharesView(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    underlyingToken(overrides?: CallOverrides): Promise<[string]>;
+
+    userUnderlying(
+      user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    userUnderlyingView(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "withdraw()"(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "withdraw(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawalRoots(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    withdrawals(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, IDelegationManager.WithdrawerAndNonceStructOutput, string] & {
+        depositor: string;
+        withdrawerAndNonce: IDelegationManager.WithdrawerAndNonceStructOutput;
+        delegatedAddress: string;
+      }
+    >;
   };
 
-  MantleToken(overrides?: CallOverrides): Promise<string>;
+  canCompleteQueuedWithdrawal(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  batchGetDeposits(
-    users: PromiseOrValue<string>[],
+  claimerOperators(
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<IStakingSlashing.DepositInfoStructOutput[]>;
+  ): Promise<string>;
 
   clearQuitRequestList(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  deposits(
+  completeWithdraw(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  delegateTo(
+    _operator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  delegation(overrides?: CallOverrides): Promise<string>;
+
+  delegationManager(overrides?: CallOverrides): Promise<string>;
+
+  delegators(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<
-    [string, string, BigNumber] & {
-      pledgor: string;
-      pubKey: string;
-      amount: BigNumber;
-    }
-  >;
+  ): Promise<string>;
 
-  exIncome(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "deposit(address,address,uint256)"(
+    depositor: PromiseOrValue<string>,
+    token: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  getDeposits(
-    user: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<IStakingSlashing.DepositInfoStructOutput>;
+  "deposit(uint256)"(
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  explanation(overrides?: CallOverrides): Promise<string>;
 
   getQuitRequestList(overrides?: CallOverrides): Promise<string[]>;
 
@@ -523,28 +1098,81 @@ export interface TssStakingSlashing extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  getSlashingParams(
-    overrides?: CallOverrides
-  ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
+  getSlashingParams(overrides?: CallOverrides): Promise<[BigNumber, BigNumber]>;
 
   initialize(
     _mantleToken: PromiseOrValue<string>,
     _tssGroupContract: PromiseOrValue<string>,
+    _delegationManager: PromiseOrValue<string>,
+    _delegation: PromiseOrValue<string>,
+    _l1messenger: PromiseOrValue<string>,
+    _regulatoryAccount: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  isEqual(
-    byteListA: PromiseOrValue<BytesLike>,
-    byteListB: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  isCanOperator(
+    _addr: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   isJailed(
     user: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  isSetParam(overrides?: CallOverrides): Promise<boolean>;
+
+  messenger(overrides?: CallOverrides): Promise<string>;
+
+  "onDelegationReceived(address,address[],uint256[])"(
+    delegator: PromiseOrValue<string>,
+    investorDelegationShares: PromiseOrValue<string>[],
+    investorShares: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "onDelegationReceived(address,address,address[],uint256[])"(
+    delegator: PromiseOrValue<string>,
+    operator: PromiseOrValue<string>,
+    delegationShares: PromiseOrValue<string>[],
+    investorShares: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "onDelegationWithdrawn(address,address,address[],uint256[])"(
+    delegator: PromiseOrValue<string>,
+    operator: PromiseOrValue<string>,
+    delegationShares: PromiseOrValue<string>[],
+    investorShares: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "onDelegationWithdrawn(address,address[],uint256[])"(
+    delegator: PromiseOrValue<string>,
+    investorDelegationShares: PromiseOrValue<string>[],
+    investorShares: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  operatorClaimers(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  operators(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   owner(overrides?: CallOverrides): Promise<string>;
+
+  paused(overrides?: CallOverrides): Promise<boolean>;
+
+  payForService(
+    token: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   quitRequest(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -555,21 +1183,62 @@ export interface TssStakingSlashing extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  registerAsOperator(
+    _pubKey: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  regulatoryAccount(overrides?: CallOverrides): Promise<string>;
+
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setAddress(
-    _token: PromiseOrValue<string>,
-    _tssGroup: PromiseOrValue<string>,
+  setClaimer(
+    _operator: PromiseOrValue<string>,
+    _claimer: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPublicKey(
+    _pubKey: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setRegulatoryAccount(
+    _account: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setSlashingParams(
     _slashAmount: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-    _exIncome: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  setTokenAddress(
+    _token: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setTssGroupAddress(
+    _tssGroup: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  shares(
+    user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  sharesToUnderlying(
+    amountShares: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  sharesToUnderlyingView(
+    amountShares: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   slashAmount(
     arg0: PromiseOrValue<BigNumberish>,
@@ -582,16 +1251,26 @@ export interface TssStakingSlashing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  staking(
-    _amount: PromiseOrValue<BigNumberish>,
-    _pubKey: PromiseOrValue<BytesLike>,
+  stakers(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  startWithdraw(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  totalShares(overrides?: CallOverrides): Promise<BigNumber>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  tssDelegationContract(overrides?: CallOverrides): Promise<string>;
+
+  tssDelegationManagerContract(overrides?: CallOverrides): Promise<string>;
 
   tssGroupContract(overrides?: CallOverrides): Promise<string>;
 
@@ -599,40 +1278,94 @@ export interface TssStakingSlashing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  withdrawToken(
+  underlyingToShares(
+    amountUnderlying: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  underlyingToSharesView(
+    amountUnderlying: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  underlyingToken(overrides?: CallOverrides): Promise<string>;
+
+  userUnderlying(
+    user: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  callStatic: {
-    MantleToken(overrides?: CallOverrides): Promise<string>;
+  userUnderlyingView(
+    user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
-    batchGetDeposits(
-      users: PromiseOrValue<string>[],
+  "withdraw()"(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "withdraw(address,address,uint256)"(
+    depositor: PromiseOrValue<string>,
+    token: PromiseOrValue<string>,
+    amountShares: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawalRoots(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  withdrawals(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, IDelegationManager.WithdrawerAndNonceStructOutput, string] & {
+      depositor: string;
+      withdrawerAndNonce: IDelegationManager.WithdrawerAndNonceStructOutput;
+      delegatedAddress: string;
+    }
+  >;
+
+  callStatic: {
+    canCompleteQueuedWithdrawal(overrides?: CallOverrides): Promise<boolean>;
+
+    claimerOperators(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<IStakingSlashing.DepositInfoStructOutput[]>;
+    ): Promise<string>;
 
     clearQuitRequestList(overrides?: CallOverrides): Promise<void>;
 
-    deposits(
+    completeWithdraw(overrides?: CallOverrides): Promise<void>;
+
+    delegateTo(
+      _operator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    delegation(overrides?: CallOverrides): Promise<string>;
+
+    delegationManager(overrides?: CallOverrides): Promise<string>;
+
+    delegators(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<
-      [string, string, BigNumber] & {
-        pledgor: string;
-        pubKey: string;
-        amount: BigNumber;
-      }
-    >;
+    ): Promise<string>;
 
-    exIncome(
-      arg0: PromiseOrValue<BigNumberish>,
+    "deposit(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getDeposits(
-      user: PromiseOrValue<string>,
+    "deposit(uint256)"(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<IStakingSlashing.DepositInfoStructOutput>;
+    ): Promise<BigNumber>;
+
+    explanation(overrides?: CallOverrides): Promise<string>;
 
     getQuitRequestList(overrides?: CallOverrides): Promise<string[]>;
 
@@ -644,17 +1377,20 @@ export interface TssStakingSlashing extends BaseContract {
 
     getSlashingParams(
       overrides?: CallOverrides
-    ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
+    ): Promise<[BigNumber, BigNumber]>;
 
     initialize(
       _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
+      _delegationManager: PromiseOrValue<string>,
+      _delegation: PromiseOrValue<string>,
+      _l1messenger: PromiseOrValue<string>,
+      _regulatoryAccount: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isEqual(
-      byteListA: PromiseOrValue<BytesLike>,
-      byteListB: PromiseOrValue<BytesLike>,
+    isCanOperator(
+      _addr: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -663,7 +1399,59 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    isSetParam(overrides?: CallOverrides): Promise<boolean>;
+
+    messenger(overrides?: CallOverrides): Promise<string>;
+
+    "onDelegationReceived(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "onDelegationReceived(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "onDelegationWithdrawn(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "onDelegationWithdrawn(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    operatorClaimers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    operators(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     owner(overrides?: CallOverrides): Promise<string>;
+
+    paused(overrides?: CallOverrides): Promise<boolean>;
+
+    payForService(
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     quitRequest(overrides?: CallOverrides): Promise<void>;
 
@@ -672,11 +1460,28 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    registerAsOperator(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    regulatoryAccount(overrides?: CallOverrides): Promise<string>;
+
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    setAddress(
-      _token: PromiseOrValue<string>,
-      _tssGroup: PromiseOrValue<string>,
+    setClaimer(
+      _operator: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPublicKey(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setRegulatoryAccount(
+      _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -685,9 +1490,33 @@ export interface TssStakingSlashing extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
-      _exIncome: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setTokenAddress(
+      _token: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setTssGroupAddress(
+      _tssGroup: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    shares(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sharesToUnderlying(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sharesToUnderlyingView(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     slashAmount(
       arg0: PromiseOrValue<BigNumberish>,
@@ -700,30 +1529,84 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    staking(
-      _amount: PromiseOrValue<BigNumberish>,
-      _pubKey: PromiseOrValue<BytesLike>,
+    stakers(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<string>;
+
+    startWithdraw(overrides?: CallOverrides): Promise<void>;
+
+    totalShares(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
+    tssDelegationContract(overrides?: CallOverrides): Promise<string>;
+
+    tssDelegationManagerContract(overrides?: CallOverrides): Promise<string>;
+
     tssGroupContract(overrides?: CallOverrides): Promise<string>;
 
     unJail(overrides?: CallOverrides): Promise<void>;
 
-    withdrawToken(overrides?: CallOverrides): Promise<void>;
+    underlyingToShares(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    underlyingToSharesView(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    underlyingToken(overrides?: CallOverrides): Promise<string>;
+
+    userUnderlying(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    userUnderlyingView(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "withdraw()"(overrides?: CallOverrides): Promise<void>;
+
+    "withdraw(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdrawalRoots(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    withdrawals(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, IDelegationManager.WithdrawerAndNonceStructOutput, string] & {
+        depositor: string;
+        withdrawerAndNonce: IDelegationManager.WithdrawerAndNonceStructOutput;
+        delegatedAddress: string;
+      }
+    >;
   };
 
   filters: {
-    "AddDeposit(address,tuple)"(
-      arg0?: null,
-      arg1?: null
-    ): AddDepositEventFilter;
-    AddDeposit(arg0?: null, arg1?: null): AddDepositEventFilter;
+    "Deposit(address,address,uint256)"(
+      depositor?: null,
+      token?: null,
+      amount?: null
+    ): DepositEventFilter;
+    Deposit(depositor?: null, token?: null, amount?: null): DepositEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
@@ -737,18 +1620,40 @@ export interface TssStakingSlashing extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
+    "Paused(address)"(account?: null): PausedEventFilter;
+    Paused(account?: null): PausedEventFilter;
+
     "Slashing(address,uint8)"(arg0?: null, arg1?: null): SlashingEventFilter;
     Slashing(arg0?: null, arg1?: null): SlashingEventFilter;
 
-    "Withdraw(address,uint256)"(arg0?: null, arg1?: null): WithdrawEventFilter;
-    Withdraw(arg0?: null, arg1?: null): WithdrawEventFilter;
+    "Unpaused(address)"(account?: null): UnpausedEventFilter;
+    Unpaused(account?: null): UnpausedEventFilter;
+
+    "Withdraw(address,address,uint256)"(
+      depositor?: null,
+      token?: null,
+      amount?: null
+    ): WithdrawEventFilter;
+    Withdraw(
+      depositor?: null,
+      token?: null,
+      amount?: null
+    ): WithdrawEventFilter;
+
+    "WithdrawQueue(address,uint256)"(
+      arg0?: null,
+      arg1?: null
+    ): WithdrawQueueEventFilter;
+    WithdrawQueue(arg0?: null, arg1?: null): WithdrawQueueEventFilter;
   };
 
   estimateGas: {
-    MantleToken(overrides?: CallOverrides): Promise<BigNumber>;
+    canCompleteQueuedWithdrawal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
-    batchGetDeposits(
-      users: PromiseOrValue<string>[],
+    claimerOperators(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -756,20 +1661,37 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    deposits(
+    completeWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegateTo(
+      _operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegation(overrides?: CallOverrides): Promise<BigNumber>;
+
+    delegationManager(overrides?: CallOverrides): Promise<BigNumber>;
+
+    delegators(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    exIncome(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+    "deposit(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getDeposits(
-      user: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    "deposit(uint256)"(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    explanation(overrides?: CallOverrides): Promise<BigNumber>;
 
     getQuitRequestList(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -784,13 +1706,16 @@ export interface TssStakingSlashing extends BaseContract {
     initialize(
       _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
+      _delegationManager: PromiseOrValue<string>,
+      _delegation: PromiseOrValue<string>,
+      _l1messenger: PromiseOrValue<string>,
+      _regulatoryAccount: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    isEqual(
-      byteListA: PromiseOrValue<BytesLike>,
-      byteListB: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
+    isCanOperator(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     isJailed(
@@ -798,7 +1723,59 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    isSetParam(overrides?: CallOverrides): Promise<BigNumber>;
+
+    messenger(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "onDelegationReceived(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "onDelegationReceived(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "onDelegationWithdrawn(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "onDelegationWithdrawn(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    operatorClaimers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    operators(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
+
+    payForService(
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     quitRequest(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -809,13 +1786,30 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    registerAsOperator(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    regulatoryAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setAddress(
-      _token: PromiseOrValue<string>,
-      _tssGroup: PromiseOrValue<string>,
+    setClaimer(
+      _operator: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPublicKey(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setRegulatoryAccount(
+      _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -824,8 +1818,32 @@ export interface TssStakingSlashing extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
-      _exIncome: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setTokenAddress(
+      _token: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setTssGroupAddress(
+      _tssGroup: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    shares(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sharesToUnderlying(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    sharesToUnderlyingView(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     slashAmount(
@@ -839,16 +1857,26 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    staking(
-      _amount: PromiseOrValue<BigNumberish>,
-      _pubKey: PromiseOrValue<BytesLike>,
+    stakers(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    startWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    totalShares(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    tssDelegationContract(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tssDelegationManagerContract(overrides?: CallOverrides): Promise<BigNumber>;
 
     tssGroupContract(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -856,16 +1884,57 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    withdrawToken(
+    underlyingToShares(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    underlyingToSharesView(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    underlyingToken(overrides?: CallOverrides): Promise<BigNumber>;
+
+    userUnderlying(
+      user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    userUnderlyingView(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "withdraw()"(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "withdraw(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawalRoots(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    withdrawals(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    MantleToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    canCompleteQueuedWithdrawal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
-    batchGetDeposits(
-      users: PromiseOrValue<string>[],
+    claimerOperators(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -873,20 +1942,37 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    deposits(
+    completeWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegateTo(
+      _operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegation(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    delegationManager(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    delegators(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    exIncome(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+    "deposit(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getDeposits(
-      user: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    "deposit(uint256)"(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    explanation(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getQuitRequestList(
       overrides?: CallOverrides
@@ -903,13 +1989,16 @@ export interface TssStakingSlashing extends BaseContract {
     initialize(
       _mantleToken: PromiseOrValue<string>,
       _tssGroupContract: PromiseOrValue<string>,
+      _delegationManager: PromiseOrValue<string>,
+      _delegation: PromiseOrValue<string>,
+      _l1messenger: PromiseOrValue<string>,
+      _regulatoryAccount: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    isEqual(
-      byteListA: PromiseOrValue<BytesLike>,
-      byteListB: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
+    isCanOperator(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     isJailed(
@@ -917,7 +2006,59 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    isSetParam(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    messenger(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "onDelegationReceived(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "onDelegationReceived(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "onDelegationWithdrawn(address,address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      operator: PromiseOrValue<string>,
+      delegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "onDelegationWithdrawn(address,address[],uint256[])"(
+      delegator: PromiseOrValue<string>,
+      investorDelegationShares: PromiseOrValue<string>[],
+      investorShares: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    operatorClaimers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    operators(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    payForService(
+      token: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     quitRequest(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -928,13 +2069,30 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    registerAsOperator(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    regulatoryAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setAddress(
-      _token: PromiseOrValue<string>,
-      _tssGroup: PromiseOrValue<string>,
+    setClaimer(
+      _operator: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPublicKey(
+      _pubKey: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setRegulatoryAccount(
+      _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -943,8 +2101,32 @@ export interface TssStakingSlashing extends BaseContract {
         PromiseOrValue<BigNumberish>,
         PromiseOrValue<BigNumberish>
       ],
-      _exIncome: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTokenAddress(
+      _token: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTssGroupAddress(
+      _tssGroup: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    shares(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    sharesToUnderlying(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    sharesToUnderlyingView(
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     slashAmount(
@@ -958,15 +2140,29 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    staking(
-      _amount: PromiseOrValue<BigNumberish>,
-      _pubKey: PromiseOrValue<BytesLike>,
+    stakers(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    startWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    totalShares(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    tssDelegationContract(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    tssDelegationManagerContract(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     tssGroupContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -975,8 +2171,47 @@ export interface TssStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    withdrawToken(
+    underlyingToShares(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    underlyingToSharesView(
+      amountUnderlying: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    underlyingToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    userUnderlying(
+      user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    userUnderlyingView(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "withdraw()"(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "withdraw(address,address,uint256)"(
+      depositor: PromiseOrValue<string>,
+      token: PromiseOrValue<string>,
+      amountShares: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawalRoots(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    withdrawals(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

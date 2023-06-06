@@ -282,7 +282,7 @@ var stCmd = &cobra.Command{
 				defer wg.Done()
 				for {
 					tx, err := layer2.Withdraw(&mc, mc.Env.PrivateKeyList[5][0],
-						mc.L2MNTAddress, big.NewInt(1))
+						mc.L2MNTAddress, big.NewInt(1234567890))
 					if err != nil {
 						fmt.Println("Withdraw MNT err: ", err)
 					}
@@ -290,6 +290,7 @@ var stCmd = &cobra.Command{
 					time.Sleep(time.Duration(2) * time.Second)
 
 					layer2.FinalizeMessage(&mc, tx.Hash())
+					// layer2.FinalizeMessage(&mc, common.HexToHash("0xc966ddb1031f8543856a527bc24b837240a6787f6454cdfad05f0a10b6e67b01"))
 
 					l1b, _, err := layer2.BERC20(&mc, common.HexToAddress(mc.Env.PrivateKeyList[5][1]), mc.L1MNTAddress,
 						mc.L2MNTAddress, nil)
@@ -483,6 +484,31 @@ var stCmd = &cobra.Command{
 				}
 			}(waitGroup)
 		}
+
+		// l2 SubscribeNewHead
+		if strings.Contains(args[0], "k") {
+			waitGroup.Add(1)
+
+			go func(wg *sync.WaitGroup) {
+				defer wg.Done()
+
+				layer2.SubscribeNewHead(*mc.L2WSClient)
+			}(waitGroup)
+		}
+
+		// SubscribeFilterLogs
+		if strings.Contains(args[0], "l") {
+			waitGroup.Add(1)
+
+			go func(wg *sync.WaitGroup) {
+				defer wg.Done()
+
+				client := *mc.L1WSClient
+				contractAddress := "0x73B9F10e505C47Aa99CDC90f28e0c0b7DDA3bAe6"
+				layer2.SubscribeFilterLogs(client, contractAddress)
+			}(waitGroup)
+		}
+
 		waitGroup.Wait()
 		return nil
 	},

@@ -70,8 +70,10 @@ type Rpc struct {
 
 type StressEnv struct {
 	L1URL                   string      `json:"l1url"`
+	L1WS                    string      `json:"l1ws"`
 	L1ChainID               int         `json:"l1chainid"`
 	L2URL                   string      `json:"l2url"`
+	L2WS                    string      `json:"l2ws"`
 	RpcList                 []Rpc       `json:"rpclist"`
 	ToAddress               string      `json:"toaddress"`
 	TokenAddress            string      `json:"tokenaddress"`
@@ -94,7 +96,9 @@ type StressEnv struct {
 type MantleCenter struct {
 	Env             StressEnv
 	L1Client        *ethclient.Client
+	L1WSClient      *ethclient.Client
 	L2Client        *ethclient.Client
+	L2WSClient      *ethclient.Client
 	UserPrivateKey  *ecdsa.PrivateKey
 	UserAddress     common.Address
 	ToAddress       common.Address
@@ -132,17 +136,27 @@ func InitSc(mc *MantleCenter) (err error) {
 
 	mc.L1Client, err = lib.NewEthClient(mc.Env.L1URL)
 	if err != nil {
-		return fmt.Errorf("sc.L1Client err: %v", err)
+		return fmt.Errorf("mc.L1Client err: %v", err)
+	}
+
+	mc.L1WSClient, err = lib.NewEthClient(mc.Env.L1WS)
+	if err != nil {
+		return fmt.Errorf("mc.L1WSClient err: %v", err)
 	}
 
 	mc.L2Client, err = lib.NewEthClient(mc.Env.L2URL)
 	if err != nil {
-		return fmt.Errorf("sc.L2Client err: %v", err)
+		return fmt.Errorf("mc.L2Client err: %v", err)
+	}
+
+	mc.L2WSClient, err = lib.NewEthClient(mc.Env.L2WS)
+	if err != nil {
+		return fmt.Errorf("mc.L2Client err: %v", err)
 	}
 
 	mc.UserPrivateKey, err = crypto.HexToECDSA(mc.Env.PrivateKeyList[0][0])
 	if err != nil {
-		return fmt.Errorf("sc.UserPrivateKey err: %v", err)
+		return fmt.Errorf("mc.UserPrivateKey err: %v", err)
 	}
 	mc.UserAddress = crypto.PubkeyToAddress(mc.UserPrivateKey.PublicKey)
 
@@ -1021,12 +1035,31 @@ func DecodeAppendSequencerBatchParams(inputData string) (params AppendSequencerB
 
 func FinalizeMessage(mc *MantleCenter, txHash common.Hash) {
 
-	command := fmt.Sprintf("node packages/finalize/index.js pri=%s l1url=%s l2url=%s hash=%s",
-		mc.Env.PrivateKeyList[0][0], mc.Env.L1URL, mc.Env.L2URL, txHash)
-
-	fmt.Println(command)
-	cmd := exec.Command("bash", "-c", command)
-
+	// command := fmt.Sprintf("node packages/finalize/index.js pri=%s l1url=%s l2url=%s hash=%s",
+	// 	mc.Env.PrivateKeyList[0][0], mc.Env.L1URL, mc.Env.L2URL, txHash)
+	cmd := exec.Command("bash", "-c", "npx ts-node packages/sdk/finalize.ts")
+	addEnvList := []string{}
+	addEnvList = append(addEnvList, fmt.Sprintf("L1_URL=%v", mc.Env.L1URL))
+	addEnvList = append(addEnvList, fmt.Sprintf("L1_CHAINID=%v", mc.Env.L1ChainID))
+	addEnvList = append(addEnvList, fmt.Sprintf("L2_URL=%v", mc.Env.L2URL))
+	addEnvList = append(addEnvList, fmt.Sprintf("L2_CHAINID=%v", 17))
+	addEnvList = append(addEnvList, fmt.Sprintf("PRIVATE_KEY=%v", mc.Env.PrivateKeyList[0][0]))
+	// addEnvList = append(addEnvList, fmt.Sprintf("PRIVATE_KEY=%v", "dd888cfabd6d3c3eeb683063657706fb660416ec4972bb5761204e0dbf59e33c"))
+	// addEnvList = append(addEnvList, fmt.Sprintf("Proxy__L1MantleToken_ADDRESS=%v", mc.Env.AddressList.Proxy__L1MantleToken))
+	addEnvList = append(addEnvList, fmt.Sprintf("TestMantleToken_ADDRESS=%v", mc.Env.AddressList.Proxy__L1MantleToken))
+	addEnvList = append(addEnvList, fmt.Sprintf("ADDRESS_MANAGER_ADDRESS=%v", mc.Env.AddressList.AddressManager))
+	// addEnvList = append(addEnvList, fmt.Sprintf("BVM_L1CrossDomainMessenger_ADDRESS=%v", "0x30558AbcBf63c80F88320B47c8A8C60E1ab2Ab2e"))
+	addEnvList = append(addEnvList, fmt.Sprintf("Proxy__BVM_L1CrossDomainMessenger_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1CrossDomainMessenger))
+	// addEnvList = append(addEnvList, fmt.Sprintf("L1_STANDARD_BRIDGE_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1StandardBridge))
+	addEnvList = append(addEnvList, fmt.Sprintf("Proxy__BVM_L1StandardBridge_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1StandardBridge))
+	addEnvList = append(addEnvList, fmt.Sprintf("STATE_COMMITMENT_CHAIN_ADDRESS=%v", mc.Env.AddressList.StateCommitmentChain))
+	// addEnvList = append(addEnvList, fmt.Sprintf("StateCommitmentChain_ADDRESS=%v", mc.Env.AddressList.StateCommitmentChain))
+	addEnvList = append(addEnvList, fmt.Sprintf("CANONICAL_TRANSACTION_CHAIN_ADDRESS=%v", mc.Env.AddressList.CanonicalTransactionChain))
+	// addEnvList = append(addEnvList, fmt.Sprintf("CanonicalTransactionChain_ADDRESS=%v", mc.Env.AddressList.CanonicalTransactionChain))
+	addEnvList = append(addEnvList, fmt.Sprintf("BOND_MANAGER_ADDRESS=%v", mc.Env.AddressList.BondManager))
+	addEnvList = append(addEnvList, fmt.Sprintf("TX_HASH=%v", txHash))
+	cmd.Env = append(os.Environ(), addEnvList...)
+	fmt.Println(addEnvList)
 	// output, err := cmd.CombinedOutput()
 	// if err != nil {
 	// 	return "", fmt.Errorf("error executing command: %v", err)
@@ -1034,7 +1067,6 @@ func FinalizeMessage(mc *MantleCenter, txHash common.Hash) {
 	// fmt.Println("===2")
 
 	// return string(output), nil
-
 	// 创建管道获取脚本的标准输出
 	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
@@ -1134,4 +1166,59 @@ func GetMapLogs(c *ethclient.Client, contractAddress common.Address, contractAbi
 		}
 	}
 	return blockNumber, logIndex, err
+}
+
+func SubscribeNewHead(c ethclient.Client) {
+	// 监听新区块
+	headers := make(chan *types.Header)
+	sub, err := c.SubscribeNewHead(context.Background(), headers)
+	if err != nil {
+		fmt.Println("SubscribeNewHead err: ", err)
+		return
+	}
+
+	for {
+		select {
+		case header := <-headers:
+			fmt.Println("新区块号:", header.Number.String())
+		case err := <-sub.Err():
+			fmt.Println("sub err: ", err)
+			return
+		case <-time.After(10 * time.Second):
+			// 等待新区块事件，可以根据需求调整等待时间
+		}
+	}
+}
+
+func SubscribeFilterLogs(c ethclient.Client, CA string) {
+
+	contractAddress := common.HexToAddress(CA)
+	query := ethereum.FilterQuery{
+		Addresses: []common.Address{contractAddress},
+	}
+
+	logs := make(chan types.Log)
+	sub, err := c.SubscribeFilterLogs(context.Background(), query, logs)
+	if err != nil {
+		fmt.Println("SubscribeFilterLogs err: ", err)
+		return
+	}
+
+	for {
+		select {
+		case err := <-sub.Err():
+			if err != nil {
+				fmt.Println("SubscribeFilterLogs's for err: ", err)
+				return
+			}
+		case vLog := <-logs:
+			fmt.Println("===============start================")
+			fmt.Println("vLog: ", vLog)
+			fmt.Println("vLog.Address: ", vLog.Address)
+			fmt.Println("vLog.Index: ", vLog.Index)
+			fmt.Println("vLog.Data: ", vLog.Data)
+			fmt.Println("vLog.Topics: ", vLog.Topics)
+			fmt.Println("=================end==================")
+		}
+	}
 }

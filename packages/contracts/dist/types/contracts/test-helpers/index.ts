@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type * as testUpgradeSol from "./TestUpgrade.sol";
 export type { testUpgradeSol };
+export type { EmptyContract } from "./EmptyContract";
 export type { FailingReceiver } from "./FailingReceiver";
 export type { L1StandardBridgeUpgrade } from "./L1StandardBridgeUpgrade";
 export type { MockStateCommitmentChain } from "./MockStateCommitmentChain";

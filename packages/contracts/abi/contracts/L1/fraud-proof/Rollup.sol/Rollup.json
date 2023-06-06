@@ -667,9 +667,28 @@
     "name": "operatorWhitelist",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "operatorslist",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -710,6 +729,51 @@
   {
     "inputs": [],
     "name": "rejectFirstUnresolvedAssertion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "batchIndex",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "batchRoot",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "batchSize",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "prevTotalElements",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "extraData",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct Lib_BVMCodec.ChainBatchHeader",
+        "name": "_batchHeader",
+        "type": "tuple"
+      }
+    ],
+    "name": "rejectLatestCreatedAssertionWithBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -821,9 +885,9 @@
     "name": "stakerWhitelist",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -862,6 +926,25 @@
       {
         "internalType": "address",
         "name": "currentChallenge",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "stakerslist",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
         "type": "address"
       }
     ],

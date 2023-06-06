@@ -32,6 +32,7 @@ func init() {
 	mantleCmd.AddCommand(rCmd)
 	mantleCmd.AddCommand(toCTCCmd)
 	mantleCmd.AddCommand(toCTCWithTxHashCmd)
+	mantleCmd.AddCommand(statusCmd)
 
 	mantleCmd.PersistentFlags().StringVarP(&layer, "layer", "l", "l1", "layer: l1 or l2")
 	mantleCmd.PersistentFlags().StringVar(&l1token, "l1token", "0", "l1 token address")
@@ -39,7 +40,6 @@ func init() {
 	mantleCmd.PersistentFlags().StringVarP(&amount, "amount", "a", "1", "transfer amount")
 	mantleCmd.PersistentFlags().StringVarP(&privateKey, "privateKey", "p", "", "privateKey")
 
-	mantleCmd.AddCommand(statusCmd)
 }
 
 var (

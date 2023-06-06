@@ -9,7 +9,6 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
 } from "../../../common";
 
 export interface Lib_ResolvedDelegateProxyInterface extends utils.Interface {

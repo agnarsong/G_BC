@@ -29,22 +29,35 @@ import type {
 
 export interface ITssRewardContractInterface extends utils.Interface {
   functions: {
+    "claim()": FunctionFragment;
     "claimReward(uint256,uint32,uint256,address[])": FunctionFragment;
+    "queryClaimTime()": FunctionFragment;
     "queryReward()": FunctionFragment;
-    "updateReward(uint256,uint256)": FunctionFragment;
+    "requestClaim()": FunctionFragment;
+    "setClaimer(address,address)": FunctionFragment;
+    "setSccAddr(address)": FunctionFragment;
+    "setSendAmountPerYear(uint256)": FunctionFragment;
+    "setStakeSlashAddr(address)": FunctionFragment;
+    "setWaitingTime(uint256)": FunctionFragment;
     "withdraw()": FunctionFragment;
-    "withdrawDust()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "claim"
       | "claimReward"
+      | "queryClaimTime"
       | "queryReward"
-      | "updateReward"
+      | "requestClaim"
+      | "setClaimer"
+      | "setSccAddr"
+      | "setSendAmountPerYear"
+      | "setStakeSlashAddr"
+      | "setWaitingTime"
       | "withdraw"
-      | "withdrawDust"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "claimReward",
     values: [
@@ -55,45 +68,90 @@ export interface ITssRewardContractInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "queryClaimTime",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "queryReward",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "updateReward",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "withdrawDust",
+    functionFragment: "requestClaim",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "setClaimer",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setSccAddr",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setSendAmountPerYear",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setStakeSlashAddr",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setWaitingTime",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "claimReward",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "queryClaimTime",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "queryReward",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateReward",
+    functionFragment: "requestClaim",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setClaimer", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setSccAddr", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setSendAmountPerYear",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setStakeSlashAddr",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setWaitingTime",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawDust",
-    data: BytesLike
-  ): Result;
 
   events: {
+    "Claim(address,uint256)": EventFragment;
     "DistributeTssReward(uint256,uint256,uint256,address[])": EventFragment;
     "DistributeTssRewardByBlock(uint256,uint32,uint256,address[])": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "Claim"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DistributeTssReward"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DistributeTssRewardByBlock"): EventFragment;
 }
+
+export interface ClaimEventObject {
+  owner: string;
+  amount: BigNumber;
+}
+export type ClaimEvent = TypedEvent<[string, BigNumber], ClaimEventObject>;
+
+export type ClaimEventFilter = TypedEventFilter<ClaimEvent>;
 
 export interface DistributeTssRewardEventObject {
   lastBatchTime: BigNumber;
@@ -150,6 +208,10 @@ export interface ITssRewardContract extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    claim(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     claimReward(
       _blockStartHeight: PromiseOrValue<BigNumberish>,
       _length: PromiseOrValue<BigNumberish>,
@@ -158,22 +220,50 @@ export interface ITssRewardContract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    queryClaimTime(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     queryReward(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    updateReward(
-      _blockID: PromiseOrValue<BigNumberish>,
-      _amount: PromiseOrValue<BigNumberish>,
+    requestClaim(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setClaimer(
+      _staker: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setSccAddr(
+      sccAddr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setSendAmountPerYear(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setStakeSlashAddr(
+      ssAddr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setWaitingTime(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    withdrawDust(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
+
+  claim(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   claimReward(
     _blockStartHeight: PromiseOrValue<BigNumberish>,
@@ -183,11 +273,39 @@ export interface ITssRewardContract extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  queryClaimTime(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   queryReward(overrides?: CallOverrides): Promise<BigNumber>;
 
-  updateReward(
-    _blockID: PromiseOrValue<BigNumberish>,
-    _amount: PromiseOrValue<BigNumberish>,
+  requestClaim(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setClaimer(
+    _staker: PromiseOrValue<string>,
+    _claimer: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setSccAddr(
+    sccAddr: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setSendAmountPerYear(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setStakeSlashAddr(
+    ssAddr: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setWaitingTime(
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -195,11 +313,9 @@ export interface ITssRewardContract extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  withdrawDust(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
+    claim(overrides?: CallOverrides): Promise<void>;
+
     claimReward(
       _blockStartHeight: PromiseOrValue<BigNumberish>,
       _length: PromiseOrValue<BigNumberish>,
@@ -208,20 +324,45 @@ export interface ITssRewardContract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    queryClaimTime(overrides?: CallOverrides): Promise<BigNumber>;
+
     queryReward(overrides?: CallOverrides): Promise<BigNumber>;
 
-    updateReward(
-      _blockID: PromiseOrValue<BigNumberish>,
-      _amount: PromiseOrValue<BigNumberish>,
+    requestClaim(overrides?: CallOverrides): Promise<boolean>;
+
+    setClaimer(
+      _staker: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
+
+    setSccAddr(
+      sccAddr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setSendAmountPerYear(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setStakeSlashAddr(
+      ssAddr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setWaitingTime(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     withdraw(overrides?: CallOverrides): Promise<void>;
-
-    withdrawDust(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
+    "Claim(address,uint256)"(owner?: null, amount?: null): ClaimEventFilter;
+    Claim(owner?: null, amount?: null): ClaimEventFilter;
+
     "DistributeTssReward(uint256,uint256,uint256,address[])"(
       lastBatchTime?: null,
       batchTime?: null,
@@ -250,32 +391,64 @@ export interface ITssRewardContract extends BaseContract {
   };
 
   estimateGas: {
+    claim(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     claimReward(
       _blockStartHeight: PromiseOrValue<BigNumberish>,
       _length: PromiseOrValue<BigNumberish>,
       _batchTime: PromiseOrValue<BigNumberish>,
       _tssMembers: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    queryClaimTime(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     queryReward(overrides?: CallOverrides): Promise<BigNumber>;
 
-    updateReward(
-      _blockID: PromiseOrValue<BigNumberish>,
-      _amount: PromiseOrValue<BigNumberish>,
+    requestClaim(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setClaimer(
+      _staker: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setSccAddr(
+      sccAddr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setSendAmountPerYear(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setStakeSlashAddr(
+      ssAddr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setWaitingTime(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    withdrawDust(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    claim(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     claimReward(
       _blockStartHeight: PromiseOrValue<BigNumberish>,
       _length: PromiseOrValue<BigNumberish>,
@@ -284,19 +457,43 @@ export interface ITssRewardContract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    queryClaimTime(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     queryReward(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    updateReward(
-      _blockID: PromiseOrValue<BigNumberish>,
-      _amount: PromiseOrValue<BigNumberish>,
+    requestClaim(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setClaimer(
+      _staker: PromiseOrValue<string>,
+      _claimer: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setSccAddr(
+      sccAddr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setSendAmountPerYear(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setStakeSlashAddr(
+      ssAddr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setWaitingTime(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     withdraw(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    withdrawDust(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

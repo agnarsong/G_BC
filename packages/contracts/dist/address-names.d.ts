@@ -14,6 +14,25 @@ export declare const names: {
             Proxy__TSS_GroupManager: string;
             Proxy__TSS_StakingSlashing: string;
         };
+        delegation: {
+            fraud_proof: {
+                FraudProofDelegation: string;
+                FraudProofDelegationManager: string;
+                FraudProofDelegationSlasher: string;
+                Proxy__FraudProofDelegation: string;
+                Proxy__FraudProofDelegationManager: string;
+                Proxy__FraudProofDelegationSlasher: string;
+            };
+            tss: {
+                EmptyContract: string;
+                TssDelegation: string;
+                TssDelegationManager: string;
+                TssDelegationSlasher: string;
+                Proxy__TssDelegation: string;
+                Proxy__TssDelegationManager: string;
+                Proxy__TssDelegationSlasher: string;
+            };
+        };
         da: {
             BVM_EigenDataLayrChain: string;
             Proxy__BVM_EigenDataLayrChain: string;
