@@ -1,41 +1,43 @@
 addresslist:
-    addressdictator: 0x1FB27316e91e477943A87Eb215E40Fab6b382Fda
-    addressmanager: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    addressdictator: 0xb6D72946Bdf23Aa23b7434A02ae6a3e3843496b9
+    addressmanager: 0x327903410307971Ca7Ba8A6CB2291D3b8825d7F5
     assertionmap: 0x9109811E8eEe02520219612bB5D47C60c382F4aa
-    bondmanager: 0xD076364Fa5de1a4512c58b39ad63DD720B7B9E11
-    bvm_eigendatalayrchain: 0x5a0069E211A28cBD1a7dbD585877596FeD07805b
+    bondmanager: 0xc723Cb5f3337c2F6Eab9b29E78CE42a28B8661d1
+    bvm_eigendatalayrchain: 0x4d048D005DF87E3807d79e4Da1ce5E67e1F53771
     bvm_eigendatalayrfee: 0x1eeAdb6C93161a34b2eBE9994fD73d6B7Bc70817
-    bvml1crossdomainmessenger: 0x30558AbcBf63c80F88320B47c8A8C60E1ab2Ab2e
-    canonicaltransactionchain: 0xEd5166f12FCb48a0804B62FDccB37f59F1F1bc3B
-    chainstoragecontainerctcbatches: 0x0090171f848B2aa86918E5Ef2406Ab3d424fdd83
-    chainstoragecontainersccbatches: 0x9faB987C9C469EB23Da31B7848B28aCf30905eA8
-    chugsplashdictator: 0xC346c14AA2c1001eee47CCEc1404D193ab1667Ab
+    bvml1crossdomainmessenger: 0x22ae16fDdB0eA926e5E710E9f90Ca53e64a956d5
+    canonicaltransactionchain: 0x258e80D5371fD7fFdDFE29E60b366f9FC44844c8
+    chainstoragecontainerctcbatches: 0x208911db669A2E54F736607917519353C80b7D3E
+    chainstoragecontainersccbatches: 0x936f12a99b49324B6Ccc311003Ab270Aa2AD1b24
+    chugsplashdictator: 0x9Fa15AFBB93Ba554b488356C333cfD2D58BA1E4a
     l1mantletoken: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
-    l1standardbridgeforverificationonly: 0xc2E4F2038D456AfEFfF2351234BCaFCB6837baC1
-    libaddressmanager: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    l1standardbridgeforverificationonly: 0x63c3b6092662A2b90dAb51d56994dee25E213a0E
+    libaddressmanager: 0x327903410307971Ca7Ba8A6CB2291D3b8825d7F5
     proxy__assertionmap: 0x4f958F2C2303BDca22b739339cD633F8543BB07D
-    proxy__bvm_eigendatalayrchain: 0x1Edd37fc504513bAa00D782E52478d0a3f675553
+    proxy__bvm_eigendatalayrchain: 0xB807B3D3CcD125165Ce6bF9208f3d7d156E51d83
     proxy__bvm_eigendatalayrfee: 0x91dC1bd9704151B0Bc4cAD3BB5c24494188aA00B
     proxy__l1mantletoken: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
     proxy__rollup: 0xb416faEaEf670632Db2Ad66558e74aaD6518FB84
     proxy__verifier: 0x8013ac56e4c4A562b72a6D8B39D60cDa7aE173A9
-    proxybvml1crossdomainmessenger: 0x8BAccFF561FDe61D6bC8B6f299fFBa561d2189B9
-    proxybvml1standardbridge: 0x82e130FF187E787D5DdDFAa4f36CB59e6B1Da6dd
-    proxytssgroupmanager: 0xe6cd9e7b620964bECd42c7Ad41e56724f515E284
-    proxytssstakingslashing: 0xD007896d9E3e4514a1f1216A91d33a72e15bf5C0
+    proxybvml1crossdomainmessenger: 0x3f41DAcb2dB659e45826126d004ad3E0C8eA680e
+    proxybvml1standardbridge: 0x4cf99b9BC9B2Da64033D1Fb65146Ea60fbe8AD4B
+    proxytssgroupmanager: 0x310AFdDA90095Fdc91B6c0aE95e020B82A68444F
+    proxytssstakingslashing: 0x8178887b6370226B27697603dA72162DC00F0d93
     rollup: 0x86E10B59cFDFeFBCf3ED5b40D018949CbFCE8B59
-    statecommitmentchain: 0x52753615226F8aC8a464bfecb11Ef798CFF3793f
-    tssgroupmanager: 0x36fCf02Fc651c0b7ef2ECA446Dd2405364F85337
-    tssstakingslashing: 0xa83239cf2b900682001f9144144B5E5e5788A631
+    statecommitmentchain: 0x88EC574e2ef0EcF9043373139099f7E535F94dBC
+    tssgroupmanager: 0x41B103a51d50C834508656427915Fd4817acA2b3
+    tssstakingslashing: 0xe4D8A9C9948f7740C912931275Bb74fb5Cd2Ed3a
     verifierentry: 0x2eC3980EcddA68E073c39afD44909f8fe0fE3000
 amount: "1123456789123456789"
 bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
 deploybool: true
 envtype: local
-l1chainid: 31337
+# l1chainid: 31337
+l1chainid: 5
 l1erc20address: 0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b
 l1gaslimit: 30000000
-l1url: http://localhost:9545
+# l1url: http://localhost:9545
+l1url: https://goerli.infura.io/v3/3f31ba1b9fc54dfd92e1e26a64fba7e0
 l1ws: ws://localhost:9545
 l2bridgeaddress: 0x4200000000000000000000000000000000000010
 l2cdmaddress: 0x4200000000000000000000000000000000000007
@@ -43,14 +45,17 @@ l2erc20address: 0x18E317A7D70d8fBf8e6E893616b52390EbBdb629
 l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
 l2gaslimit: 30000000
 l2mntaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
-l2url: http://localhost:8545
+# l2url: http://localhost:8545
+l2url: https://mantle-l2geth.qa.davionlabs.com
 l2ws: ws://localhost:8546
 privatekeylist:
     - - ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
       - 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 rpclist:
-    - chainid: 5000
-      url: http://localhost:8545
+    # - chainid: 5000
+    #   url: http://localhost:8545
+    - chainid: 1705003
+      url: https://mantle-l2geth.qa.davionlabs.com
 toaddress: 0xA6A64636584237A2dcacc19B0E0F4e1df336C15C
 tokenaddress: 0xFCcb552cBB310eDD9B72812171BcA4B3cf80b576
 userprivatekeylist:
@@ -64,12 +69,12 @@ userprivatekeylist:
       - 0x5153C068f932d6D863a8165Fd788d6E9aC665359
     - - ce7cbc777d76794c19dea954d4a075114e953ceafc5400f3092d15e271a83c71
       - 0x36117a1c7b1615A8518Ba51DF5c08921d8B8C37d
-    - - 11d65b9c2dad7b8900ec6cdbc44a2d3d8d20560b2da9d71749fda03648f1fa71
-      - 0x19f3FB1E89b24dE4b2df5010B6cC594e2B333922
+    - - a34a746c310d24ab311ea7e385915a810d176bd8db83cca41fcab2c38d393706
+      - 0xa29d471B919403bF5e07868F2b3C8d27c0430cb2
     - - acb3de07378165aa6142414fb61d964e8058d0e601589d90d0124c44714dd0be
       - 0x4dfd6Ae88347b079456d0fDAA8ABe4c480492d6E
-    - - dbfb1267e9f79aac50d51ff231e35477c072801fabb7ce7fb263e7db1dce05f8
-      - 0x5d003dDf71a1beFe4C159bEF461D24A0288abba9
+    - - a34a746c310d24ab311ea7e385915a810d176bd8db83cca41fcab2c38d393706
+      - 0xa29d471B919403bF5e07868F2b3C8d27c0430cb2
     - - 8f9124e4743e9b7a2727d255c635def0ba1cba1c222cb4f85ce3a69b09b3de55
       - 0xCe5aA49d930EfA016b1Aa358ed53F31c2191CdcB
     - - 473703c8f056161164aceb48fdfa7d8487614dfe5a115897bd99dc6157094ce6
