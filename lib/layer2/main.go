@@ -1132,6 +1132,7 @@ func GetMapLogs(c *ethclient.Client, contractAddress common.Address, contractAbi
 ) {
 
 	query := ethereum.FilterQuery{
+		FromBlock: big.NewInt(0),
 		Addresses: []common.Address{
 			contractAddress,
 		},
