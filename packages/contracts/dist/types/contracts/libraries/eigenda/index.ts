@@ -3,6 +3,6 @@
 /* eslint-disable */
 import type * as parseSol from "./Parse.sol";
 export type { parseSol };
-import type * as lib from "./lib";
-export type { lib };
-export type { DataLayrDisclosureLogic } from "./DataLayrDisclosureLogic";
+import type * as interfaces from "./interfaces";
+export type { interfaces };
+export type { DataStoreUtils } from "./DataStoreUtils";

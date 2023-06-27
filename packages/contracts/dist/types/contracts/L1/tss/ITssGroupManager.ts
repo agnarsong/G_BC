@@ -45,6 +45,8 @@ export interface ITssGroupManagerInterface extends utils.Interface {
     "getTssInactiveGroupInfo()": FunctionFragment;
     "getTssMember(bytes)": FunctionFragment;
     "inActiveIsEmpty()": FunctionFragment;
+    "isTssGroupUnJailMembers(address)": FunctionFragment;
+    "memberExistActive(address)": FunctionFragment;
     "memberExistActive(bytes)": FunctionFragment;
     "memberExistInActive(bytes)": FunctionFragment;
     "memberJail(bytes)": FunctionFragment;
@@ -64,7 +66,9 @@ export interface ITssGroupManagerInterface extends utils.Interface {
       | "getTssInactiveGroupInfo"
       | "getTssMember"
       | "inActiveIsEmpty"
-      | "memberExistActive"
+      | "isTssGroupUnJailMembers"
+      | "memberExistActive(address)"
+      | "memberExistActive(bytes)"
       | "memberExistInActive"
       | "memberJail"
       | "memberUnJail"
@@ -100,7 +104,15 @@ export interface ITssGroupManagerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "memberExistActive",
+    functionFragment: "isTssGroupUnJailMembers",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "memberExistActive(address)",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "memberExistActive(bytes)",
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
@@ -161,7 +173,15 @@ export interface ITssGroupManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "memberExistActive",
+    functionFragment: "isTssGroupUnJailMembers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "memberExistActive(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "memberExistActive(bytes)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -246,7 +266,17 @@ export interface ITssGroupManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    memberExistActive(
+    isTssGroupUnJailMembers(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "memberExistActive(address)"(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "memberExistActive(bytes)"(
       _publicKey: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -320,7 +350,17 @@ export interface ITssGroupManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  memberExistActive(
+  isTssGroupUnJailMembers(
+    _addr: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "memberExistActive(address)"(
+    _addr: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "memberExistActive(bytes)"(
     _publicKey: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -388,7 +428,17 @@ export interface ITssGroupManager extends BaseContract {
 
     inActiveIsEmpty(overrides?: CallOverrides): Promise<boolean>;
 
-    memberExistActive(
+    isTssGroupUnJailMembers(
+      _addr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "memberExistActive(address)"(
+      _addr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "memberExistActive(bytes)"(
       _publicKey: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -465,7 +515,17 @@ export interface ITssGroupManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    memberExistActive(
+    isTssGroupUnJailMembers(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "memberExistActive(address)"(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "memberExistActive(bytes)"(
       _publicKey: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -540,7 +600,17 @@ export interface ITssGroupManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    memberExistActive(
+    isTssGroupUnJailMembers(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "memberExistActive(address)"(
+      _addr: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "memberExistActive(bytes)"(
       _publicKey: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

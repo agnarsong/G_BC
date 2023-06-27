@@ -28,17 +28,11 @@ var filterLogsCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("abi.JSON err: %v", err)
 		}
-		// layer2.GetDataLogs(
-		// 	mc.L1Client,
-		// 	common.HexToAddress("0xd9e2F450525079e1e29fB23Bc7Caca6F61f8fD4a"),
-		// 	contractAbi,
-		// 	"SentMessage(address,address,bytes,uint256,uint256)",
-		// )
 
 		v := map[string]interface{}{}
 		bn, li, err := layer2.GetMapLogs(
 			mc.L1Client,
-			common.HexToAddress("0xd9e2F450525079e1e29fB23Bc7Caca6F61f8fD4a"),
+			common.HexToAddress("0x52753615226F8aC8a464bfecb11Ef798CFF3793f"),
 			contractAbi,
 			"SentMessage(address,address,bytes,uint256,uint256)",
 			v,

@@ -71,6 +71,7 @@ export interface StateCommitmentChainInterface extends utils.Interface {
     "appendStateBatch(bytes32[],uint256,bytes)": FunctionFragment;
     "batches()": FunctionFragment;
     "deleteStateBatch((uint256,bytes32,uint256,uint256,bytes,bytes))": FunctionFragment;
+    "getFraudProofWindow()": FunctionFragment;
     "getLastSequencerTimestamp()": FunctionFragment;
     "getTotalBatches()": FunctionFragment;
     "getTotalElements()": FunctionFragment;
@@ -90,6 +91,7 @@ export interface StateCommitmentChainInterface extends utils.Interface {
       | "appendStateBatch"
       | "batches"
       | "deleteStateBatch"
+      | "getFraudProofWindow"
       | "getLastSequencerTimestamp"
       | "getTotalBatches"
       | "getTotalElements"
@@ -122,6 +124,10 @@ export interface StateCommitmentChainInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "deleteStateBatch",
     values: [Lib_BVMCodec.ChainBatchHeaderStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getFraudProofWindow",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getLastSequencerTimestamp",
@@ -184,6 +190,10 @@ export interface StateCommitmentChainInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "batches", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "deleteStateBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getFraudProofWindow",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -331,6 +341,10 @@ export interface StateCommitmentChain extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getFraudProofWindow(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { _fraudProofWindow: BigNumber }>;
+
     getLastSequencerTimestamp(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _lastSequencerTimestamp: BigNumber }>;
@@ -395,6 +409,8 @@ export interface StateCommitmentChain extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getFraudProofWindow(overrides?: CallOverrides): Promise<BigNumber>;
+
   getLastSequencerTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
 
   getTotalBatches(overrides?: CallOverrides): Promise<BigNumber>;
@@ -452,6 +468,8 @@ export interface StateCommitmentChain extends BaseContract {
       _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getFraudProofWindow(overrides?: CallOverrides): Promise<BigNumber>;
 
     getLastSequencerTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -560,6 +578,8 @@ export interface StateCommitmentChain extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getFraudProofWindow(overrides?: CallOverrides): Promise<BigNumber>;
+
     getLastSequencerTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTotalBatches(overrides?: CallOverrides): Promise<BigNumber>;
@@ -621,6 +641,10 @@ export interface StateCommitmentChain extends BaseContract {
     deleteStateBatch(
       _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getFraudProofWindow(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getLastSequencerTimestamp(

@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -28,16 +27,41 @@ import type {
   PromiseOrValue,
 } from "../../../../common";
 
+export declare namespace Lib_BVMCodec {
+  export type ChainBatchHeaderStruct = {
+    batchIndex: PromiseOrValue<BigNumberish>;
+    batchRoot: PromiseOrValue<BytesLike>;
+    batchSize: PromiseOrValue<BigNumberish>;
+    prevTotalElements: PromiseOrValue<BigNumberish>;
+    signature: PromiseOrValue<BytesLike>;
+    extraData: PromiseOrValue<BytesLike>;
+  };
+
+  export type ChainBatchHeaderStructOutput = [
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    string
+  ] & {
+    batchIndex: BigNumber;
+    batchRoot: string;
+    batchSize: BigNumber;
+    prevTotalElements: BigNumber;
+    signature: string;
+    extraData: string;
+  };
+}
+
 export interface RollupBaseInterface extends utils.Interface {
   functions: {
     "advanceStake(uint256)": FunctionFragment;
     "assertions()": FunctionFragment;
     "baseStakeAmount()": FunctionFragment;
     "challengeAssertion(address[2],uint256[2])": FunctionFragment;
-    "challengePeriod()": FunctionFragment;
     "completeChallenge(address,address)": FunctionFragment;
     "confirmFirstUnresolvedAssertion()": FunctionFragment;
-    "confirmationPeriod()": FunctionFragment;
     "confirmedInboxSize()": FunctionFragment;
     "createAssertion(bytes32,uint256)": FunctionFragment;
     "createAssertionWithStateBatch(bytes32,uint256,bytes32[],uint256,bytes)": FunctionFragment;
@@ -45,8 +69,9 @@ export interface RollupBaseInterface extends utils.Interface {
     "isStaked(address)": FunctionFragment;
     "minimumAssertionPeriod()": FunctionFragment;
     "rejectFirstUnresolvedAssertion()": FunctionFragment;
+    "rejectLatestCreatedAssertionWithBatch((uint256,bytes32,uint256,uint256,bytes,bytes))": FunctionFragment;
     "removeStake(address)": FunctionFragment;
-    "stake()": FunctionFragment;
+    "stake(uint256,address)": FunctionFragment;
     "stakeToken()": FunctionFragment;
     "unstake(uint256)": FunctionFragment;
     "verifier()": FunctionFragment;
@@ -59,10 +84,8 @@ export interface RollupBaseInterface extends utils.Interface {
       | "assertions"
       | "baseStakeAmount"
       | "challengeAssertion"
-      | "challengePeriod"
       | "completeChallenge"
       | "confirmFirstUnresolvedAssertion"
-      | "confirmationPeriod"
       | "confirmedInboxSize"
       | "createAssertion"
       | "createAssertionWithStateBatch"
@@ -70,6 +93,7 @@ export interface RollupBaseInterface extends utils.Interface {
       | "isStaked"
       | "minimumAssertionPeriod"
       | "rejectFirstUnresolvedAssertion"
+      | "rejectLatestCreatedAssertionWithBatch"
       | "removeStake"
       | "stake"
       | "stakeToken"
@@ -98,19 +122,11 @@ export interface RollupBaseInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "challengePeriod",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "completeChallenge",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "confirmFirstUnresolvedAssertion",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "confirmationPeriod",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -148,10 +164,17 @@ export interface RollupBaseInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
+    values: [Lib_BVMCodec.ChainBatchHeaderStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "removeStake",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "stake",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "stakeToken",
     values?: undefined
@@ -177,19 +200,11 @@ export interface RollupBaseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "challengePeriod",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "completeChallenge",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "confirmFirstUnresolvedAssertion",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "confirmationPeriod",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -215,6 +230,10 @@ export interface RollupBaseInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "rejectFirstUnresolvedAssertion",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -355,8 +374,6 @@ export interface RollupBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    challengePeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -366,8 +383,6 @@ export interface RollupBase extends BaseContract {
     confirmFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    confirmationPeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     confirmedInboxSize(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -399,13 +414,20 @@ export interface RollupBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     stakeToken(overrides?: CallOverrides): Promise<[string]>;
@@ -437,8 +459,6 @@ export interface RollupBase extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  challengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
   completeChallenge(
     winner: PromiseOrValue<string>,
     loser: PromiseOrValue<string>,
@@ -448,8 +468,6 @@ export interface RollupBase extends BaseContract {
   confirmFirstUnresolvedAssertion(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  confirmationPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
   confirmedInboxSize(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -481,13 +499,20 @@ export interface RollupBase extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  rejectLatestCreatedAssertionWithBatch(
+    _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   removeStake(
     stakerAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   stake(
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    stakeAmount: PromiseOrValue<BigNumberish>,
+    operator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   stakeToken(overrides?: CallOverrides): Promise<string>;
@@ -522,8 +547,6 @@ export interface RollupBase extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    challengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -531,8 +554,6 @@ export interface RollupBase extends BaseContract {
     ): Promise<void>;
 
     confirmFirstUnresolvedAssertion(overrides?: CallOverrides): Promise<void>;
-
-    confirmationPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     confirmedInboxSize(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -562,12 +583,21 @@ export interface RollupBase extends BaseContract {
 
     rejectFirstUnresolvedAssertion(overrides?: CallOverrides): Promise<void>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stake(overrides?: CallOverrides): Promise<void>;
+    stake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     stakeToken(overrides?: CallOverrides): Promise<string>;
 
@@ -646,8 +676,6 @@ export interface RollupBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    challengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -657,8 +685,6 @@ export interface RollupBase extends BaseContract {
     confirmFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    confirmationPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     confirmedInboxSize(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -690,13 +716,20 @@ export interface RollupBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stakeToken(overrides?: CallOverrides): Promise<BigNumber>;
@@ -732,8 +765,6 @@ export interface RollupBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    challengePeriod(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -742,10 +773,6 @@ export interface RollupBase extends BaseContract {
 
     confirmFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    confirmationPeriod(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     confirmedInboxSize(
@@ -784,13 +811,20 @@ export interface RollupBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stakeToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;

@@ -139,6 +139,44 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_addr",
+        type: "address",
+      },
+    ],
+    name: "isTssGroupUnJailMembers",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_addr",
+        type: "address",
+      },
+    ],
+    name: "memberExistActive",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes",
         name: "_publicKey",
         type: "bytes",

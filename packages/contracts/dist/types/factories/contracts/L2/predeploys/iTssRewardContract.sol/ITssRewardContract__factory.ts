@@ -15,6 +15,25 @@ const _abi = [
     inputs: [
       {
         indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "Claim",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint256",
         name: "lastBatchTime",
         type: "uint256",
@@ -73,6 +92,13 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -102,6 +128,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "queryClaimTime",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "queryReward",
     outputs: [
       {
@@ -114,19 +153,8 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_blockID",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256",
-      },
-    ],
-    name: "updateReward",
+    inputs: [],
+    name: "requestClaim",
     outputs: [
       {
         internalType: "bool",
@@ -138,15 +166,78 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "withdraw",
+    inputs: [
+      {
+        internalType: "address",
+        name: "_staker",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_claimer",
+        type: "address",
+      },
+    ],
+    name: "setClaimer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "sccAddr",
+        type: "address",
+      },
+    ],
+    name: "setSccAddr",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "setSendAmountPerYear",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "ssAddr",
+        type: "address",
+      },
+    ],
+    name: "setStakeSlashAddr",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "setWaitingTime",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "withdrawDust",
+    name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

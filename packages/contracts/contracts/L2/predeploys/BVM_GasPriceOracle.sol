@@ -215,13 +215,4 @@ contract BVM_GasPriceOracle is Ownable,IBVM_GasPriceOracle {
         uint256 unsigned = total + overhead;
         return unsigned + (68 * 16);
     }
-
-    uint256 public counter;
-
-    event CounterIncremented(address indexed user, uint256 newValue);
-
-    function incrementCounter() public {
-        counter++;
-        emit CounterIncremented(msg.sender, counter);
-    }
 }

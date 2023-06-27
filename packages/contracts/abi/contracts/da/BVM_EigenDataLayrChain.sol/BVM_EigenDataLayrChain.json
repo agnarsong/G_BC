@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -199,6 +204,11 @@
               {
                 "internalType": "uint32",
                 "name": "globalDataStoreId",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "referenceBlockNumber",
                 "type": "uint32"
               },
               {
@@ -553,11 +563,11 @@
     "outputs": [
       {
         "internalType": "bytes",
-        "name": "",
+        "name": "provenString",
         "type": "bytes"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -589,6 +599,11 @@
               {
                 "internalType": "uint32",
                 "name": "globalDataStoreId",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "referenceBlockNumber",
                 "type": "uint32"
               },
               {

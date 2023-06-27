@@ -1,38 +1,32 @@
 [
   {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
         "indexed": false,
         "internalType": "address",
-        "name": "",
+        "name": "depositor",
         "type": "address"
       },
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "pledgor",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "pubKey",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
         "indexed": false,
-        "internalType": "struct IStakingSlashing.DepositInfo",
-        "name": "",
-        "type": "tuple"
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "AddDeposit",
+    "name": "Deposit",
     "type": "event"
   },
   {
@@ -73,6 +67,19 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "Paused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "",
         "type": "address"
       },
@@ -92,6 +99,44 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "Unpaused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "depositor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "",
         "type": "address"
       },
@@ -102,53 +147,36 @@
         "type": "uint256"
       }
     ],
-    "name": "Withdraw",
+    "name": "WithdrawQueue",
     "type": "event"
   },
   {
     "inputs": [],
-    "name": "BitToken",
+    "name": "canCompleteQueuedWithdrawal",
     "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "users",
-        "type": "address[]"
-      }
-    ],
-    "name": "batchGetDeposits",
+    "name": "claimerOperators",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "pledgor",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "pubKey",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IStakingSlashing.DepositInfo[]",
+        "internalType": "address",
         "name": "",
-        "type": "tuple[]"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -162,6 +190,52 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "completeWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
+    ],
+    "name": "delegateTo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delegation",
+    "outputs": [
+      {
+        "internalType": "contract IDelegation",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delegationManager",
+    "outputs": [
+      {
+        "internalType": "contract IDelegationManager",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -169,17 +243,28 @@
         "type": "address"
       }
     ],
-    "name": "deposits",
+    "name": "delegators",
     "outputs": [
       {
         "internalType": "address",
-        "name": "pledgor",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "depositor",
         "type": "address"
       },
       {
-        "internalType": "bytes",
-        "name": "pubKey",
-        "type": "bytes"
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -187,18 +272,26 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "name": "deposit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "newShares",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "exIncome",
+    "name": "deposit",
     "outputs": [
       {
         "internalType": "uint256",
@@ -206,43 +299,20 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getDeposits",
+    "inputs": [],
+    "name": "explanation",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "pledgor",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "pubKey",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IStakingSlashing.DepositInfo",
+        "internalType": "string",
         "name": "",
-        "type": "tuple"
+        "type": "string"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -290,11 +360,6 @@
         "internalType": "uint256[2]",
         "name": "",
         "type": "uint256[2]"
-      },
-      {
-        "internalType": "uint256[2]",
-        "name": "",
-        "type": "uint256[2]"
       }
     ],
     "stateMutability": "view",
@@ -304,12 +369,32 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_bitToken",
+        "name": "_mantleToken",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "_tssGroupContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_delegationManager",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_delegation",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_l1messenger",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_regulatoryAccount",
         "type": "address"
       }
     ],
@@ -321,17 +406,12 @@
   {
     "inputs": [
       {
-        "internalType": "bytes",
-        "name": "byteListA",
-        "type": "bytes"
-      },
-      {
-        "internalType": "bytes",
-        "name": "byteListB",
-        "type": "bytes"
+        "internalType": "address",
+        "name": "_addr",
+        "type": "address"
       }
     ],
-    "name": "isEqual",
+    "name": "isCanOperator",
     "outputs": [
       {
         "internalType": "bool",
@@ -339,7 +419,7 @@
         "type": "bool"
       }
     ],
-    "stateMutability": "pure",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -363,6 +443,172 @@
   },
   {
     "inputs": [],
+    "name": "isSetParam",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "messenger",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "delegator",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IDelegationShare[]",
+        "name": "investorDelegationShares",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "investorShares",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "onDelegationReceived",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "delegator",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IDelegationShare[]",
+        "name": "delegationShares",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "investorShares",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "onDelegationReceived",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "delegator",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IDelegationShare[]",
+        "name": "delegationShares",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "investorShares",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "onDelegationWithdrawn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "delegator",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IDelegationShare[]",
+        "name": "investorDelegationShares",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "investorShares",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "onDelegationWithdrawn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "operatorClaimers",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "operators",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -372,6 +618,37 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "payForService",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -401,6 +678,32 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "_pubKey",
+        "type": "bytes"
+      }
+    ],
+    "name": "registerAsOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "regulatoryAccount",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
@@ -411,16 +714,42 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_token",
+        "name": "_operator",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_tssGroup",
+        "name": "_claimer",
         "type": "address"
       }
     ],
-    "name": "setAddress",
+    "name": "setClaimer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "_pubKey",
+        "type": "bytes"
+      }
+    ],
+    "name": "setPublicKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "setRegulatoryAccount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -431,16 +760,94 @@
         "internalType": "uint256[2]",
         "name": "_slashAmount",
         "type": "uint256[2]"
-      },
-      {
-        "internalType": "uint256[2]",
-        "name": "_exIncome",
-        "type": "uint256[2]"
       }
     ],
     "name": "setSlashingParams",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "setTokenAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tssGroup",
+        "type": "address"
+      }
+    ],
+    "name": "setTssGroupAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "shares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountShares",
+        "type": "uint256"
+      }
+    ],
+    "name": "sharesToUnderlying",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountShares",
+        "type": "uint256"
+      }
+    ],
+    "name": "sharesToUnderlyingView",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -483,19 +890,45 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       },
       {
-        "internalType": "bytes",
-        "name": "_pubKey",
-        "type": "bytes"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "staking",
+    "name": "stakers",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -509,6 +942,32 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tssDelegationContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tssDelegationManagerContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -532,10 +991,182 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountUnderlying",
+        "type": "uint256"
+      }
+    ],
+    "name": "underlyingToShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountUnderlying",
+        "type": "uint256"
+      }
+    ],
+    "name": "underlyingToSharesView",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "withdrawToken",
+    "name": "underlyingToken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "userUnderlying",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "userUnderlyingView",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "depositor",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountShares",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawalRoots",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawals",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "depositor",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "withdrawer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint96",
+            "name": "nonce",
+            "type": "uint96"
+          }
+        ],
+        "internalType": "struct IDelegationManager.WithdrawerAndNonce",
+        "name": "withdrawerAndNonce",
+        "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "delegatedAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ]

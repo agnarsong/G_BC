@@ -240,6 +240,19 @@
   },
   {
     "inputs": [],
+    "name": "getFraudProofWindow",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_fraudProofWindow",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getLastSequencerTimestamp",
     "outputs": [
       {

@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -28,6 +27,33 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
+export declare namespace Lib_BVMCodec {
+  export type ChainBatchHeaderStruct = {
+    batchIndex: PromiseOrValue<BigNumberish>;
+    batchRoot: PromiseOrValue<BytesLike>;
+    batchSize: PromiseOrValue<BigNumberish>;
+    prevTotalElements: PromiseOrValue<BigNumberish>;
+    signature: PromiseOrValue<BytesLike>;
+    extraData: PromiseOrValue<BytesLike>;
+  };
+
+  export type ChainBatchHeaderStructOutput = [
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    string
+  ] & {
+    batchIndex: BigNumber;
+    batchRoot: string;
+    batchSize: BigNumber;
+    prevTotalElements: BigNumber;
+    signature: string;
+    extraData: string;
+  };
+}
+
 export interface IRollupInterface extends utils.Interface {
   functions: {
     "advanceStake(uint256)": FunctionFragment;
@@ -41,8 +67,9 @@ export interface IRollupInterface extends utils.Interface {
     "currentRequiredStake()": FunctionFragment;
     "isStaked(address)": FunctionFragment;
     "rejectFirstUnresolvedAssertion()": FunctionFragment;
+    "rejectLatestCreatedAssertionWithBatch((uint256,bytes32,uint256,uint256,bytes,bytes))": FunctionFragment;
     "removeStake(address)": FunctionFragment;
-    "stake()": FunctionFragment;
+    "stake(uint256,address)": FunctionFragment;
     "unstake(uint256)": FunctionFragment;
     "withdraw()": FunctionFragment;
   };
@@ -60,6 +87,7 @@ export interface IRollupInterface extends utils.Interface {
       | "currentRequiredStake"
       | "isStaked"
       | "rejectFirstUnresolvedAssertion"
+      | "rejectLatestCreatedAssertionWithBatch"
       | "removeStake"
       | "stake"
       | "unstake"
@@ -120,10 +148,17 @@ export interface IRollupInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
+    values: [Lib_BVMCodec.ChainBatchHeaderStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "removeStake",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "stake",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "unstake",
     values: [PromiseOrValue<BigNumberish>]
@@ -166,6 +201,10 @@ export interface IRollupInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "isStaked", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "rejectFirstUnresolvedAssertion",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -331,13 +370,20 @@ export interface IRollup extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unstake(
@@ -401,13 +447,20 @@ export interface IRollup extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  rejectLatestCreatedAssertionWithBatch(
+    _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   removeStake(
     stakerAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   stake(
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    stakeAmount: PromiseOrValue<BigNumberish>,
+    operator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unstake(
@@ -470,12 +523,21 @@ export interface IRollup extends BaseContract {
 
     rejectFirstUnresolvedAssertion(overrides?: CallOverrides): Promise<void>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stake(overrides?: CallOverrides): Promise<void>;
+    stake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     unstake(
       stakeAmount: PromiseOrValue<BigNumberish>,
@@ -583,13 +645,20 @@ export interface IRollup extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unstake(
@@ -661,13 +730,20 @@ export interface IRollup extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     removeStake(
       stakerAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unstake(

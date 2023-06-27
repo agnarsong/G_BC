@@ -197,6 +197,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getPauseOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -238,6 +251,13 @@
   {
     "inputs": [],
     "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pauseByPOwner",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -468,6 +488,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_pauseOwner",
+        "type": "address"
+      }
+    ],
+    "name": "setPauseOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
@@ -493,6 +526,13 @@
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "unpause",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

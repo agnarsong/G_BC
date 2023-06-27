@@ -427,6 +427,51 @@ const _abi = [
   {
     inputs: [
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "batchIndex",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "batchRoot",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint256",
+            name: "batchSize",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "prevTotalElements",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "signature",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "extraData",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct Lib_BVMCodec.ChainBatchHeader",
+        name: "_batchHeader",
+        type: "tuple",
+      },
+    ],
+    name: "rejectLatestCreatedAssertionWithBatch",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "stakerAddress",
         type: "address",
@@ -438,10 +483,21 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "stakeAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+    ],
     name: "stake",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

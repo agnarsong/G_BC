@@ -21,11 +21,11 @@
     "outputs": [
       {
         "internalType": "bytes",
-        "name": "",
+        "name": "provenString",
         "type": "bytes"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   }
 ]

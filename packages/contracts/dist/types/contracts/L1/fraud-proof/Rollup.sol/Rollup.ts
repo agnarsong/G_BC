@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -28,23 +27,49 @@ import type {
   PromiseOrValue,
 } from "../../../../common";
 
+export declare namespace Lib_BVMCodec {
+  export type ChainBatchHeaderStruct = {
+    batchIndex: PromiseOrValue<BigNumberish>;
+    batchRoot: PromiseOrValue<BytesLike>;
+    batchSize: PromiseOrValue<BigNumberish>;
+    prevTotalElements: PromiseOrValue<BigNumberish>;
+    signature: PromiseOrValue<BytesLike>;
+    extraData: PromiseOrValue<BytesLike>;
+  };
+
+  export type ChainBatchHeaderStructOutput = [
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    string
+  ] & {
+    batchIndex: BigNumber;
+    batchRoot: string;
+    batchSize: BigNumber;
+    prevTotalElements: BigNumber;
+    signature: string;
+    extraData: string;
+  };
+}
+
 export interface RollupInterface extends utils.Interface {
   functions: {
-    "addToWhitelist(address[])": FunctionFragment;
+    "addToOperatorWhitelist(address[])": FunctionFragment;
+    "addToStakerWhitelist(address[])": FunctionFragment;
     "advanceStake(uint256)": FunctionFragment;
     "assertions()": FunctionFragment;
     "baseStakeAmount()": FunctionFragment;
     "challengeAssertion(address[2],uint256[2])": FunctionFragment;
     "challengeCtx()": FunctionFragment;
-    "challengePeriod()": FunctionFragment;
     "completeChallenge(address,address)": FunctionFragment;
     "confirmFirstUnresolvedAssertion()": FunctionFragment;
-    "confirmationPeriod()": FunctionFragment;
     "confirmedInboxSize()": FunctionFragment;
     "createAssertion(bytes32,uint256)": FunctionFragment;
     "createAssertionWithStateBatch(bytes32,uint256,bytes32[],uint256,bytes)": FunctionFragment;
     "currentRequiredStake()": FunctionFragment;
-    "initialize(address,address,address,address,address,uint256,uint256,uint256,uint256,bytes32,address[])": FunctionFragment;
+    "initialize(address,address,address,address,address,uint256,uint256,bytes32,address[],address[])": FunctionFragment;
     "isStaked(address)": FunctionFragment;
     "lastConfirmedAssertionID()": FunctionFragment;
     "lastCreatedAssertionID()": FunctionFragment;
@@ -52,19 +77,25 @@ export interface RollupInterface extends utils.Interface {
     "libAddressManager()": FunctionFragment;
     "minimumAssertionPeriod()": FunctionFragment;
     "numStakers()": FunctionFragment;
+    "operatorWhitelist(address)": FunctionFragment;
+    "operatorslist(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
+    "registers(address)": FunctionFragment;
     "rejectFirstUnresolvedAssertion()": FunctionFragment;
-    "removeFromWhitelist(address[])": FunctionFragment;
+    "rejectLatestCreatedAssertionWithBatch((uint256,bytes32,uint256,uint256,bytes,bytes))": FunctionFragment;
+    "removeFromOperatorWhitelist(address[])": FunctionFragment;
+    "removeFromStakerWhitelist(address[])": FunctionFragment;
     "removeOldZombies()": FunctionFragment;
     "removeStake(address)": FunctionFragment;
     "resolve(string)": FunctionFragment;
-    "stake()": FunctionFragment;
+    "stake(uint256,address)": FunctionFragment;
     "stakeToken()": FunctionFragment;
+    "stakerWhitelist(address)": FunctionFragment;
     "stakers(address)": FunctionFragment;
+    "stakerslist(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unstake(uint256)": FunctionFragment;
     "verifier()": FunctionFragment;
-    "whitelist(address)": FunctionFragment;
     "withdraw()": FunctionFragment;
     "withdrawableFunds(address)": FunctionFragment;
     "zombies(uint256)": FunctionFragment;
@@ -72,16 +103,15 @@ export interface RollupInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "addToWhitelist"
+      | "addToOperatorWhitelist"
+      | "addToStakerWhitelist"
       | "advanceStake"
       | "assertions"
       | "baseStakeAmount"
       | "challengeAssertion"
       | "challengeCtx"
-      | "challengePeriod"
       | "completeChallenge"
       | "confirmFirstUnresolvedAssertion"
-      | "confirmationPeriod"
       | "confirmedInboxSize"
       | "createAssertion"
       | "createAssertionWithStateBatch"
@@ -94,26 +124,36 @@ export interface RollupInterface extends utils.Interface {
       | "libAddressManager"
       | "minimumAssertionPeriod"
       | "numStakers"
+      | "operatorWhitelist"
+      | "operatorslist"
       | "owner"
+      | "registers"
       | "rejectFirstUnresolvedAssertion"
-      | "removeFromWhitelist"
+      | "rejectLatestCreatedAssertionWithBatch"
+      | "removeFromOperatorWhitelist"
+      | "removeFromStakerWhitelist"
       | "removeOldZombies"
       | "removeStake"
       | "resolve"
       | "stake"
       | "stakeToken"
+      | "stakerWhitelist"
       | "stakers"
+      | "stakerslist"
       | "transferOwnership"
       | "unstake"
       | "verifier"
-      | "whitelist"
       | "withdraw"
       | "withdrawableFunds"
       | "zombies"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "addToWhitelist",
+    functionFragment: "addToOperatorWhitelist",
+    values: [PromiseOrValue<string>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addToStakerWhitelist",
     values: [PromiseOrValue<string>[]]
   ): string;
   encodeFunctionData(
@@ -140,19 +180,11 @@ export interface RollupInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "challengePeriod",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "completeChallenge",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "confirmFirstUnresolvedAssertion",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "confirmationPeriod",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -187,9 +219,8 @@ export interface RollupInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>[],
       PromiseOrValue<string>[]
     ]
   ): string;
@@ -221,13 +252,33 @@ export interface RollupInterface extends utils.Interface {
     functionFragment: "numStakers",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "operatorWhitelist",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "operatorslist",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "registers",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "rejectFirstUnresolvedAssertion",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "removeFromWhitelist",
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
+    values: [Lib_BVMCodec.ChainBatchHeaderStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeFromOperatorWhitelist",
+    values: [PromiseOrValue<string>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeFromStakerWhitelist",
     values: [PromiseOrValue<string>[]]
   ): string;
   encodeFunctionData(
@@ -242,14 +293,25 @@ export interface RollupInterface extends utils.Interface {
     functionFragment: "resolve",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "stake",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "stakeToken",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "stakerWhitelist",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "stakers",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "stakerslist",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -260,10 +322,6 @@ export interface RollupInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "verifier", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "whitelist",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdrawableFunds",
@@ -275,7 +333,11 @@ export interface RollupInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "addToWhitelist",
+    functionFragment: "addToOperatorWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "addToStakerWhitelist",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -296,19 +358,11 @@ export interface RollupInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "challengePeriod",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "completeChallenge",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "confirmFirstUnresolvedAssertion",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "confirmationPeriod",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -350,13 +404,30 @@ export interface RollupInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "numStakers", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "operatorWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "operatorslist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "registers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "rejectFirstUnresolvedAssertion",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeFromWhitelist",
+    functionFragment: "rejectLatestCreatedAssertionWithBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeFromOperatorWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeFromStakerWhitelist",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -370,14 +441,21 @@ export interface RollupInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "resolve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakeToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stakerWhitelist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "stakers", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stakerslist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "verifier", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawableFunds",
@@ -509,7 +587,12 @@ export interface Rollup extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    addToWhitelist(
+    addToOperatorWhitelist(
+      toAddAddresses: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    addToStakerWhitelist(
       toAddAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -545,8 +628,6 @@ export interface Rollup extends BaseContract {
       }
     >;
 
-    challengePeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -556,8 +637,6 @@ export interface Rollup extends BaseContract {
     confirmFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    confirmationPeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     confirmedInboxSize(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -584,12 +663,11 @@ export interface Rollup extends BaseContract {
       _stakeToken: PromiseOrValue<string>,
       _libAddressManager: PromiseOrValue<string>,
       _assertionMap: PromiseOrValue<string>,
-      _confirmationPeriod: PromiseOrValue<BigNumberish>,
-      _challengePeriod: PromiseOrValue<BigNumberish>,
       _minimumAssertionPeriod: PromiseOrValue<BigNumberish>,
       _baseStakeAmount: PromiseOrValue<BigNumberish>,
       _initialVMhash: PromiseOrValue<BytesLike>,
-      whitelists: PromiseOrValue<string>[],
+      stakerWhitelists: PromiseOrValue<string>[],
+      operatorWhitelists: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -610,13 +688,38 @@ export interface Rollup extends BaseContract {
 
     numStakers(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    operatorWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    registers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     rejectFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    removeFromWhitelist(
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    removeFromOperatorWhitelist(
+      toRemoveAddresses: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    removeFromStakerWhitelist(
       toRemoveAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -636,22 +739,35 @@ export interface Rollup extends BaseContract {
     ): Promise<[string]>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     stakeToken(overrides?: CallOverrides): Promise<[string]>;
+
+    stakerWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     stakers(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, BigNumber, string] & {
+      [boolean, BigNumber, BigNumber, string, string] & {
         isStaked: boolean;
         amountStaked: BigNumber;
         assertionID: BigNumber;
+        operator: string;
         currentChallenge: string;
       }
     >;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -664,11 +780,6 @@ export interface Rollup extends BaseContract {
     ): Promise<ContractTransaction>;
 
     verifier(overrides?: CallOverrides): Promise<[string]>;
-
-    whitelist(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -690,7 +801,12 @@ export interface Rollup extends BaseContract {
     >;
   };
 
-  addToWhitelist(
+  addToOperatorWhitelist(
+    toAddAddresses: PromiseOrValue<string>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  addToStakerWhitelist(
     toAddAddresses: PromiseOrValue<string>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -723,8 +839,6 @@ export interface Rollup extends BaseContract {
     }
   >;
 
-  challengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
   completeChallenge(
     winner: PromiseOrValue<string>,
     loser: PromiseOrValue<string>,
@@ -734,8 +848,6 @@ export interface Rollup extends BaseContract {
   confirmFirstUnresolvedAssertion(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  confirmationPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
   confirmedInboxSize(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -762,12 +874,11 @@ export interface Rollup extends BaseContract {
     _stakeToken: PromiseOrValue<string>,
     _libAddressManager: PromiseOrValue<string>,
     _assertionMap: PromiseOrValue<string>,
-    _confirmationPeriod: PromiseOrValue<BigNumberish>,
-    _challengePeriod: PromiseOrValue<BigNumberish>,
     _minimumAssertionPeriod: PromiseOrValue<BigNumberish>,
     _baseStakeAmount: PromiseOrValue<BigNumberish>,
     _initialVMhash: PromiseOrValue<BytesLike>,
-    whitelists: PromiseOrValue<string>[],
+    stakerWhitelists: PromiseOrValue<string>[],
+    operatorWhitelists: PromiseOrValue<string>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -788,13 +899,38 @@ export interface Rollup extends BaseContract {
 
   numStakers(overrides?: CallOverrides): Promise<BigNumber>;
 
+  operatorWhitelist(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  operatorslist(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   owner(overrides?: CallOverrides): Promise<string>;
+
+  registers(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   rejectFirstUnresolvedAssertion(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  removeFromWhitelist(
+  rejectLatestCreatedAssertionWithBatch(
+    _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  removeFromOperatorWhitelist(
+    toRemoveAddresses: PromiseOrValue<string>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  removeFromStakerWhitelist(
     toRemoveAddresses: PromiseOrValue<string>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -814,22 +950,35 @@ export interface Rollup extends BaseContract {
   ): Promise<string>;
 
   stake(
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    stakeAmount: PromiseOrValue<BigNumberish>,
+    operator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   stakeToken(overrides?: CallOverrides): Promise<string>;
+
+  stakerWhitelist(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   stakers(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
-    [boolean, BigNumber, BigNumber, string] & {
+    [boolean, BigNumber, BigNumber, string, string] & {
       isStaked: boolean;
       amountStaked: BigNumber;
       assertionID: BigNumber;
+      operator: string;
       currentChallenge: string;
     }
   >;
+
+  stakerslist(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
@@ -842,11 +991,6 @@ export interface Rollup extends BaseContract {
   ): Promise<ContractTransaction>;
 
   verifier(overrides?: CallOverrides): Promise<string>;
-
-  whitelist(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   withdraw(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -865,7 +1009,12 @@ export interface Rollup extends BaseContract {
   >;
 
   callStatic: {
-    addToWhitelist(
+    addToOperatorWhitelist(
+      toAddAddresses: PromiseOrValue<string>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    addToStakerWhitelist(
       toAddAddresses: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<void>;
@@ -901,8 +1050,6 @@ export interface Rollup extends BaseContract {
       }
     >;
 
-    challengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -910,8 +1057,6 @@ export interface Rollup extends BaseContract {
     ): Promise<void>;
 
     confirmFirstUnresolvedAssertion(overrides?: CallOverrides): Promise<void>;
-
-    confirmationPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     confirmedInboxSize(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -938,12 +1083,11 @@ export interface Rollup extends BaseContract {
       _stakeToken: PromiseOrValue<string>,
       _libAddressManager: PromiseOrValue<string>,
       _assertionMap: PromiseOrValue<string>,
-      _confirmationPeriod: PromiseOrValue<BigNumberish>,
-      _challengePeriod: PromiseOrValue<BigNumberish>,
       _minimumAssertionPeriod: PromiseOrValue<BigNumberish>,
       _baseStakeAmount: PromiseOrValue<BigNumberish>,
       _initialVMhash: PromiseOrValue<BytesLike>,
-      whitelists: PromiseOrValue<string>[],
+      stakerWhitelists: PromiseOrValue<string>[],
+      operatorWhitelists: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -964,11 +1108,36 @@ export interface Rollup extends BaseContract {
 
     numStakers(overrides?: CallOverrides): Promise<BigNumber>;
 
+    operatorWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     owner(overrides?: CallOverrides): Promise<string>;
+
+    registers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     rejectFirstUnresolvedAssertion(overrides?: CallOverrides): Promise<void>;
 
-    removeFromWhitelist(
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    removeFromOperatorWhitelist(
+      toRemoveAddresses: PromiseOrValue<string>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    removeFromStakerWhitelist(
       toRemoveAddresses: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<void>;
@@ -985,21 +1154,36 @@ export interface Rollup extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    stake(overrides?: CallOverrides): Promise<void>;
+    stake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     stakeToken(overrides?: CallOverrides): Promise<string>;
+
+    stakerWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     stakers(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, BigNumber, string] & {
+      [boolean, BigNumber, BigNumber, string, string] & {
         isStaked: boolean;
         amountStaked: BigNumber;
         assertionID: BigNumber;
+        operator: string;
         currentChallenge: string;
       }
     >;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -1012,11 +1196,6 @@ export interface Rollup extends BaseContract {
     ): Promise<void>;
 
     verifier(overrides?: CallOverrides): Promise<string>;
-
-    whitelist(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     withdraw(overrides?: CallOverrides): Promise<void>;
 
@@ -1092,7 +1271,12 @@ export interface Rollup extends BaseContract {
   };
 
   estimateGas: {
-    addToWhitelist(
+    addToOperatorWhitelist(
+      toAddAddresses: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    addToStakerWhitelist(
       toAddAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1117,8 +1301,6 @@ export interface Rollup extends BaseContract {
 
     challengeCtx(overrides?: CallOverrides): Promise<BigNumber>;
 
-    challengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -1128,8 +1310,6 @@ export interface Rollup extends BaseContract {
     confirmFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    confirmationPeriod(overrides?: CallOverrides): Promise<BigNumber>;
 
     confirmedInboxSize(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1156,12 +1336,11 @@ export interface Rollup extends BaseContract {
       _stakeToken: PromiseOrValue<string>,
       _libAddressManager: PromiseOrValue<string>,
       _assertionMap: PromiseOrValue<string>,
-      _confirmationPeriod: PromiseOrValue<BigNumberish>,
-      _challengePeriod: PromiseOrValue<BigNumberish>,
       _minimumAssertionPeriod: PromiseOrValue<BigNumberish>,
       _baseStakeAmount: PromiseOrValue<BigNumberish>,
       _initialVMhash: PromiseOrValue<BytesLike>,
-      whitelists: PromiseOrValue<string>[],
+      stakerWhitelists: PromiseOrValue<string>[],
+      operatorWhitelists: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1182,13 +1361,38 @@ export interface Rollup extends BaseContract {
 
     numStakers(overrides?: CallOverrides): Promise<BigNumber>;
 
+    operatorWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    registers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     rejectFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    removeFromWhitelist(
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    removeFromOperatorWhitelist(
+      toRemoveAddresses: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    removeFromStakerWhitelist(
       toRemoveAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1208,13 +1412,25 @@ export interface Rollup extends BaseContract {
     ): Promise<BigNumber>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stakeToken(overrides?: CallOverrides): Promise<BigNumber>;
 
+    stakerWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     stakers(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1229,11 +1445,6 @@ export interface Rollup extends BaseContract {
     ): Promise<BigNumber>;
 
     verifier(overrides?: CallOverrides): Promise<BigNumber>;
-
-    whitelist(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1251,7 +1462,12 @@ export interface Rollup extends BaseContract {
   };
 
   populateTransaction: {
-    addToWhitelist(
+    addToOperatorWhitelist(
+      toAddAddresses: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    addToStakerWhitelist(
       toAddAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -1276,8 +1492,6 @@ export interface Rollup extends BaseContract {
 
     challengeCtx(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    challengePeriod(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     completeChallenge(
       winner: PromiseOrValue<string>,
       loser: PromiseOrValue<string>,
@@ -1286,10 +1500,6 @@ export interface Rollup extends BaseContract {
 
     confirmFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    confirmationPeriod(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     confirmedInboxSize(
@@ -1321,12 +1531,11 @@ export interface Rollup extends BaseContract {
       _stakeToken: PromiseOrValue<string>,
       _libAddressManager: PromiseOrValue<string>,
       _assertionMap: PromiseOrValue<string>,
-      _confirmationPeriod: PromiseOrValue<BigNumberish>,
-      _challengePeriod: PromiseOrValue<BigNumberish>,
       _minimumAssertionPeriod: PromiseOrValue<BigNumberish>,
       _baseStakeAmount: PromiseOrValue<BigNumberish>,
       _initialVMhash: PromiseOrValue<BytesLike>,
-      whitelists: PromiseOrValue<string>[],
+      stakerWhitelists: PromiseOrValue<string>[],
+      operatorWhitelists: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1355,13 +1564,38 @@ export interface Rollup extends BaseContract {
 
     numStakers(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    operatorWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    operatorslist(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    registers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     rejectFirstUnresolvedAssertion(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    removeFromWhitelist(
+    rejectLatestCreatedAssertionWithBatch(
+      _batchHeader: Lib_BVMCodec.ChainBatchHeaderStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    removeFromOperatorWhitelist(
+      toRemoveAddresses: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    removeFromStakerWhitelist(
       toRemoveAddresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -1381,13 +1615,25 @@ export interface Rollup extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     stake(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stakeToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    stakerWhitelist(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     stakers(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    stakerslist(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1402,11 +1648,6 @@ export interface Rollup extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     verifier(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    whitelist(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }

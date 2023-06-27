@@ -31,14 +31,12 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
   functions: {
     "IsBurning()": FunctionFragment;
     "charge()": FunctionFragment;
-    "counter()": FunctionFragment;
     "daGasPrice()": FunctionFragment;
     "daSwitch()": FunctionFragment;
     "decimals()": FunctionFragment;
     "gasPrice()": FunctionFragment;
     "getL1Fee(bytes)": FunctionFragment;
     "getL1GasUsed(bytes)": FunctionFragment;
-    "incrementCounter()": FunctionFragment;
     "l1BaseFee()": FunctionFragment;
     "overhead()": FunctionFragment;
     "owner()": FunctionFragment;
@@ -61,14 +59,12 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "IsBurning"
       | "charge"
-      | "counter"
       | "daGasPrice"
       | "daSwitch"
       | "decimals"
       | "gasPrice"
       | "getL1Fee"
       | "getL1GasUsed"
-      | "incrementCounter"
       | "l1BaseFee"
       | "overhead"
       | "owner"
@@ -89,7 +85,6 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
 
   encodeFunctionData(functionFragment: "IsBurning", values?: undefined): string;
   encodeFunctionData(functionFragment: "charge", values?: undefined): string;
-  encodeFunctionData(functionFragment: "counter", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "daGasPrice",
     values?: undefined
@@ -104,10 +99,6 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getL1GasUsed",
     values: [PromiseOrValue<BytesLike>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "incrementCounter",
-    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "l1BaseFee", values?: undefined): string;
   encodeFunctionData(functionFragment: "overhead", values?: undefined): string;
@@ -164,7 +155,6 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "IsBurning", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "charge", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "counter", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "daGasPrice", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "daSwitch", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
@@ -172,10 +162,6 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "getL1Fee", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getL1GasUsed",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "incrementCounter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "l1BaseFee", data: BytesLike): Result;
@@ -224,7 +210,6 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
 
   events: {
     "ChargeUpdated(uint256)": EventFragment;
-    "CounterIncremented(address,uint256)": EventFragment;
     "DAGasPriceUpdated(uint256)": EventFragment;
     "DASwitchUpdated(uint256)": EventFragment;
     "DecimalsUpdated(uint256)": EventFragment;
@@ -237,7 +222,6 @@ export interface BVM_GasPriceOracleInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "ChargeUpdated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CounterIncremented"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DAGasPriceUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DASwitchUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DecimalsUpdated"): EventFragment;
@@ -258,18 +242,6 @@ export type ChargeUpdatedEvent = TypedEvent<
 >;
 
 export type ChargeUpdatedEventFilter = TypedEventFilter<ChargeUpdatedEvent>;
-
-export interface CounterIncrementedEventObject {
-  user: string;
-  newValue: BigNumber;
-}
-export type CounterIncrementedEvent = TypedEvent<
-  [string, BigNumber],
-  CounterIncrementedEventObject
->;
-
-export type CounterIncrementedEventFilter =
-  TypedEventFilter<CounterIncrementedEvent>;
 
 export interface DAGasPriceUpdatedEventObject {
   arg0: BigNumber;
@@ -397,8 +369,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
 
     charge(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    counter(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     daGasPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     daSwitch(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -416,10 +386,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
       _data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    incrementCounter(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     l1BaseFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -490,8 +456,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
 
   charge(overrides?: CallOverrides): Promise<BigNumber>;
 
-  counter(overrides?: CallOverrides): Promise<BigNumber>;
-
   daGasPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
   daSwitch(overrides?: CallOverrides): Promise<BigNumber>;
@@ -509,10 +473,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
     _data: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  incrementCounter(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   l1BaseFee(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -583,8 +543,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
 
     charge(overrides?: CallOverrides): Promise<BigNumber>;
 
-    counter(overrides?: CallOverrides): Promise<BigNumber>;
-
     daGasPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     daSwitch(overrides?: CallOverrides): Promise<BigNumber>;
@@ -602,8 +560,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
       _data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    incrementCounter(overrides?: CallOverrides): Promise<void>;
 
     l1BaseFee(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -672,15 +628,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
     "ChargeUpdated(uint256)"(arg0?: null): ChargeUpdatedEventFilter;
     ChargeUpdated(arg0?: null): ChargeUpdatedEventFilter;
 
-    "CounterIncremented(address,uint256)"(
-      user?: PromiseOrValue<string> | null,
-      newValue?: null
-    ): CounterIncrementedEventFilter;
-    CounterIncremented(
-      user?: PromiseOrValue<string> | null,
-      newValue?: null
-    ): CounterIncrementedEventFilter;
-
     "DAGasPriceUpdated(uint256)"(arg0?: null): DAGasPriceUpdatedEventFilter;
     DAGasPriceUpdated(arg0?: null): DAGasPriceUpdatedEventFilter;
 
@@ -720,8 +667,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
 
     charge(overrides?: CallOverrides): Promise<BigNumber>;
 
-    counter(overrides?: CallOverrides): Promise<BigNumber>;
-
     daGasPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     daSwitch(overrides?: CallOverrides): Promise<BigNumber>;
@@ -738,10 +683,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
     getL1GasUsed(
       _data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    incrementCounter(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     l1BaseFee(overrides?: CallOverrides): Promise<BigNumber>;
@@ -814,8 +755,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
 
     charge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    counter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     daGasPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     daSwitch(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -832,10 +771,6 @@ export interface BVM_GasPriceOracle extends BaseContract {
     getL1GasUsed(
       _data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    incrementCounter(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     l1BaseFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;

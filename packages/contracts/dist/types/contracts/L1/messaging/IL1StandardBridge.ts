@@ -34,9 +34,9 @@ export interface IL1StandardBridgeInterface extends utils.Interface {
     "depositERC20To(address,address,address,uint256,uint32,bytes)": FunctionFragment;
     "depositETH(uint32,bytes)": FunctionFragment;
     "depositETHTo(address,uint32,bytes)": FunctionFragment;
-    "finalizeBitWithdrawal(address,address,uint256,bytes)": FunctionFragment;
     "finalizeERC20Withdrawal(address,address,address,address,uint256,bytes)": FunctionFragment;
     "finalizeETHWithdrawal(address,address,uint256,bytes)": FunctionFragment;
+    "finalizeMantleWithdrawal(address,address,uint256,bytes)": FunctionFragment;
     "l2TokenBridge()": FunctionFragment;
   };
 
@@ -46,9 +46,9 @@ export interface IL1StandardBridgeInterface extends utils.Interface {
       | "depositERC20To"
       | "depositETH"
       | "depositETHTo"
-      | "finalizeBitWithdrawal"
       | "finalizeERC20Withdrawal"
       | "finalizeETHWithdrawal"
+      | "finalizeMantleWithdrawal"
       | "l2TokenBridge"
   ): FunctionFragment;
 
@@ -86,15 +86,6 @@ export interface IL1StandardBridgeInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "finalizeBitWithdrawal",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "finalizeERC20Withdrawal",
     values: [
       PromiseOrValue<string>,
@@ -107,6 +98,15 @@ export interface IL1StandardBridgeInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "finalizeETHWithdrawal",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "finalizeMantleWithdrawal",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
@@ -133,15 +133,15 @@ export interface IL1StandardBridgeInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "finalizeBitWithdrawal",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "finalizeERC20Withdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "finalizeETHWithdrawal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "finalizeMantleWithdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -281,14 +281,6 @@ export interface IL1StandardBridge extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    finalizeBitWithdrawal(
-      _from: PromiseOrValue<string>,
-      _to: PromiseOrValue<string>,
-      _amount: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     finalizeERC20Withdrawal(
       _l1Token: PromiseOrValue<string>,
       _l2Token: PromiseOrValue<string>,
@@ -300,6 +292,14 @@ export interface IL1StandardBridge extends BaseContract {
     ): Promise<ContractTransaction>;
 
     finalizeETHWithdrawal(
+      _from: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -344,14 +344,6 @@ export interface IL1StandardBridge extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  finalizeBitWithdrawal(
-    _from: PromiseOrValue<string>,
-    _to: PromiseOrValue<string>,
-    _amount: PromiseOrValue<BigNumberish>,
-    _data: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   finalizeERC20Withdrawal(
     _l1Token: PromiseOrValue<string>,
     _l2Token: PromiseOrValue<string>,
@@ -363,6 +355,14 @@ export interface IL1StandardBridge extends BaseContract {
   ): Promise<ContractTransaction>;
 
   finalizeETHWithdrawal(
+    _from: PromiseOrValue<string>,
+    _to: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    _data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  finalizeMantleWithdrawal(
     _from: PromiseOrValue<string>,
     _to: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
@@ -407,14 +407,6 @@ export interface IL1StandardBridge extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    finalizeBitWithdrawal(
-      _from: PromiseOrValue<string>,
-      _to: PromiseOrValue<string>,
-      _amount: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     finalizeERC20Withdrawal(
       _l1Token: PromiseOrValue<string>,
       _l2Token: PromiseOrValue<string>,
@@ -426,6 +418,14 @@ export interface IL1StandardBridge extends BaseContract {
     ): Promise<void>;
 
     finalizeETHWithdrawal(
+      _from: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -531,14 +531,6 @@ export interface IL1StandardBridge extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    finalizeBitWithdrawal(
-      _from: PromiseOrValue<string>,
-      _to: PromiseOrValue<string>,
-      _amount: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     finalizeERC20Withdrawal(
       _l1Token: PromiseOrValue<string>,
       _l2Token: PromiseOrValue<string>,
@@ -550,6 +542,14 @@ export interface IL1StandardBridge extends BaseContract {
     ): Promise<BigNumber>;
 
     finalizeETHWithdrawal(
+      _from: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
@@ -595,14 +595,6 @@ export interface IL1StandardBridge extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    finalizeBitWithdrawal(
-      _from: PromiseOrValue<string>,
-      _to: PromiseOrValue<string>,
-      _amount: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     finalizeERC20Withdrawal(
       _l1Token: PromiseOrValue<string>,
       _l2Token: PromiseOrValue<string>,
@@ -614,6 +606,14 @@ export interface IL1StandardBridge extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     finalizeETHWithdrawal(
+      _from: PromiseOrValue<string>,
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    finalizeMantleWithdrawal(
       _from: PromiseOrValue<string>,
       _to: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,

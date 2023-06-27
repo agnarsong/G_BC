@@ -23,67 +23,77 @@ import type {
   PromiseOrValue,
 } from "../../../../common";
 
-export declare namespace IStakingSlashing {
-  export type DepositInfoStruct = {
-    pledgor: PromiseOrValue<string>;
-    pubKey: PromiseOrValue<BytesLike>;
-    amount: PromiseOrValue<BigNumberish>;
-  };
-
-  export type DepositInfoStructOutput = [string, string, BigNumber] & {
-    pledgor: string;
-    pubKey: string;
-    amount: BigNumber;
-  };
-}
-
 export interface IStakingSlashingInterface extends utils.Interface {
   functions: {
-    "batchGetDeposits(address[])": FunctionFragment;
+    "canCompleteQueuedWithdrawal()": FunctionFragment;
     "clearQuitRequestList()": FunctionFragment;
-    "getDeposits(address)": FunctionFragment;
+    "completeWithdraw()": FunctionFragment;
+    "delegateTo(address)": FunctionFragment;
+    "deposit(uint256)": FunctionFragment;
     "getQuitRequestList()": FunctionFragment;
     "getSlashRecord(uint256,address)": FunctionFragment;
     "getSlashingParams()": FunctionFragment;
+    "isCanOperator(address)": FunctionFragment;
     "isJailed(address)": FunctionFragment;
     "quitRequest()": FunctionFragment;
-    "setAddress(address,address)": FunctionFragment;
-    "setSlashingParams(uint256[2],uint256[2])": FunctionFragment;
+    "registerAsOperator(bytes)": FunctionFragment;
+    "setClaimer(address,address)": FunctionFragment;
+    "setPublicKey(bytes)": FunctionFragment;
+    "setRegulatoryAccount(address)": FunctionFragment;
+    "setSlashingParams(uint256[2])": FunctionFragment;
+    "setTokenAddress(address)": FunctionFragment;
+    "setTssGroupAddress(address)": FunctionFragment;
     "slashing(bytes,bytes)": FunctionFragment;
-    "staking(uint256,bytes)": FunctionFragment;
+    "startWithdraw()": FunctionFragment;
     "unJail()": FunctionFragment;
-    "withdrawToken()": FunctionFragment;
+    "withdraw()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "batchGetDeposits"
+      | "canCompleteQueuedWithdrawal"
       | "clearQuitRequestList"
-      | "getDeposits"
+      | "completeWithdraw"
+      | "delegateTo"
+      | "deposit"
       | "getQuitRequestList"
       | "getSlashRecord"
       | "getSlashingParams"
+      | "isCanOperator"
       | "isJailed"
       | "quitRequest"
-      | "setAddress"
+      | "registerAsOperator"
+      | "setClaimer"
+      | "setPublicKey"
+      | "setRegulatoryAccount"
       | "setSlashingParams"
+      | "setTokenAddress"
+      | "setTssGroupAddress"
       | "slashing"
-      | "staking"
+      | "startWithdraw"
       | "unJail"
-      | "withdrawToken"
+      | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "batchGetDeposits",
-    values: [PromiseOrValue<string>[]]
+    functionFragment: "canCompleteQueuedWithdrawal",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "clearQuitRequestList",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getDeposits",
+    functionFragment: "completeWithdraw",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegateTo",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getQuitRequestList",
@@ -98,6 +108,10 @@ export interface IStakingSlashingInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "isCanOperator",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isJailed",
     values: [PromiseOrValue<string>]
   ): string;
@@ -106,32 +120,46 @@ export interface IStakingSlashingInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "setAddress",
+    functionFragment: "registerAsOperator",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setClaimer",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPublicKey",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRegulatoryAccount",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setSlashingParams",
-    values: [
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-    ]
+    values: [[PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setTokenAddress",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setTssGroupAddress",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "slashing",
     values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
-    functionFragment: "staking",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
-  ): string;
-  encodeFunctionData(functionFragment: "unJail", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "withdrawToken",
+    functionFragment: "startWithdraw",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "unJail", values?: undefined): string;
+  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
   decodeFunctionResult(
-    functionFragment: "batchGetDeposits",
+    functionFragment: "canCompleteQueuedWithdrawal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -139,9 +167,11 @@ export interface IStakingSlashingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getDeposits",
+    functionFragment: "completeWithdraw",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "delegateTo", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getQuitRequestList",
     data: BytesLike
@@ -154,23 +184,47 @@ export interface IStakingSlashingInterface extends utils.Interface {
     functionFragment: "getSlashingParams",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "isCanOperator",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isJailed", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "quitRequest",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setAddress", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "registerAsOperator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setClaimer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setPublicKey",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setRegulatoryAccount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setSlashingParams",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "slashing", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "staking", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "unJail", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawToken",
+    functionFragment: "setTokenAddress",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "setTssGroupAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "slashing", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "startWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "unJail", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {};
 }
@@ -202,17 +256,25 @@ export interface IStakingSlashing extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    batchGetDeposits(
-      arg0: PromiseOrValue<string>[],
-      overrides?: CallOverrides
-    ): Promise<[IStakingSlashing.DepositInfoStructOutput[]]>;
+    canCompleteQueuedWithdrawal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     clearQuitRequestList(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getDeposits(
+    completeWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    delegateTo(
       arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    deposit(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -226,7 +288,12 @@ export interface IStakingSlashing extends BaseContract {
 
     getSlashingParams(
       overrides?: CallOverrides
-    ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
+    ): Promise<[[BigNumber, BigNumber]]>;
+
+    isCanOperator(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     isJailed(
       arg0: PromiseOrValue<string>,
@@ -237,15 +304,39 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setAddress(
+    registerAsOperator(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setClaimer(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setPublicKey(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setRegulatoryAccount(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setSlashingParams(
       arg0: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      arg1: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setTokenAddress(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setTssGroupAddress(
+      arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -255,9 +346,7 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    staking(
-      arg0: PromiseOrValue<BigNumberish>,
-      arg1: PromiseOrValue<BytesLike>,
+    startWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -265,22 +354,30 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    withdrawToken(
+    withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
-  batchGetDeposits(
-    arg0: PromiseOrValue<string>[],
-    overrides?: CallOverrides
-  ): Promise<IStakingSlashing.DepositInfoStructOutput[]>;
+  canCompleteQueuedWithdrawal(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   clearQuitRequestList(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getDeposits(
+  completeWithdraw(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  delegateTo(
     arg0: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  deposit(
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -292,9 +389,12 @@ export interface IStakingSlashing extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  getSlashingParams(
-    overrides?: CallOverrides
-  ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
+  getSlashingParams(overrides?: CallOverrides): Promise<[BigNumber, BigNumber]>;
+
+  isCanOperator(
+    arg0: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   isJailed(
     arg0: PromiseOrValue<string>,
@@ -305,15 +405,39 @@ export interface IStakingSlashing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setAddress(
+  registerAsOperator(
+    arg0: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setClaimer(
     arg0: PromiseOrValue<string>,
     arg1: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setPublicKey(
+    arg0: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setRegulatoryAccount(
+    arg0: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setSlashingParams(
     arg0: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-    arg1: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setTokenAddress(
+    arg0: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setTssGroupAddress(
+    arg0: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -323,9 +447,7 @@ export interface IStakingSlashing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  staking(
-    arg0: PromiseOrValue<BigNumberish>,
-    arg1: PromiseOrValue<BytesLike>,
+  startWithdraw(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -333,22 +455,26 @@ export interface IStakingSlashing extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  withdrawToken(
+  withdraw(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    batchGetDeposits(
-      arg0: PromiseOrValue<string>[],
-      overrides?: CallOverrides
-    ): Promise<IStakingSlashing.DepositInfoStructOutput[]>;
+    canCompleteQueuedWithdrawal(overrides?: CallOverrides): Promise<boolean>;
 
     clearQuitRequestList(overrides?: CallOverrides): Promise<void>;
 
-    getDeposits(
+    completeWithdraw(overrides?: CallOverrides): Promise<void>;
+
+    delegateTo(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<IStakingSlashing.DepositInfoStructOutput>;
+    ): Promise<void>;
+
+    deposit(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getQuitRequestList(overrides?: CallOverrides): Promise<string[]>;
 
@@ -360,7 +486,12 @@ export interface IStakingSlashing extends BaseContract {
 
     getSlashingParams(
       overrides?: CallOverrides
-    ): Promise<[[BigNumber, BigNumber], [BigNumber, BigNumber]]>;
+    ): Promise<[BigNumber, BigNumber]>;
+
+    isCanOperator(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     isJailed(
       arg0: PromiseOrValue<string>,
@@ -369,15 +500,39 @@ export interface IStakingSlashing extends BaseContract {
 
     quitRequest(overrides?: CallOverrides): Promise<void>;
 
-    setAddress(
+    registerAsOperator(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setClaimer(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setPublicKey(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setRegulatoryAccount(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setSlashingParams(
       arg0: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      arg1: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setTokenAddress(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setTssGroupAddress(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -387,31 +542,35 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    staking(
-      arg0: PromiseOrValue<BigNumberish>,
-      arg1: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    startWithdraw(overrides?: CallOverrides): Promise<void>;
 
     unJail(overrides?: CallOverrides): Promise<void>;
 
-    withdrawToken(overrides?: CallOverrides): Promise<void>;
+    withdraw(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
 
   estimateGas: {
-    batchGetDeposits(
-      arg0: PromiseOrValue<string>[],
-      overrides?: CallOverrides
+    canCompleteQueuedWithdrawal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     clearQuitRequestList(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getDeposits(
+    completeWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegateTo(
       arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    deposit(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -425,6 +584,11 @@ export interface IStakingSlashing extends BaseContract {
 
     getSlashingParams(overrides?: CallOverrides): Promise<BigNumber>;
 
+    isCanOperator(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     isJailed(
       arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -434,15 +598,39 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setAddress(
+    registerAsOperator(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setClaimer(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setPublicKey(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setRegulatoryAccount(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setSlashingParams(
       arg0: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      arg1: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setTokenAddress(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setTssGroupAddress(
+      arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -452,9 +640,7 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    staking(
-      arg0: PromiseOrValue<BigNumberish>,
-      arg1: PromiseOrValue<BytesLike>,
+    startWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -462,23 +648,31 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    withdrawToken(
+    withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    batchGetDeposits(
-      arg0: PromiseOrValue<string>[],
-      overrides?: CallOverrides
+    canCompleteQueuedWithdrawal(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     clearQuitRequestList(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getDeposits(
+    completeWithdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegateTo(
       arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    deposit(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -494,6 +688,11 @@ export interface IStakingSlashing extends BaseContract {
 
     getSlashingParams(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    isCanOperator(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     isJailed(
       arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -503,15 +702,39 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setAddress(
+    registerAsOperator(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setClaimer(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setPublicKey(
+      arg0: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setRegulatoryAccount(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     setSlashingParams(
       arg0: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      arg1: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTokenAddress(
+      arg0: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTssGroupAddress(
+      arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -521,9 +744,7 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    staking(
-      arg0: PromiseOrValue<BigNumberish>,
-      arg1: PromiseOrValue<BytesLike>,
+    startWithdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -531,7 +752,7 @@ export interface IStakingSlashing extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    withdrawToken(
+    withdraw(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

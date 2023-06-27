@@ -32,6 +32,7 @@ export declare namespace IDataLayrServiceManager {
     headerHash: PromiseOrValue<BytesLike>;
     durationDataStoreId: PromiseOrValue<BigNumberish>;
     globalDataStoreId: PromiseOrValue<BigNumberish>;
+    referenceBlockNumber: PromiseOrValue<BigNumberish>;
     blockNumber: PromiseOrValue<BigNumberish>;
     fee: PromiseOrValue<BigNumberish>;
     confirmer: PromiseOrValue<string>;
@@ -43,6 +44,7 @@ export declare namespace IDataLayrServiceManager {
     number,
     number,
     number,
+    number,
     BigNumber,
     string,
     string
@@ -50,6 +52,7 @@ export declare namespace IDataLayrServiceManager {
     headerHash: string;
     durationDataStoreId: number;
     globalDataStoreId: number;
+    referenceBlockNumber: number;
     blockNumber: number;
     fee: BigNumber;
     confirmer: string;
@@ -173,7 +176,7 @@ export interface BVM_EigenDataLayrChainInterface extends utils.Interface {
   functions: {
     "BLOCK_STALE_MEASURE()": FunctionFragment;
     "FRAUD_STRING()": FunctionFragment;
-    "confirmData(bytes,((bytes32,uint32,uint32,uint32,uint96,address,bytes32),uint8,uint256,uint32),uint256,uint256,uint32,uint256,bool)": FunctionFragment;
+    "confirmData(bytes,((bytes32,uint32,uint32,uint32,uint32,uint96,address,bytes32),uint8,uint256,uint32),uint256,uint256,uint32,uint256,bool)": FunctionFragment;
     "dataManageAddress()": FunctionFragment;
     "dataStoreIdToL2RollUpBlock(uint32)": FunctionFragment;
     "dataStoreIdToRollupStoreNumber(uint32)": FunctionFragment;
@@ -187,7 +190,7 @@ export interface BVM_EigenDataLayrChainInterface extends utils.Interface {
     "l2StoredBlockNumber()": FunctionFragment;
     "owner()": FunctionFragment;
     "parse(bytes[],uint256,uint256)": FunctionFragment;
-    "proveFraud(uint256,uint256,((bytes32,uint32,uint32,uint32,uint96,address,bytes32),uint8,uint256,uint32),(bytes,uint32,bytes[],((uint256,uint256),(uint256,uint256),(uint256[2],uint256[2]),bytes)[],(uint256[2],uint256[2])))": FunctionFragment;
+    "proveFraud(uint256,uint256,((bytes32,uint32,uint32,uint32,uint32,uint96,address,bytes32),uint8,uint256,uint32),(bytes,uint32,bytes[],((uint256,uint256),(uint256,uint256),(uint256[2],uint256[2]),bytes)[],(uint256[2],uint256[2])))": FunctionFragment;
     "reRollupBatchIndex(uint256)": FunctionFragment;
     "reRollupIndex()": FunctionFragment;
     "reSubmitterAddress()": FunctionFragment;
@@ -744,8 +747,8 @@ export interface BVM_EigenDataLayrChain extends BaseContract {
       polys: PromiseOrValue<BytesLike>[],
       startIndex: PromiseOrValue<BigNumberish>,
       length: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[string] & { provenString: string }>;
 
     proveFraud(
       fraudulentStoreNumber: PromiseOrValue<BigNumberish>,
@@ -925,8 +928,8 @@ export interface BVM_EigenDataLayrChain extends BaseContract {
     polys: PromiseOrValue<BytesLike>[],
     startIndex: PromiseOrValue<BigNumberish>,
     length: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   proveFraud(
     fraudulentStoreNumber: PromiseOrValue<BigNumberish>,
@@ -1344,7 +1347,7 @@ export interface BVM_EigenDataLayrChain extends BaseContract {
       polys: PromiseOrValue<BytesLike>[],
       startIndex: PromiseOrValue<BigNumberish>,
       length: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     proveFraud(
@@ -1523,7 +1526,7 @@ export interface BVM_EigenDataLayrChain extends BaseContract {
       polys: PromiseOrValue<BytesLike>[],
       startIndex: PromiseOrValue<BigNumberish>,
       length: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     proveFraud(

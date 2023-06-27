@@ -24,14 +24,14 @@ import type {
 
 export interface ChugSplashDictatorInterface extends utils.Interface {
   functions: {
-    "bitAddressSlotKey()": FunctionFragment;
-    "bitAddressSlotVal()": FunctionFragment;
     "bridgeSlotKey()": FunctionFragment;
     "bridgeSlotVal()": FunctionFragment;
     "codeHash()": FunctionFragment;
     "doActions(bytes)": FunctionFragment;
     "finalOwner()": FunctionFragment;
     "isUpgrading()": FunctionFragment;
+    "mantleAddressSlotKey()": FunctionFragment;
+    "mantleAddressSlotVal()": FunctionFragment;
     "messengerSlotKey()": FunctionFragment;
     "messengerSlotVal()": FunctionFragment;
     "returnOwnership()": FunctionFragment;
@@ -40,28 +40,20 @@ export interface ChugSplashDictatorInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "bitAddressSlotKey"
-      | "bitAddressSlotVal"
       | "bridgeSlotKey"
       | "bridgeSlotVal"
       | "codeHash"
       | "doActions"
       | "finalOwner"
       | "isUpgrading"
+      | "mantleAddressSlotKey"
+      | "mantleAddressSlotVal"
       | "messengerSlotKey"
       | "messengerSlotVal"
       | "returnOwnership"
       | "target"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "bitAddressSlotKey",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "bitAddressSlotVal",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "bridgeSlotKey",
     values?: undefined
@@ -84,6 +76,14 @@ export interface ChugSplashDictatorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "mantleAddressSlotKey",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mantleAddressSlotVal",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "messengerSlotKey",
     values?: undefined
   ): string;
@@ -98,14 +98,6 @@ export interface ChugSplashDictatorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "target", values?: undefined): string;
 
   decodeFunctionResult(
-    functionFragment: "bitAddressSlotKey",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "bitAddressSlotVal",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "bridgeSlotKey",
     data: BytesLike
   ): Result;
@@ -118,6 +110,14 @@ export interface ChugSplashDictatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "finalOwner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isUpgrading",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "mantleAddressSlotKey",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "mantleAddressSlotVal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -164,10 +164,6 @@ export interface ChugSplashDictator extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    bitAddressSlotKey(overrides?: CallOverrides): Promise<[string]>;
-
-    bitAddressSlotVal(overrides?: CallOverrides): Promise<[string]>;
-
     bridgeSlotKey(overrides?: CallOverrides): Promise<[string]>;
 
     bridgeSlotVal(overrides?: CallOverrides): Promise<[string]>;
@@ -183,6 +179,10 @@ export interface ChugSplashDictator extends BaseContract {
 
     isUpgrading(overrides?: CallOverrides): Promise<[boolean]>;
 
+    mantleAddressSlotKey(overrides?: CallOverrides): Promise<[string]>;
+
+    mantleAddressSlotVal(overrides?: CallOverrides): Promise<[string]>;
+
     messengerSlotKey(overrides?: CallOverrides): Promise<[string]>;
 
     messengerSlotVal(overrides?: CallOverrides): Promise<[string]>;
@@ -193,10 +193,6 @@ export interface ChugSplashDictator extends BaseContract {
 
     target(overrides?: CallOverrides): Promise<[string]>;
   };
-
-  bitAddressSlotKey(overrides?: CallOverrides): Promise<string>;
-
-  bitAddressSlotVal(overrides?: CallOverrides): Promise<string>;
 
   bridgeSlotKey(overrides?: CallOverrides): Promise<string>;
 
@@ -213,6 +209,10 @@ export interface ChugSplashDictator extends BaseContract {
 
   isUpgrading(overrides?: CallOverrides): Promise<boolean>;
 
+  mantleAddressSlotKey(overrides?: CallOverrides): Promise<string>;
+
+  mantleAddressSlotVal(overrides?: CallOverrides): Promise<string>;
+
   messengerSlotKey(overrides?: CallOverrides): Promise<string>;
 
   messengerSlotVal(overrides?: CallOverrides): Promise<string>;
@@ -224,10 +224,6 @@ export interface ChugSplashDictator extends BaseContract {
   target(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    bitAddressSlotKey(overrides?: CallOverrides): Promise<string>;
-
-    bitAddressSlotVal(overrides?: CallOverrides): Promise<string>;
-
     bridgeSlotKey(overrides?: CallOverrides): Promise<string>;
 
     bridgeSlotVal(overrides?: CallOverrides): Promise<string>;
@@ -243,6 +239,10 @@ export interface ChugSplashDictator extends BaseContract {
 
     isUpgrading(overrides?: CallOverrides): Promise<boolean>;
 
+    mantleAddressSlotKey(overrides?: CallOverrides): Promise<string>;
+
+    mantleAddressSlotVal(overrides?: CallOverrides): Promise<string>;
+
     messengerSlotKey(overrides?: CallOverrides): Promise<string>;
 
     messengerSlotVal(overrides?: CallOverrides): Promise<string>;
@@ -255,10 +255,6 @@ export interface ChugSplashDictator extends BaseContract {
   filters: {};
 
   estimateGas: {
-    bitAddressSlotKey(overrides?: CallOverrides): Promise<BigNumber>;
-
-    bitAddressSlotVal(overrides?: CallOverrides): Promise<BigNumber>;
-
     bridgeSlotKey(overrides?: CallOverrides): Promise<BigNumber>;
 
     bridgeSlotVal(overrides?: CallOverrides): Promise<BigNumber>;
@@ -274,6 +270,10 @@ export interface ChugSplashDictator extends BaseContract {
 
     isUpgrading(overrides?: CallOverrides): Promise<BigNumber>;
 
+    mantleAddressSlotKey(overrides?: CallOverrides): Promise<BigNumber>;
+
+    mantleAddressSlotVal(overrides?: CallOverrides): Promise<BigNumber>;
+
     messengerSlotKey(overrides?: CallOverrides): Promise<BigNumber>;
 
     messengerSlotVal(overrides?: CallOverrides): Promise<BigNumber>;
@@ -286,10 +286,6 @@ export interface ChugSplashDictator extends BaseContract {
   };
 
   populateTransaction: {
-    bitAddressSlotKey(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    bitAddressSlotVal(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     bridgeSlotKey(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     bridgeSlotVal(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -304,6 +300,14 @@ export interface ChugSplashDictator extends BaseContract {
     finalOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     isUpgrading(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    mantleAddressSlotKey(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    mantleAddressSlotVal(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     messengerSlotKey(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
