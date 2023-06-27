@@ -1,61 +1,61 @@
 addresslist:
-    addressdictator: 0x1FB27316e91e477943A87Eb215E40Fab6b382Fda
-    addressmanager: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
+    addressdictator: 0xFfE4D4fA8559512221758D3Fc64B50ab2b7f33BA
+    addressmanager: 0xdF7798fF55C8299537e06A8FAE6530ea258261a7
     assertionmap: 0x9109811E8eEe02520219612bB5D47C60c382F4aa
-    bondmanager: 0xD076364Fa5de1a4512c58b39ad63DD720B7B9E11
-    bvm_eigendatalayrchain: 0x5a0069E211A28cBD1a7dbD585877596FeD07805b
-    bvm_eigendatalayrfee: 0x1eeAdb6C93161a34b2eBE9994fD73d6B7Bc70817
-    bvml1crossdomainmessenger: 0x30558AbcBf63c80F88320B47c8A8C60E1ab2Ab2e
-    canonicaltransactionchain: 0xEd5166f12FCb48a0804B62FDccB37f59F1F1bc3B
-    chainstoragecontainerctcbatches: 0x0090171f848B2aa86918E5Ef2406Ab3d424fdd83
-    chainstoragecontainersccbatches: 0x9faB987C9C469EB23Da31B7848B28aCf30905eA8
-    chugsplashdictator: 0xC346c14AA2c1001eee47CCEc1404D193ab1667Ab
-    l1mantletoken: 0x92aBAD50368175785e4270ca9eFd169c949C4ce1
-    l1standardbridgeforverificationonly: 0xc2E4F2038D456AfEFfF2351234BCaFCB6837baC1
-    libaddressmanager: 0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612
-    proxy__assertionmap: 0x4f958F2C2303BDca22b739339cD633F8543BB07D
-    proxy__bvm_eigendatalayrchain: 0x1Edd37fc504513bAa00D782E52478d0a3f675553
-    proxy__bvm_eigendatalayrfee: 0x91dC1bd9704151B0Bc4cAD3BB5c24494188aA00B
-    proxy__l1mantletoken: 0x19C22f181280dF6Ad1d97285cdD430173Df91C12
-    proxy__rollup: 0xb416faEaEf670632Db2Ad66558e74aaD6518FB84
-    proxy__verifier: 0x8013ac56e4c4A562b72a6D8B39D60cDa7aE173A9
-    proxybvml1crossdomainmessenger: 0x8BAccFF561FDe61D6bC8B6f299fFBa561d2189B9
-    proxybvml1standardbridge: 0x82e130FF187E787D5DdDFAa4f36CB59e6B1Da6dd
+    bondmanager: 0x8328C30547A9889CFa4E97135926D13d3B4f9852
+    bvm_eigendatalayrchain: 0x46a97A5023Eb414E5b852DfA042e9E796e5416DF
+    bvm_eigendatalayrfee: 0xf60ce633e5A5c62DE817fD065f9e2ca507AF2B92
+    bvml1crossdomainmessenger: 0x48b7907528521e7B9953EA67fA50Ad106cd70638
+    canonicaltransactionchain: 0xDd775342EE8cBB6Cc18fce7EF1Bae0E1fE97eFd8
+    chainstoragecontainerctcbatches: 0x3FA35DB49efDc42AF59aCf98B13277D0E99aF5B6
+    chainstoragecontainersccbatches: 0xf81C3A5366ff65Aad718868eA6E75F14b7E3Ceb4
+    chugsplashdictator: 0x939F74Fc7f6260f7E4aAdD2Dd801673EEdb2430f
+    l1mantletoken: 0xc1dC2d65A2243c22344E725677A3E3BEBD26E604
+    l1standardbridgeforverificationonly: 0xc07d1F9F7571C9FA344F8A0B949E7cDbD55b8e7d
+    libaddressmanager: 0x0B52B5444a52462b911a3DC163A6539b5c8575fB
+    proxy__assertionmap: 0x8E08f45A4508645992C635973d02EFd2e609cc65
+    proxy__bvm_eigendatalayrchain: 0xD2EB844f05FE9FaF85a615d8B4dBE57b0AE08346
+    proxy__bvm_eigendatalayrfee: 0x7ad9d03dE0c78F2f26d60e41eDa406E98e365d35
+    proxy__l1mantletoken: 0xc1dC2d65A2243c22344E725677A3E3BEBD26E604
+    proxy__rollup: 0x6469d5068d38c01C3Bd26B4Bf5ADDeF4393e627E
+    proxy__verifier: 0xCCd12E780006247f2127bD51dd350D27a3fDFF62
+    proxybvml1crossdomainmessenger: 0xbE59bda17Fa8786072AfFAa082C17d6dCD99dbA0
+    proxybvml1standardbridge: 0xCfA3bE7d06A881D71E1396e136b54f1384afbc2e
     proxytssgroupmanager: 0xe6cd9e7b620964bECd42c7Ad41e56724f515E284
-    proxytssstakingslashing: 0xD007896d9E3e4514a1f1216A91d33a72e15bf5C0
-    rollup: 0x86E10B59cFDFeFBCf3ED5b40D018949CbFCE8B59
-    statecommitmentchain: 0x52753615226F8aC8a464bfecb11Ef798CFF3793f
-    tssgroupmanager: 0x36fCf02Fc651c0b7ef2ECA446Dd2405364F85337
-    tssstakingslashing: 0xa83239cf2b900682001f9144144B5E5e5788A631
-    verifierentry: 0x2eC3980EcddA68E073c39afD44909f8fe0fE3000
-amount: "1123456789123456789"
+    proxytssstakingslashing: 0x98310Fc5e4A69f495e706499e5F593469240E18A
+    rollup: 0xF3873b5820d173Cb61790e40cb99Def61729465A
+    statecommitmentchain: 0x68a62c0e4603190099C8675acfAa8eAf137EE022
+    tssgroupmanager: 0x4Ba03E6201Fea4A8334615645eEd3bD3CF9aD8A7
+    tssstakingslashing: 0x19F02AAd2BD9BfEe1873BB79Cc799827b11F730C
+    verifierentry: 0x9C9e5E393f2445d7E7FF885839ABCbCE125Fd012
+amount: "1"
 bvm_l2tol1messagepasser: 0x4200000000000000000000000000000000000000
 deploybool: true
 envtype: local
-l1chainid: 31337
+l1chainid: 5
 l1erc20address: 0xdFdE6B33f13de2CA1A75A6F7169f50541B14f75b
 l1gaslimit: 30000000
-l1url: http://localhost:9545
-l1ws: ws://localhost:9545
+l1url: https://goerli.infura.io/v3/3f31ba1b9fc54dfd92e1e26a64fba7e0
+l1ws: wss://goerli.infura.io/v3/3f31ba1b9fc54dfd92e1e26a64fba7e0
 l2bridgeaddress: 0x4200000000000000000000000000000000000010
 l2cdmaddress: 0x4200000000000000000000000000000000000007
 l2erc20address: 0x18E317A7D70d8fBf8e6E893616b52390EbBdb629
 l2ethaddress: 0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111
 l2gaslimit: 30000000
 l2mntaddress: 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
-l2url: http://localhost:8545
-l2ws: ws://localhost:8546
+l2url: https://rpc4blockscout.mainnet.gomantle.org
+l2ws: wss://rpc4blockscout.mainnet.gomantle.org
 privatekeylist:
     - - ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
       - 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 rpclist:
     - chainid: 5000
-      url: http://localhost:8545
+      url: https://rpc4blockscout.mainnet.gomantle.org
 toaddress: 0xA6A64636584237A2dcacc19B0E0F4e1df336C15C
 tokenaddress: 0xFCcb552cBB310eDD9B72812171BcA4B3cf80b576
 userprivatekeylist:
-    - - ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-      - 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+    - - e7bbfa2e0a24248701d7de1745495d8c7e08a835782006db5dddc37442f2ccb2
+      - 0xa42D235E91C378c982e31877868511DCdaA352E8
     - - a34a746c310d24ab311ea7e385915a810d176bd8db83cca41fcab2c38d393706
       - 0xa29d471B919403bF5e07868F2b3C8d27c0430cb2
     - - 5e884e1033aee65f61aa8582fe04928a18fbabf771a651027e9297f7efa59c53
