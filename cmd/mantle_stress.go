@@ -37,6 +37,7 @@ func init() {
 	d20Cmd.Flags().BoolVarP(&isMNT, "isMNT", "", false, "the l1 ERC20 is MNT")
 	d20Cmd.Flags().BoolVarP(&isETH, "isETH", "", false, "the l2 ERC20 is ETH")
 
+	fmt.Println("==> 2")
 }
 
 var stressCmd = &cobra.Command{
@@ -45,6 +46,7 @@ var stressCmd = &cobra.Command{
 	Short:   "压测工具",
 	Long:    "压测工具",
 	RunE: func(cmd *cobra.Command, args []string) error {
+
 		// 打印l1 l2 的高度
 		cid1, err := mc.L1Client.ChainID(context.Background())
 		fmt.Println("l1 ChainID: ", cid1)
@@ -59,7 +61,10 @@ var stressCmd = &cobra.Command{
 		}
 		return nil
 	},
-	PersistentPreRunE: mantleCmd.PersistentPreRunE,
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+
+		return nil
+	},
 }
 
 var dntCmd = &cobra.Command{
@@ -71,13 +76,12 @@ var dntCmd = &cobra.Command{
 --layer == l1, 转账l1的ETH
 --layer == l2, 转账l2的nativeToken`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-
+		fmt.Println("====>3", layer)
 		if err := stress.DNT(&mc, layer); err != nil {
 			return err
 		}
 		return nil
 	},
-	PreRunE: stressCmd.PersistentPreRunE,
 }
 
 // 在l2上部署普通的erc20合约
@@ -125,7 +129,6 @@ var ERC20Cmd = &cobra.Command{
 		}
 		return nil
 	},
-	PreRunE: stressCmd.PersistentPreRunE,
 }
 
 // erc20 分发token
@@ -165,7 +168,6 @@ var d20Cmd = &cobra.Command{
 		}
 		return nil
 	},
-	PreRunE: stressCmd.PersistentPreRunE,
 }
 
 // Stability
@@ -512,7 +514,6 @@ var stCmd = &cobra.Command{
 		waitGroup.Wait()
 		return nil
 	},
-	PreRunE: stressCmd.PersistentPreRunE,
 }
 
 // run
@@ -526,5 +527,4 @@ var rCmd = &cobra.Command{
 		fmt.Println("todo……")
 		return nil
 	},
-	PreRunE: stressCmd.PersistentPreRunE,
 }

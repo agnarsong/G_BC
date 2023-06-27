@@ -25,7 +25,6 @@ func init() {
 	}
 
 	mtCmd.AddCommand(mantleCmd)
-	mantleCmd.AddCommand(dntCmd)
 	mantleCmd.AddCommand(ERC20Cmd)
 	mantleCmd.AddCommand(d20Cmd)
 	mantleCmd.AddCommand(stCmd)
@@ -40,6 +39,29 @@ func init() {
 	mantleCmd.PersistentFlags().StringVarP(&amount, "amount", "a", "1", "transfer amount")
 	mantleCmd.PersistentFlags().StringVarP(&privateKey, "privateKey", "p", "", "privateKey")
 
+	// 初始化
+	if err := viper.Unmarshal(&mc.Env); err != nil {
+		fmt.Println("viper.Unmarshal err: ", err)
+		return
+	}
+
+	if err = layer2.InitSc(&mc); err != nil {
+		fmt.Println("viper.Unmarshal err: ", err)
+		return
+	}
+
+	// 更新配置文件
+	if viper.Get("addresslist.Proxy__L1MantleToken") != mc.Env.AddressList.Proxy__L1MantleToken {
+		viper.Set("addresslist", mc.Env.AddressList)
+		viper.Set("userprivatekeylist", mc.Env.PrivateKeyList)
+
+		err := viper.WriteConfig()
+		if err != nil {
+			fmt.Println("write config failed: ", err)
+			return
+		}
+	}
+	fmt.Println("==> 1")
 }
 
 var (
@@ -53,6 +75,20 @@ var (
 	isETH      bool
 	maxRetries = 10
 )
+
+type IntoConf struct {
+	Url        string
+	Layer      string
+	Contract   string
+	PriKey     string
+	ToAddress  string
+	Amount     string
+	IsMNT      bool
+	IsETH      bool
+	StartBlock uint64
+	EndBlock   uint64
+	Block      uint64
+}
 
 var mantleCmd = &cobra.Command{
 	Use:     "m",
@@ -77,26 +113,6 @@ var mantleCmd = &cobra.Command{
 		return nil
 	},
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-
-		// 初始化
-		if err := viper.Unmarshal(&mc.Env); err != nil {
-			return err
-		}
-
-		if err = layer2.InitSc(&mc); err != nil {
-			return err
-		}
-
-		// 更新配置文件
-		if viper.Get("addresslist.Proxy__L1MantleToken") != mc.Env.AddressList.Proxy__L1MantleToken {
-			viper.Set("addresslist", mc.Env.AddressList)
-			viper.Set("userprivatekeylist", mc.Env.PrivateKeyList)
-
-			err := viper.WriteConfig()
-			if err != nil {
-				return fmt.Errorf("write config failed: %v", err)
-			}
-		}
 
 		return nil
 	},
