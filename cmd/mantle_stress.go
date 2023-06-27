@@ -291,6 +291,9 @@ var stCmd = &cobra.Command{
 					fmt.Println("Withdraw MNT txHash: ", tx.Hash())
 					time.Sleep(time.Duration(2) * time.Second)
 
+					if err = lib.CheckReceiptStatus(mc.L2Client, tx.Hash()); err != nil {
+						fmt.Printf("txHash: %v, \nWithdrawBIT GetReStatus err: %v\n", tx.Hash(), err)
+					}
 					layer2.FinalizeMessage(&mc, tx.Hash())
 					// layer2.FinalizeMessage(&mc, common.HexToHash("0xc966ddb1031f8543856a527bc24b837240a6787f6454cdfad05f0a10b6e67b01"))
 
