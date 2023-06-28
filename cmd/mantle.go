@@ -61,7 +61,6 @@ func init() {
 			return
 		}
 	}
-	fmt.Println("==> 1")
 }
 
 var (

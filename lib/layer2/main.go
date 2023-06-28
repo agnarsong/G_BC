@@ -140,9 +140,9 @@ func InitSc(mc *MantleCenter) (err error) {
 	}
 
 	mc.L1WSClient, err = lib.NewEthClient(mc.Env.L1WS)
-	if err != nil {
-		return fmt.Errorf("mc.L1WSClient err: %v", err)
-	}
+	// if err != nil {
+	// 	return fmt.Errorf("mc.L1WSClient err: %v", err)
+	// }
 
 	mc.L2Client, err = lib.NewEthClient(mc.Env.L2URL)
 	if err != nil {
@@ -150,9 +150,9 @@ func InitSc(mc *MantleCenter) (err error) {
 	}
 
 	mc.L2WSClient, err = lib.NewEthClient(mc.Env.L2WS)
-	if err != nil {
-		return fmt.Errorf("mc.L2Client err: %v", err)
-	}
+	// if err != nil {
+	// 	return fmt.Errorf("mc.L2Client err: %v", err)
+	// }
 
 	mc.UserPrivateKey, err = crypto.HexToECDSA(mc.Env.PrivateKeyList[0][0])
 	if err != nil {
