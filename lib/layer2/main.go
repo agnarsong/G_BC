@@ -139,10 +139,10 @@ func InitSc(mc *MantleCenter) (err error) {
 		return fmt.Errorf("mc.L1Client err: %v", err)
 	}
 
-	// mc.L1WSClient, err = lib.NewEthClient(mc.Env.L1WS)
-	// if err != nil {
-	// 	return fmt.Errorf("mc.L1WSClient err: %v", err)
-	// }
+	mc.L1WSClient, err = lib.NewEthClient(mc.Env.L1WS)
+	if err != nil {
+		return fmt.Errorf("mc.L1WSClient err: %v", err)
+	}
 
 	mc.L2Client, err = lib.NewEthClient(mc.Env.L2URL)
 	if err != nil {
