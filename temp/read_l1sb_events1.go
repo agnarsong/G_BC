@@ -16,10 +16,10 @@ import (
 
 func main() {
 	// client, err := ethclient.Dial("http://127.0.0.1:9545")
-	client, err := ethclient.Dial("http://127.0.0.1:8545")
+	// client, err := ethclient.Dial("http://127.0.0.1:8545")
 	// client, err := ethclient.Dial("https://rpc.testnet.mantle.xyz/")
 	// client, err := ethclient.Dial("https://mantle-l2geth.qa.davionlabs.com")
-	// client, err := ethclient.Dial("https://goerli.infura.io/v3/3f31ba1b9fc54dfd92e1e26a64fba7e0")
+	client, err := ethclient.Dial("https://goerli.infura.io/v3/3f31ba1b9fc54dfd92e1e26a64fba7e0")
 	// client, err := ethclient.Dial("http://dev-bitnetwork-eth-goerli.node.bybchain.io")
 
 	if err != nil {
@@ -27,13 +27,14 @@ func main() {
 	}
 
 	// 0x Protocol (ZRX) token address
-	contractAddress := common.HexToAddress("0x4200000000000000000000000000000000000020")
+	// contractAddress := common.HexToAddress("0x4200000000000000000000000000000000000020")
 	// contractAddress := common.HexToAddress("0xe6cd9e7b620964bECd42c7Ad41e56724f515E284")
 	// contractAddress := common.HexToAddress("0x7A8B94a9fA2bb0581D2EEA2fEd875FCA97494612")
 	// contractAddress := common.HexToAddress("0xa647f5947c50248bc4b2ef773791c9c2bc01c65a")
+	contractAddress := common.HexToAddress("0xDd775342EE8cBB6Cc18fce7EF1Bae0E1fE97eFd8")
 
 	query := ethereum.FilterQuery{
-		FromBlock: big.NewInt(0),
+		FromBlock: big.NewInt(9200000),
 		Addresses: []common.Address{
 			contractAddress,
 		},
@@ -44,23 +45,25 @@ func main() {
 		log.Fatal(err)
 	}
 
-	contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lastBatchTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"batchTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"tssMembers\",\"type\":\"address[]\"}],\"name\":\"DistributeTssReward\",\"type\":\"event\"}]")))
+	// contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lastBatchTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"batchTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"tssMembers\",\"type\":\"address[]\"}],\"name\":\"DistributeTssReward\",\"type\":\"event\"}]")))
 	// contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"contract IDelegationCallback\",\"name\":\"delegationTerms\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"returnData\",\"type\":\"bytes32\"}],\"name\":\"OnDelegationWithdrawnCallFailure\",\"type\":\"event\"}]")))
 	// contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"delegatior\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"DelegateTo\",\"type\":\"event\"}]")))
 	// contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_newAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_oldAddress\",\"type\":\"address\"}],\"name\":\"AddressSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_newAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_oldAddress\",\"type\":\"address\"}],\"name\":\"AddressSet\",\"type\":\"event\"}]")))
-
+	contractAbi, err := abi.JSON(strings.NewReader(string("[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_l1TxOrigin\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_target\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_gasLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"_queueIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_timestamp\",\"type\":\"uint256\"}],\"name\":\"TransactionEnqueued\",\"type\":\"event\"}]")))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	method := "DistributeTssReward"
-	dSig := []byte("DistributeTssReward(uint256,uint256,uint256,address[])")
+	// method := "DistributeTssReward"
+	// dSig := []byte("DistributeTssReward(uint256,uint256,uint256,address[])")
 	// method := "OnDelegationWithdrawnCallFailure"
 	// dSig := []byte("OnDelegationWithdrawnCallFailure(address,bytes32)")
 	// method := "DelegateTo"
 	// dSig := []byte("DelegateTo(address,address)")
 	// method := "AddressSet"
 	// dSig := []byte("AddressSet(string,address,address)")
+	method := "TransactionEnqueued"
+	dSig := []byte("TransactionEnqueued(address,address,uint256,bytes,uint256,uint256)")
 
 	dHash := crypto.Keccak256Hash(dSig)
 	fmt.Println("dHash: ", dHash)

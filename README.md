@@ -212,21 +212,21 @@
 
 ```shell
 ## 增加l1的ETH
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast rpc "hardhat_setBalance" --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x12345678901234567890123456789
-true
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast b --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-5907679980460342222050878921467785
+cast rpc "hardhat_setBalance" --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x12345678901234567890123456789
+
+# 或者用
+curl -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"anvil_setBalance","params":["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "123456789123456789123456789"],"id":1}' http://localhost:9545 -s |jq
+
+cast b --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 
 ## 增加l1的MNT
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast send --rpc-url http://127.0.0.1:9545 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 0x92aBAD50368175785e4270ca9eFd169c949C4ce1  "mint(uint256)" 12345678901234567890123456789
+export Proxy__L1MantleToken=0x19C22f181280dF6Ad1d97285cdD430173Df91C12
+export deployer=041deb3563e965bce6e803b88b9d25005cb1414c4cdade04181363e87ca9e259
+cast send --rpc-url http://127.0.0.1:9545 --private-key $deployer $Proxy__L1MantleToken  "mint(address,uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 12345678901234567890123456789
 
-transactionHash         0x23e8a242e5d05e184fbe7c751f4509c7060871a00261eb45950658e145a08d01
+cast 2d `cast call --rpc-url http://127.0.0.1:9545 0x92aBAD50368175785e4270ca9eFd169c949C4ce1 "balanceOf(address)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`
 
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast 2d `cast call --rpc-url http://127.0.0.1:9545 0x92aBAD50368175785e4270ca9eFd169c949C4ce1 "balanceOf(address)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`
-12445678918654321005543209909
-
-
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s e
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s e
 ReceiptStatus checking……
 L1ERC20 address:  0x8ac5eE52F70AE01dB914bE459D8B3d50126fd6aE
 L2ERC20 address:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -235,7 +235,7 @@ DepostERC20 1237940039285380274899124224
 ReceiptStatus checking……
 
 
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s dnt
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s dnt
 ReceiptStatus checking……
 第 1 次transfer,txHash: 0x8067a508823f4b2c3e6f6408e84027d8137e83946c3f63b7fa29beca74eb6ec2
 ReceiptStatus checking……
