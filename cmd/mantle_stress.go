@@ -36,8 +36,6 @@ func init() {
 
 	d20Cmd.Flags().BoolVarP(&isMNT, "isMNT", "", false, "the l1 ERC20 is MNT")
 	d20Cmd.Flags().BoolVarP(&isETH, "isETH", "", false, "the l2 ERC20 is ETH")
-
-	fmt.Println("==> 2")
 }
 
 var stressCmd = &cobra.Command{
@@ -76,8 +74,7 @@ var dntCmd = &cobra.Command{
 --layer == l1, 转账l1的ETH
 --layer == l2, 转账l2的nativeToken`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("====>3", layer)
-		if err := stress.DNT(&mc, layer); err != nil {
+		if err := stress.DNT(&mc, layer, accountNum); err != nil {
 			return err
 		}
 		return nil
@@ -443,7 +440,7 @@ var stCmd = &cobra.Command{
 			if !b {
 				return fmt.Errorf("ParseAmount return false")
 			}
-			_, err := lib.TransferERC20(mc.L2Client, mc.L2ERC20Address, mc.Env.PrivateKeyList[0][0], mc.L2ERC20Address, amount)
+			_, err := lib.TransferERC20(mc.L2Client, mc.L2ERC20Address, mc.Env.PrivateKeyList[10][0], mc.L2ERC20Address, amount)
 			if err != nil {
 				return fmt.Errorf("TransferERC20 err: %v", err)
 			}

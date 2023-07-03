@@ -212,21 +212,21 @@
 
 ```shell
 ## 增加l1的ETH
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast rpc "hardhat_setBalance" --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x12345678901234567890123456789
-true
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast b --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-5907679980460342222050878921467785
+cast rpc "hardhat_setBalance" --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x12345678901234567890123456789
+
+# 或者用
+curl -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"anvil_setBalance","params":["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "123456789123456789123456789"],"id":1}' http://localhost:9545 -s |jq
+
+cast b --rpc-url http://127.0.0.1:9545 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 
 ## 增加l1的MNT
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast send --rpc-url http://127.0.0.1:9545 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 0x92aBAD50368175785e4270ca9eFd169c949C4ce1  "mint(uint256)" 12345678901234567890123456789
+export Proxy__L1MantleToken=0x19C22f181280dF6Ad1d97285cdD430173Df91C12
+export deployer=041deb3563e965bce6e803b88b9d25005cb1414c4cdade04181363e87ca9e259
+cast send --rpc-url http://127.0.0.1:9545 --private-key $deployer $Proxy__L1MantleToken  "mint(address,uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 12345678901234567890123456789
 
-transactionHash         0x23e8a242e5d05e184fbe7c751f4509c7060871a00261eb45950658e145a08d01
+cast 2d `cast call --rpc-url http://127.0.0.1:9545 0x92aBAD50368175785e4270ca9eFd169c949C4ce1 "balanceOf(address)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`
 
-(anaconda3)➜  red2 git:(update_for_run_verifierda) cast 2d `cast call --rpc-url http://127.0.0.1:9545 0x92aBAD50368175785e4270ca9eFd169c949C4ce1 "balanceOf(address)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`
-12445678918654321005543209909
-
-
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s e
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s e
 ReceiptStatus checking……
 L1ERC20 address:  0x8ac5eE52F70AE01dB914bE459D8B3d50126fd6aE
 L2ERC20 address:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -235,7 +235,7 @@ DepostERC20 1237940039285380274899124224
 ReceiptStatus checking……
 
 
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s dnt
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s dnt
 ReceiptStatus checking……
 第 1 次transfer,txHash: 0x8067a508823f4b2c3e6f6408e84027d8137e83946c3f63b7fa29beca74eb6ec2
 ReceiptStatus checking……
@@ -257,7 +257,7 @@ ReceiptStatus checking……
 ReceiptStatus checking……
 第 10 次transfer,txHash: 0xc1aae4b14e297158133b4640cb4b46d9c507bccd95190372843625f3bbe036d2
 
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s dnt -l l2
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s dnt -l l2
 第 1 次transfer,txHash: 0x324c9ac1eec53c2d26ecf4c3e0b04f69a3eb75cd3cf9b32014cd17fa4f72a987
 第 2 次transfer,txHash: 0x2acc63e542813fbb1cc7d0a290ded21ac0e08c9e1768b8e9d1bf6f0c0ad3b7ea
 第 3 次transfer,txHash: 0xc12e5c52a68aca946a57304bef7f0a0f61febb52df56dbdbf7f70659e9b79e38
@@ -269,7 +269,7 @@ ReceiptStatus checking……
 第 9 次transfer,txHash: 0x7ffac5d5443ee0a169b484c4bad7c3e1e21d7ce613f90f4283cfc9a25764993e
 第 10 次transfer,txHash: 0x0092ae4d5254733d912132671dab18094c795544eaf26920334c92354eddc437
 
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s d20                      
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s d20                      
 第 1 次transfer,txHash: 0x777e06c614c801fd2ddbc5320bdf66e1735f262ef00c6379ccfff1d7582e22cb
 第 2 次transfer,txHash: 0x47063eec57abae70224b7d151900fed66c744941eb356c0b6891d815b8b66ba0
 第 3 次transfer,txHash: 0x54adf63dbc3566fd8022070908f2cf9187b83b83ba8c52cd99f4fa9c1b045d8a
@@ -294,7 +294,7 @@ ReceiptStatus checking……
 第 9 次transfer,txHash: 0xc5ebe3c664bcc0689badc748c0f3abf9c4fff0e429c259f6efc271a4291b2b1c
 第 10 次transfer,txHash: 0xd3d5c59ffa40161ea463e5a0364648784926a7a459740468878c330c5d5b7478
 
-(anaconda3)➜  g_bc git:(main) ✗ go run main.go s d20 -l l2
+(anaconda3)➜  g_bc git:(main) ✗ go run main.go m s d20 -l l2
 第 1 次transfer,txHash: 0x6cd5e0db35ae3993d95e7f535e065f66ea892cfe438df0b5c0fffc0f800c1949
 第 2 次transfer,txHash: 0xcf38ea579d75fc17b197419087f47725b3df1be061c307a9a4ae909e383c23d0
 第 3 次transfer,txHash: 0xcb829df0f241fdccd7c060b1b9bc260f20158277d9382cc2db646a2756a6addf

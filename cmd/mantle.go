@@ -38,6 +38,7 @@ func init() {
 	mantleCmd.PersistentFlags().StringVar(&l2token, "l2token", "0", "l2 token address")
 	mantleCmd.PersistentFlags().StringVarP(&amount, "amount", "a", "1", "transfer amount")
 	mantleCmd.PersistentFlags().StringVarP(&privateKey, "privateKey", "p", "", "privateKey")
+	mantleCmd.PersistentFlags().IntVar(&accountNum, "accountNum", 10, "init accounts num")
 
 	// 初始化
 	if err := viper.Unmarshal(&mc.Env); err != nil {
@@ -61,7 +62,6 @@ func init() {
 			return
 		}
 	}
-	fmt.Println("==> 1")
 }
 
 var (
@@ -71,6 +71,7 @@ var (
 	layer      string
 	amount     string
 	privateKey string
+	accountNum int
 	isMNT      bool
 	isETH      bool
 	maxRetries = 10

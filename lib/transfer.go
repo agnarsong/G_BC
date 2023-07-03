@@ -63,24 +63,43 @@ func SendTransaction(c *ethclient.Client, signedTx *types.Transaction) (txHash s
 
 func CheckReceiptStatus(c *ethclient.Client, txHash common.Hash) error {
 
+	fmt.Println("will to check Txhash: ", txHash.Hex())
+	maxRetries := 3
+
+OuterLoop:
 	for {
-		_, isPending, err := c.TransactionByHash(context.Background(), txHash)
-		if err != nil {
-			return err
+		// 最大重试次数为maxRetries
+		for retries := 0; retries <= maxRetries; retries++ {
+			_, _, err := c.TransactionByHash(context.Background(), txHash)
+			if err == ethereum.NotFound {
+				// 请求失败，打印错误信息，并等待一段时间后重试
+				fmt.Printf("TransactionByHash 重试 %d: %v\n", retries+1, err)
+				time.Sleep(2 * time.Second)
+
+				continue
+			} else if err != nil {
+				return fmt.Errorf("TransactionByHash err: %v", err)
+			}
+
+			break OuterLoop
 		}
 
-		if !isPending {
-			break
-		}
 		fmt.Println("ReceiptStatus checking: TransactionByHash……")
 		time.Sleep(time.Second * time.Duration(2))
 	}
 
 	for i := 0; ; i++ {
 		re, err := c.TransactionReceipt(context.Background(), txHash)
-		if err != nil {
-			return err
+		if err == ethereum.NotFound {
+			// 请求失败，打印错误信息，并等待一段时间后重试
+			fmt.Printf("TransactionReceipt 重试 %d: %v\n", i+1, err)
+			time.Sleep(5 * time.Second)
+
+			continue
+		} else if err != nil {
+			return fmt.Errorf("TransactionReceipt err: %v", err)
 		}
+
 		if re.Status == 1 {
 			break
 		}

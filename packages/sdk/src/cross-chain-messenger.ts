@@ -849,7 +849,7 @@ export class CrossChainMessenger implements ICrossChainMessenger {
     if (stateRoot === null) {
       throw new Error(`state root for message not yet published`)
     }
-    
+
     // We need to calculate the specific storage slot that demonstrates that this message was
     // actually included in the L2 chain. The following calculation is based on the fact that
     // messages are stored in the following mapping on L2:

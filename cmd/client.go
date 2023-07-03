@@ -48,8 +48,8 @@ func init() {
 	mtCmd.AddCommand(clientCmd)
 
 	clientCmd.PersistentFlags().StringVarP(&url, "url", "u", "", "")
-	clientCmd.PersistentFlags().StringP("contractAddress", "c", "", "Contract address")
-	clientCmd.PersistentFlags().Int64VarP(&b, "blockNum", "b", -1, "区块高度")
+	clientCmd.PersistentFlags().String("contractAddress", "", "Contract address")
+	clientCmd.PersistentFlags().Int64Var(&b, "blockNum", -1, "区块高度")
 	clientCmd.PersistentFlags().StringP("privateKey", "p", "", "privateKey of sender address")
 	clientCmd.PersistentFlags().StringVarP(&fromAddress, "fromAddress", "f", "", "tx's fromAdrress")
 	clientCmd.PersistentFlags().StringVarP(&toAddress, "toAddress", "t", "", "tx's toAddress")

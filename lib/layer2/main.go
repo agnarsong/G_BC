@@ -139,9 +139,11 @@ func InitSc(mc *MantleCenter) (err error) {
 		return fmt.Errorf("mc.L1Client err: %v", err)
 	}
 
-	mc.L1WSClient, err = lib.NewEthClient(mc.Env.L1WS)
-	if err != nil {
-		return fmt.Errorf("mc.L1WSClient err: %v", err)
+	if mc.Env.L1WS != "" {
+		mc.L1WSClient, err = lib.NewEthClient(mc.Env.L1WS)
+		if err != nil {
+			return fmt.Errorf("mc.L1WSClient err: %v", err)
+		}
 	}
 
 	mc.L2Client, err = lib.NewEthClient(mc.Env.L2URL)
@@ -149,9 +151,11 @@ func InitSc(mc *MantleCenter) (err error) {
 		return fmt.Errorf("mc.L2Client err: %v", err)
 	}
 
-	mc.L2WSClient, err = lib.NewEthClient(mc.Env.L2WS)
-	if err != nil {
-		return fmt.Errorf("mc.L2Client err: %v", err)
+	if mc.Env.L2WS != "" {
+		mc.L2WSClient, err = lib.NewEthClient(mc.Env.L2WS)
+		if err != nil {
+			return fmt.Errorf("mc.L2Client err: %v", err)
+		}
 	}
 
 	mc.UserPrivateKey, err = crypto.HexToECDSA(mc.Env.PrivateKeyList[0][0])
@@ -165,7 +169,7 @@ func InitSc(mc *MantleCenter) (err error) {
 	case "local":
 		addressURL = mc.Env.L1URL[:len(mc.Env.L1URL)-4] + "8081/addresses.json"
 	case "qa":
-		addressURL = "http://localhost:8081/addresses.json"
+		addressURL = ""
 	}
 
 	if addressURL != "" {
@@ -432,6 +436,7 @@ func Deposit(mc *MantleCenter, prk string, l1token common.Address, l2token commo
 	if err != nil {
 		return nil, fmt.Errorf("DepostETH err: %v", err)
 	}
+
 	if err = lib.CheckReceiptStatus(mc.L1Client, tx.Hash()); err != nil {
 		return nil, fmt.Errorf("txHash: %v, \nDepostETH GetReStatus err: %v", tx.Hash(), err)
 	}
@@ -1042,21 +1047,16 @@ func FinalizeMessage(mc *MantleCenter, txHash common.Hash) {
 	addEnvList = append(addEnvList, fmt.Sprintf("L1_URL=%v", mc.Env.L1URL))
 	addEnvList = append(addEnvList, fmt.Sprintf("L1_CHAINID=%v", mc.Env.L1ChainID))
 	addEnvList = append(addEnvList, fmt.Sprintf("L2_URL=%v", mc.Env.L2URL))
-	addEnvList = append(addEnvList, fmt.Sprintf("L2_CHAINID=%v", 17))
+	addEnvList = append(addEnvList, fmt.Sprintf("L2_CHAINID=%v", 1705003))
 	addEnvList = append(addEnvList, fmt.Sprintf("PRIVATE_KEY=%v", mc.Env.PrivateKeyList[0][0]))
-	// addEnvList = append(addEnvList, fmt.Sprintf("PRIVATE_KEY=%v", "dd888cfabd6d3c3eeb683063657706fb660416ec4972bb5761204e0dbf59e33c"))
-	// addEnvList = append(addEnvList, fmt.Sprintf("Proxy__L1MantleToken_ADDRESS=%v", mc.Env.AddressList.Proxy__L1MantleToken))
-	addEnvList = append(addEnvList, fmt.Sprintf("TestMantleToken_ADDRESS=%v", mc.Env.AddressList.Proxy__L1MantleToken))
 	addEnvList = append(addEnvList, fmt.Sprintf("ADDRESS_MANAGER_ADDRESS=%v", mc.Env.AddressList.AddressManager))
-	// addEnvList = append(addEnvList, fmt.Sprintf("BVM_L1CrossDomainMessenger_ADDRESS=%v", "0x30558AbcBf63c80F88320B47c8A8C60E1ab2Ab2e"))
-	addEnvList = append(addEnvList, fmt.Sprintf("Proxy__BVM_L1CrossDomainMessenger_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1CrossDomainMessenger))
-	// addEnvList = append(addEnvList, fmt.Sprintf("L1_STANDARD_BRIDGE_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1StandardBridge))
-	addEnvList = append(addEnvList, fmt.Sprintf("Proxy__BVM_L1StandardBridge_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1StandardBridge))
+	addEnvList = append(addEnvList, fmt.Sprintf("L1_CROSS_DOMAIN_MESSENGER_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1CrossDomainMessenger))
+	addEnvList = append(addEnvList, fmt.Sprintf("L1_STANDARD_BRIDGE_ADDRESS=%v", mc.Env.AddressList.ProxyBVML1StandardBridge))
 	addEnvList = append(addEnvList, fmt.Sprintf("STATE_COMMITMENT_CHAIN_ADDRESS=%v", mc.Env.AddressList.StateCommitmentChain))
-	// addEnvList = append(addEnvList, fmt.Sprintf("StateCommitmentChain_ADDRESS=%v", mc.Env.AddressList.StateCommitmentChain))
 	addEnvList = append(addEnvList, fmt.Sprintf("CANONICAL_TRANSACTION_CHAIN_ADDRESS=%v", mc.Env.AddressList.CanonicalTransactionChain))
-	// addEnvList = append(addEnvList, fmt.Sprintf("CanonicalTransactionChain_ADDRESS=%v", mc.Env.AddressList.CanonicalTransactionChain))
 	addEnvList = append(addEnvList, fmt.Sprintf("BOND_MANAGER_ADDRESS=%v", mc.Env.AddressList.BondManager))
+	addEnvList = append(addEnvList, fmt.Sprintf("TestMantleToken_ADDRESS=%v", mc.Env.AddressList.Proxy__L1MantleToken))
+	addEnvList = append(addEnvList, fmt.Sprintf("FRAUD_PROOF_WINDOW=%v", 60))
 	addEnvList = append(addEnvList, fmt.Sprintf("TX_HASH=%v", txHash))
 	cmd.Env = append(os.Environ(), addEnvList...)
 	fmt.Println(addEnvList)

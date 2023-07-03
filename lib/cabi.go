@@ -87,6 +87,11 @@ func ParseContractFunctionOutputs(abiJSON string, funcName string, data []byte) 
 		return nil, fmt.Errorf("JSON err: %v", err)
 	}
 
+	return ParseContractFunctionOutputs1(parsedABI, funcName, data)
+}
+
+func ParseContractFunctionOutputs1(parsedABI abi.ABI, funcName string, data []byte) (map[string]interface{}, error) {
+
 	// 解析方法名（函数选择器）
 	if len(data)%32 != 0 {
 		return nil, fmt.Errorf("len(data) is %d, want a multiple of 32", len(data))
